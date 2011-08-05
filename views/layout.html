@@ -25,7 +25,17 @@
           <section id='widgets'>
             [news] [wall] [invite friends] [like]
           </section>
-          <section id='screens'>		
+          <section id='screens'>
+		    <% if ( isPlaying ){ %>
+	          <a href='/games/<%- playingGameId %>'>Having Drama</a> 
+	        <% } else if (hasAvatar) { %>
+	          <a href='/games'>Homeroom</a>
+	        <% } else { %>
+	          <a href='/avatars/new'>Register</a>
+		    <% } %>
+	        <a href='/games'>Profile</a>
+	        <a href='/games'>Shop</a>
+	        <a href='/games'>Leaderboards</a>			
 	      </section>
 	    </nav>
       </header>
