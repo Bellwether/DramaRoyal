@@ -2,6 +2,26 @@ var Lobby = function() {
   var LOBBY_CHANNEL = 'lobby';
   var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];
 
+  function onGameEvent(data) {	
+	switch (data.event) {
+	  case 'new':
+	    break;
+	  case 'started':
+	    break;
+	  case 'ended':
+	    break;
+	}
+  }
+
+  function onGamePlayerEvent(data) {	
+	switch (data.event) {
+	  case 'joined':
+	    break;			
+	  case 'left':
+	    break;
+	}
+  }
+
   return {
     listen: function(userSessionId) {
 	  if (userSessionId === undefined) return;
@@ -13,6 +33,8 @@ var Lobby = function() {
 	
 	  function onAuthorized(data) {	
         if (!data.authorized)	{
+		  socket.on('player', onGamePlayerEvent);
+		  socket.on('game', onGameEvent);
         }
       }
 	
