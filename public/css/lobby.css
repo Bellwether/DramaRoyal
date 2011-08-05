@@ -1,0 +1,82 @@
+#lobby-wrapper {
+  height:400px;
+}
+
+#lobby-wrapper h2 {
+  font-size:18px;	
+}
+
+#lobby-chat-panel, #games-panel {
+  float:left;	
+}
+
+#lobby-chat-panel {
+  margin-right:15px;	
+  width:375px;	
+}
+
+#games-panel {
+  width:300px;	
+}
+
+#lobby-chat {
+  border:1px solid #eee;	
+  overflow-y:scroll;
+  height:350px;	
+  width:375px;		
+}
+
+#game-list {
+  border:1px solid #eee;	
+  list-style:none;
+  margin:0;
+  overflow-y:scroll;
+  height:350px;
+  width:300px;
+}
+
+#game-list ul {
+  font-size:10px;	
+  list-style:none;
+  margin:0;
+}
+
+.lobby-game {
+  border-bottom:1px solid #eee;	
+  margin:2px 5px; 	
+  padding-bottom:5px;
+}
+
+#chat-controls {
+  width:650px;	
+}
+
+#avatar {
+  height:50px;	
+  vertical-align:top;
+  width:50px;	
+}
+
+.console-block,
+#lobby-console {
+  display:inline-block;	
+}
+
+#lobby-console input[type=text] {
+  border:1px solid #ccc;	
+  height:40px;
+  font-size:16px;
+  margin-right:20px;
+  padding:5px;
+  width:300px;	
+}
+
+#lobby-console input[type=submit] {
+  margin-right:20px;
+}
+
+#chat-status {
+  display:inline-block;	
+  margin-bottom:10px;
+  width:200px;	
+}

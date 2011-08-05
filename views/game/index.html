@@ -1,3 +1,52 @@
+<section id="game-lobby">
+  <div id='lobby-wrapper'>	
+	<div id='lobby-chat-panel'>
+	  <h2>Homeroom <span id='player-count'>(0)</span></h2>
+      <div id='lobby-chat'></div>
+	</div>
+	
+    <div id='games-panel'>	
+	  <% var cnt = 0; for(var k in locals.games) {cnt=cnt+1}; %>
+
+      <h2>Dramas <span id='game-count'>(<%- cnt %>)</span></h2>
+      <ul id='game-list'>
+        <% for(var k in locals.games) { %>
+          <li id="game-<%- locals.games[k]._id %>" class='lobby-game'>
+	        <h5><%- locals.games[k].title %></h5>
+		    <ul>
+			  <% for(var i = 0; i < locals.games[k].players.length; i++) { %>	
+			    <li id="<%- 'game-'+locals.games[k]._id+'-player-'+locals.games[k].players[i].playerId %>"><%- locals.games[k].players[i].name %> </li>
+			  <% } %>	
+		    </ul>
+	        <%- (locals.games[k].status === 'pending') ? "<a href='/games/"+locals.games[k]._id+"'>[join drama]</a>" : "(Fighting!)" %>
+          </li>	
+        <% } %>	
+      </ul>
+    </div>	
+
+  </div>
+
+  <div id='chat-controls'>
+    <form id="lobby-console" method="post" action="/lobby_messages" class='hidden'>
+	  <span class='console-block'>
+      	<img src='/img/placeholder.png' id='avatar' />
+        <input type='text' id="lobby-message" name="message" />
+      </span>
+      <span class='console-block'>
+	    <span id='chat-status'>Status: connecting to chat</span>
+	    <br />
+        <input id="lobby-console-submit" type="submit" value="Chat" disabled='disabled' />
+        or <a href="/games/new">start some drama</a>
+      </span>
+    </form>
+  </div>
+
+  <div id='lobby-dashboard'>
+	<div id='lobby-users'></div>
+  </div>
+
+</section>
+
 <script type="text/javascript">
   $(document).ready(function() {
 	Lobby.listen( <%- 1234567890 %> );
