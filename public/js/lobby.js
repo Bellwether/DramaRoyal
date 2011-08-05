@@ -22,6 +22,9 @@ var Lobby = function() {
 	}
   }
 
+  function onChat(data) {
+  };
+
   return {
     listen: function(userSessionId) {
 	  if (userSessionId === undefined) return;
@@ -35,6 +38,7 @@ var Lobby = function() {
         if (!data.authorized)	{
 		  socket.on('player', onGamePlayerEvent);
 		  socket.on('game', onGameEvent);
+		  socket.on('chat', onChat);
         }
       }
 	
