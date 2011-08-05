@@ -66,3 +66,6 @@ var Lobby = function() {
     }
   };
 }();
+
+// Expose Lobby to the global object
+window.Lobby = Lobby;
