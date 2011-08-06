@@ -1,8 +1,32 @@
+var lobbyUI = {
+  domConnectionStatus: function(){ return $('#chat-status'); },
+  domPlayerCount: function(){ return $('#player-count'); },
+  domLobbyChat: function(){ return $('#lobby-chat'); },
+  domChatButton: function(){ return $('#lobby-console-submit'); },
+
+  setConnectionStatus: function (status){
+    lobbyUI.domConnectionStatus().text('Status: '+status);
+  },
+  setplayerCount: function(cnt){
+    lobbyUI.domPlayerCount().text('('+cnt+')');
+  },
+  printMessage: function(message, name){
+    var element = name ? $('<p><b>'+name+': '+message+'</p>') : $('<p>'+message+'</p>');
+    element.appendTo(lobbyUI.domLobbyChat());
+  },
+  enableChat: function() {
+    lobbyUI.domChatButton().removeAttr("disabled").removeClass('disabled');
+  },
+  disableChat: function() {
+    lobbyUI.domChatButton().attr('disabled', 'disabled').addClass('disabled');
+  }
+}
+
 var Lobby = function() {
   var LOBBY_CHANNEL = 'lobby';
   var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];
 
-  function onGameEvent(data) {	
+  function onGameEvent(data) { 
 	switch (data.event) {
 	  case 'new':
 	    break;
@@ -13,7 +37,7 @@ var Lobby = function() {
 	}
   }
 
-  function onGamePlayerEvent(data) {	
+  function onGamePlayerEvent(data) { 
 	switch (data.event) {
 	  case 'joined':
 	    break;			
@@ -22,7 +46,13 @@ var Lobby = function() {
 	}
   }
 
-  function onChat(data) {
+  function onChat(data) { 
+	lobbyUI.printMessage(data.message, data.name);
+  };
+
+  function onAnnouncement(data) {
+	lobbyUI.printMessage(data.message);
+	if (data.count) lobbyUI.setplayerCount(data.count);
   };
 
   return {
@@ -32,13 +62,18 @@ var Lobby = function() {
 	  var socket = io.connect('/lobby',	{'transports': TRANSPORTS});
 	
 	  function onDisconnect() {
+		lobbyUI.disableChat();
+        lobbyUI.setConnectionStatus('disconnected');
       }
 	
 	  function onAuthorized(data) {	
-        if (!data.authorized)	{
+        if (data.authorized)	{
 		  socket.on('player', onGamePlayerEvent);
 		  socket.on('game', onGameEvent);
 		  socket.on('chat', onChat);
+		  socket.on('announcement', onAnnouncement);
+		
+		  if (data.count) lobbyUI.setplayerCount(data.count);
         }
       }
 	
@@ -46,16 +81,23 @@ var Lobby = function() {
 	    socket.on('disconnect', onDisconnect);
 		socket.once('authorized', onAuthorized);
 		
-        socket.emit('authorizeUser', userSessionId);		
+        socket.emit('authorizeUser', userSessionId);
+        lobbyUI.setConnectionStatus('connected');	
+        lobbyUI.enableChat();
 	  }
 	
 	  function onConnectFailed() {	
+        lobbyUI.setConnectionStatus('cannot connect to chat');
 	  }
 	  function onReconnecting(){
+        lobbyUI.setConnectionStatus('reconnecting to chat');
 	  };
 	  function onReconnect(){
+        lobbyUI.setConnectionStatus('reconnected to chat');
+        lobbyUI.enableChat();
 	  };
 	  function onReconnectFailure(){
+        lobbyUI.setConnectionStatus('failed to reconnect to chat');
 	  };
 
 	  socket.on('connect', onConnect);
