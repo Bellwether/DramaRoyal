@@ -13,6 +13,18 @@ var schema = new Schema({
 });
 var model = mongoose.model('User', schema);
 
+model.findByFbId = function(fbId, callback) {
+  model.findOne({ fbId: fbId }, function(err, doc){	
+	if (typeof callback === 'function') callback(err, doc);
+  });
+}
+
+model.findById = function(id, callback) {
+  model.findOne({ _id: id }, function(err, doc){	
+	if (typeof callback === 'function') callback(err, doc);
+  });
+}
+
 module.exports = {
   Schema: schema,
   Model: model
