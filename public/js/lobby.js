@@ -3,6 +3,7 @@ var lobbyUI = {
   domPlayerCount: function(){ return $('#player-count'); },
   domLobbyChat: function(){ return $('#lobby-chat'); },
   domChatButton: function(){ return $('#lobby-console-submit'); },
+  domChatBox: function(){ return $('#lobby-message'); },
 
   setConnectionStatus: function (status){
     lobbyUI.domConnectionStatus().text('Status: '+status);
@@ -19,6 +20,18 @@ var lobbyUI = {
   },
   disableChat: function() {
     lobbyUI.domChatButton().attr('disabled', 'disabled').addClass('disabled');
+  },
+  initChatControls: function(socket) {
+    var emitChatMessage = function(e){
+      e.preventDefault();
+      var data = lobbyUI.domChatBox().val();
+      socket.emit('chat', data, function(){
+        lobbyUI.printMessage(data, me);
+      });
+      lobbyUI.domChatBox().val('');
+      return false;
+    };
+    lobbyUI.domChatButton().click(emitChatMessage);
   }
 }
 
@@ -83,7 +96,8 @@ var Lobby = function() {
 		
         socket.emit('authorizeUser', userSessionId);
         lobbyUI.setConnectionStatus('connected');	
-        lobbyUI.enableChat();
+        lobbyUI.initChatControls();
+        lobbyUI.enableChat(socket);
 	  }
 	
 	  function onConnectFailed() {	
