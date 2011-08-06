@@ -12,7 +12,7 @@ var lobbyUI = {
     lobbyUI.domPlayerCount().text('('+cnt+')');
   },
   printMessage: function(message, name){
-    var element = name ? $('<p><b>'+name+': '+message+'</p>') : $('<p>'+message+'</p>');
+    var element = name ? $('<p><b>'+name+':</b> '+message+'</p>') : $('<p>'+message+'</p>');
     element.appendTo(lobbyUI.domLobbyChat());
   },
   enableChat: function() {
@@ -27,7 +27,7 @@ var lobbyUI = {
       e.preventDefault();
       var data = lobbyUI.domChatBox().val();
       sckt.emit('chat', data, function(){
-        lobbyUI.printMessage(data, me);
+        lobbyUI.printMessage(data, 'me');
       });
       lobbyUI.domChatBox().val('');
       return false;
@@ -97,7 +97,7 @@ var Lobby = function() {
 		
         socket.emit('authorizeUser', userSessionId);
         lobbyUI.setConnectionStatus('connected');	
-        lobbyUI.initChatControls();
+        lobbyUI.initChatControls(socket);
         lobbyUI.enableChat(socket);
 	  }
 	
