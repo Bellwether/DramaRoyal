@@ -2,8 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
+function required(val) { return val && val.length; }
+
 var schema = new Schema({
-  nick: String
+  nick: {type: String, validate: required}
 });
 var model = mongoose.model('Avatar', schema);
 

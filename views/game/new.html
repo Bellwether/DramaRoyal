@@ -1,0 +1,23 @@
+<section id="new-game">
+  <h2>Start a New Drama</h2>
+  <form id="game-form" method="post" action="/games">
+	<p>
+      <label>Title:</label>
+      <input type="text" autofocus="autofocus" name="title" />
+	</p>	
+	<p>
+	  <label>Type:</label>	
+      <span>Public</span> <input type="radio" name="type" value="public" checked="checked">
+      <span>Friends</span> <input type="radio" name="type" value="friends">
+      <span>Private</span> <input type="radio" name="type" value="private">
+    </p>
+    <p>
+	  <label>Pace:</label>	
+      <span>Fast</span> <input type="radio" name="pace" value="fast" checked="checked">
+      <span>Slow</span> <input type="radio" name="pace" value="slow">
+    </p>
+    <br />
+    <input id="game-submit" type="submit" value="let the drama begin" />
+    <span>or <a href='/games'>return to homeroom</a></span>
+  </form>
+</section>

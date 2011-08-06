@@ -1,15 +1,17 @@
+var avtr = require('./avatar');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Avatar = require('./avatar').Schema;
+
+function required(val) { return val && val.length; }
 
 var schema = new Schema({
-  name: String,
+  name: {type: String, validate: required},
   full: String,
-  fbId: { type: String, index: {unique:true} },
+  fbId: {type: String, index: {unique:true} },
   token: String,
   sex: String,
   ts: { type: Date, default: Date.now },
-  avatar: [Avatar]
+  avatar: [avtr.Schema]
 });
 var model = mongoose.model('User', schema);
 
