@@ -22,10 +22,11 @@ var lobbyUI = {
     lobbyUI.domChatButton().attr('disabled', 'disabled').addClass('disabled');
   },
   initChatControls: function(socket) {
+	var sckt = socket;
     var emitChatMessage = function(e){
       e.preventDefault();
       var data = lobbyUI.domChatBox().val();
-      socket.emit('chat', data, function(){
+      sckt.emit('chat', data, function(){
         lobbyUI.printMessage(data, me);
       });
       lobbyUI.domChatBox().val('');
