@@ -1,0 +1,27 @@
+{
+  ref: "https://developers.facebook.com/docs/test_users/",
+  users: [
+    {
+      create_url: "https://graph.facebook.com/153494728049768/accounts/test-users?installed=false&method=post&access_token=153494728049768|bcc0da3c6b0c50229a1b670b690b5c46",
+	  id: "100002704489895",
+	  login_url: "https://www.facebook.com/platform/test_account_login.php?user_id=100002704489895&n=UWHQirwWP5VowEJ",
+	  email: "arpdgeg_putnamescu_1312712851\u0040tfbnw.net",
+	  password: "1412252790"
+    },
+    {
+      create_url: "https://graph.facebook.com/153494728049768/accounts/test-users?installed=false&&method=post&access_token=153494728049768|bcc0da3c6b0c50229a1b670b690b5c46"
+	  id: "100002691320039",
+	  login_url: "https://www.facebook.com/platform/test_account_login.php?user_id=100002691320039&n=PEZBz8toM5MzJBa",
+	  email: "savuyss_lausteinskymansensonbergescuwitz_1312713494\u0040tfbnw.net",
+	  password: "2061018823"
+    },
+    {
+      create_url: "https://graph.facebook.com/153494728049768/accounts/test-users?installed=true&permissions=friends_online_presence,offline_access&method=post&access_token=153494728049768|bcc0da3c6b0c50229a1b670b690b5c46"
+	  id: "100002735029943",
+	  access_token: "153494728049768|7c4b1eaef6a6d8495df096ed.0-100002735029943|L6-WDzsDE_Gk_eYgTWtLNwuIPX8",
+	  login_url: "https://www.facebook.com/platform/test_account_login.php?user_id=100002735029943&n=dEFIvBSqZXv2wDX",
+	  email: "socqfpf_sidhuberg_1312713605\u0040tfbnw.net",
+	  password: "1429860206"
+    }
+  ]
+}

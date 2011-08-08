@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-function required(val) { return val && val.length; }
-
 var plyr = require('./player')
 var trn = require('./turn');
 
@@ -15,6 +13,9 @@ var MAX_TURNS = 50;
 var TURN_DURATION = 60;
 var COOLDOWN_DURATION = 30;
 
+function required(val) { return val && val.length; }
+function maxPlayers(val) { return !val || !val.length || val.length <= MAX_PLAYERS; }
+
 var schema = new Schema({
   userId: String,
   title: {type: String, validate: required},
@@ -22,7 +23,7 @@ var schema = new Schema({
   status: { type: String, default: 'pending', enum: GAME_STATUS, validate: required },
   start: Date,
   end: Date,
-  players: [plyr.Schema],
+  players: { type: [plyr.Schema], validate: maxPlayers},
   turns: [trn.Schema],
   ts: { type: Date, default: Date.now() }
 });
@@ -41,4 +42,18 @@ model.create = function(params, callback) {
   game.save(function (err) {
     if (typeof callback === 'function') callback(err, game);
   });
+}
+
+model.prototype.createPlayer = function(userId, callback) {
+  var player = {userId: userId};
+  this.players.push(player);
+
+  this.save(function (err) {
+    callback(err, player);
+  });
+}
+
+module.exports = {
+  Schema: schema,
+  Model: model
 }

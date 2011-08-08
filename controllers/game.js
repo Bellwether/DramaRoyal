@@ -18,11 +18,12 @@ module.exports = {
       };
 	}
 	
-	mgmt.GameManager.findGame(gameId, function(err, game){
+	gt.Main.findGame(gameId, function(err, game){
 	  if (game)	{
+	    var userId = req.user.getId();
 	    gt.Main.joinGame(gameId, userId, onJoinGame);	
 	  }
-	  else {	
+	  else {
         res.redirect('/games');
 	  };
 	});
@@ -32,11 +33,13 @@ module.exports = {
 	var type = req.body.type;
     var userId = req.user.getId();
 	
-	gt.Main.addGame(title, type, userId, function(err, game){
-	  if (game)
+	gt.Main.createGame(title, type, userId, function(err, game){
+	  if (game) {
         res.redirect('/games/'+game._id);
-      else
+      } else {
+	    console.log("error creating game "+err);
         res.redirect('/games');
+      }
     });
   }
 };
