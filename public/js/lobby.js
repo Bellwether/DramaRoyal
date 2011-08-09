@@ -69,11 +69,17 @@ var Lobby = function() {
 	if (data.count) lobbyUI.setplayerCount(data.count);
   };
 
+  function isSecurePage() {
+	return location.protocol.indexOf('https') === 0;
+  };
+
   return {
     listen: function(userSessionId) {
 	  if (userSessionId === undefined) return;
 	
-	  var socket = io.connect('/lobby',	{'transports': TRANSPORTS});
+	  var options = {'transports': TRANSPORTS};
+	  if (isSecurePage()) options['secure'] = true;
+	  var socket = io.connect('/lobby', options);
 	
 	  function onDisconnect() {
 		lobbyUI.disableChat();
