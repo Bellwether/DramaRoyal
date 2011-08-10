@@ -1,5 +1,6 @@
 var avtr = require('./avatar');
 var mongoose = require('mongoose');
+var graph = require('./../lib/facebook/graph');
 var Schema = mongoose.Schema;
 
 function required(val) { return val && val.length; }
@@ -14,6 +15,45 @@ var schema = new Schema({
   avatar: [avtr.Schema]
 });
 var model = mongoose.model('User', schema);
+
+function userParamsFromGraph(data){
+  var convertGraphObject = function (graphData){	
+	return JSON.parse( JSON.stringify(graphData) );
+  }
+  var userData = convertGraphObject(data);
+
+  var name = userData['first_name'];
+  var fullName = userData['name'];
+  var gender = userData['gender'];
+  var username = userData['username'];	
+  var verified = userData['verified'];
+  var friends = (userData['friends'] || {})['data'] || [];
+  var friendIds = [];
+  for (var idx = 0; idx < friends.length; idx++) {
+    friendIds.push( friends[idx].id );
+  }
+
+  var params = {name: name, full: fullName, fbId: fbId, token: oauthToken, sex: gender}	
+  return params;
+}
+
+model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFunction, callback) {
+  model.findByFbId(facebookUserId, function (err, doc){
+    if (doc) {
+	  callback(err, doc);
+    } else if (typeof fbGraphFunction === 'function') {
+	  fbGraphFunction(function(userData){
+		var params = userParamsFromGraph(userData)
+		var user = new model(params);
+	    user.save(function (err, doc) {
+          callback(err, doc);
+	    });
+	  });
+    } else {
+	  callback(err);
+    }
+  })	
+}
 
 model.findByFbId = function(fbId, callback) {
   model.findOne({ fbId: fbId }, function(err, doc){	
