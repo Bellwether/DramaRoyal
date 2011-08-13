@@ -1,9 +1,25 @@
-module.exports = {
-  get_authorize: function(req, res) {
-	var authUrl = res.getOAuthDialogUrl();
-    res.render('app/authorize', { layout: false, oAuthDialogUrl: authUrl});
-  },
+var appKey = '153494728049768';
+var canvasAppUrl = "https://apps.facebook.com/dramaroyal";
+var appProfilePageUrl = 'https://www.facebook.com/apps/application.php?id='+appKey;
 
-  get_callback: function(req, res) {
+var facebookAuthorizeAction = function(req, res) {
+  var code = req.query.code;
+  var error = req.query.error;
+
+  if (code) {
+    res.redirect(canvasAppUrl);
+  } 
+  else {
+    res.redirect(appProfilePageUrl);
+  }
+}
+
+module.exports = {
+  get_oauth: facebookAuthorizeAction,
+  post_oauth: facebookAuthorizeAction,
+
+  index: function(req, res) {
+	var authUrl = res.getOAuthDialogUrl();
+    res.render('auth/index', {layout: false, oAuthDialogUrl: authUrl});
   }
 };

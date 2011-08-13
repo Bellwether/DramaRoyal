@@ -1,12 +1,18 @@
 var gt = require('./../lib/mechanics/game_tracker');
 
 module.exports = {
+  before_filter: function(req, res, next){
+	next();
+  },
+	
   index: function(req, res){
 	res.render();
   },
+
   new: function(req, res){
 	res.render();
   },
+
   show: function(req, res){
 	var gameId = req.params.id;
 	
@@ -28,6 +34,7 @@ module.exports = {
 	  };
 	});
   },
+
   create: function(req, res){
 	var title = req.body.title;
 	var type = req.body.type;
