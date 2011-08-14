@@ -9,6 +9,16 @@ var Drama = function() {
   };
 
   var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];
+
+  return {
+    listen: function(userSessionId) {
+	  if (userSessionId === undefined) return;
+	
+	  var options = {'transports': TRANSPORTS};
+	  if (isSecurePage()) options['secure'] = true;
+	  var socket = io.connect('/games', options);	
+	}
+  };
 }();
 
 // Expose Drama to the global object
