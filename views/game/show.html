@@ -1,0 +1,10 @@
+<section id="game">
+  <%- partial('game/ui/timer') %>	
+  &nbsp;&nbsp;
+  <h5 id='game-status'>
+  <%- locals.game.status === 'pending' ? 'Waiting For Players' : ((locals.game.status === 'cooldown') ? 'Waiting for next turn' : 'Turn ' + Math.max(locals.game.turns.length,1)) %>
+  </h5>
+  &nbsp;&nbsp;
+  <h2><%- locals.game.title %></h2>
+
+</section>	

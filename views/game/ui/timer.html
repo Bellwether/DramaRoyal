@@ -1,0 +1,12 @@
+<h5 id='turn-timer'>
+  <% if ( locals.game.isActive() ) { %>	
+	  <% var currentTime = Date.now(); %> 
+	  <% var currentTurn = locals.game.getCurrentTurn() %>
+	  <% var startTime = new Date( currentTurn.ts ); %>
+	  <% var latencyDelay = 1; %>
+	  <% seconds = 60 - parseInt(( currentTime - startTime.getTime() ) / 1000.0) - latencyDelay; %>
+	  <%- (seconds >= 10) ? seconds : ('0' + seconds)  %> seconds
+	<% } else if (locals.game.status === 'cooldown') { %>
+    00 seconds
+	<% } %>
+</h5>

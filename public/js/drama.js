@@ -1,4 +1,11 @@
 var dramaUI = {
+  domConnectionStatus: function(){ return $('#chat-status'); },
+  domChatButton: function(){ return $('#game-console-submit'); },
+  domChatBox: function(){ return $('#game-message'); },	
+
+  setConnectionStatus: function (status){
+    dramaUI.domConnectionStatus().text('Status: '+status);
+  },
 }
 
 var Drama = function() {
