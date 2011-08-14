@@ -24,15 +24,7 @@ module.exports = {
       };
 	}
 	
-	gt.Main.findGame(gameId, function(err, game){
-	  if (game)	{
-	    var userId = req.user.getId();
-	    gt.Main.joinGame(gameId, userId, onJoinGame);	
-	  }
-	  else {
-        res.redirect('/games');
-	  };
-	});
+	gt.Main.joinGame(gameId, userId, onJoinGame);
   },
 
   create: function(req, res){

@@ -45,12 +45,18 @@ model.create = function(params, callback) {
 }
 
 model.prototype.createPlayer = function(userId, callback) {
-  var player = {userId: userId};
-  this.players.push(player);
+  var isGameJoinable = this.status === 'pending';
 
-  this.save(function (err) {
-    callback(err, player);
-  });
+  if (isGameJoinable)	{
+    var player = {userId: userId};
+    this.players.push(player);
+
+    this.save(function (err) {
+      callback(err, player);
+    });
+  } else {
+	callback(false);
+  }
 }
 
 module.exports = {
