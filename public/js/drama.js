@@ -1,3 +1,6 @@
+var dramaUI = {
+}
+
 var Drama = function() {
   function getGameIdFromUrl() {
     var urlParts = window.location.toString().split('/'); 
@@ -17,6 +20,12 @@ var Drama = function() {
 	  var options = {'transports': TRANSPORTS};
 	  if (isSecurePage()) options['secure'] = true;
 	  var socket = io.connect('/games', options);	
+	
+	  socket.on('connect', onConnect);
+	  socket.on('connect_failed', onConnectFailed);	
+	  socket.on('reconnecting', onReconnecting);
+	  socket.on('reconnect', onReconnect);
+	  socket.on('reconnect_failure', onReconnectFailure);
 	}
   };
 }();
