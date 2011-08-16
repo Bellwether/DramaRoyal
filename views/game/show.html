@@ -9,12 +9,21 @@
 
   <div id='game-players'>
 	<ul id='player-list'>
-      <%- partial('player', { collection: locals.game.players }); %>
+      <%- partial('game/ui/player', { collection: locals.game.players }); %>
       <% for(var i = 0; i < 6 - locals.game.players.length; i++) { %>	
 	    <li></li>
       <% } %>
 	</ul>
   </div>
 
+  <div id='turn-outcomes' class='hidden'>
+    <div id="outcome-pagination">
+      <a href="#" id="turn-outcome-pagination-previous" class="button prev">Previous</a>
+      <a href="#" id="turn-outcome-pagination-next" class="button next">Next</a>
+    </div>	
+    <ul id='outcome-pages' data-page='1' data-next='turn-outcome-pagination-next' data-previous='turn-outcome-pagination-previous'>
+	</ul>
+  </div>
 
+  <%- partial('game/ui/drama_console') %>
 </section>	
