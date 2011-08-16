@@ -87,13 +87,17 @@ var Lobby = function() {
       }
 	
 	  function onAuthorized(data) {	
-        if (data.authorized)	{
+        if (data.authorized) {
 		  socket.on('player', onGamePlayerEvent);
 		  socket.on('game', onGameEvent);
 		  socket.on('chat', onChat);
 		  socket.on('announcement', onAnnouncement);
 		
 		  if (data.count) lobbyUI.setplayerCount(data.count);
+
+          lobbyUI.setConnectionStatus('connected');	
+          lobbyUI.initChatControls(socket);
+          lobbyUI.enableChat(socket);		
         }
       }
 	
@@ -102,9 +106,6 @@ var Lobby = function() {
 		socket.once('authorized', onAuthorized);
 		
         socket.emit('authorizeUser', userSessionId);
-        lobbyUI.setConnectionStatus('connected');	
-        lobbyUI.initChatControls(socket);
-        lobbyUI.enableChat(socket);
 	  }
 	
 	  function onConnectFailed() {	
