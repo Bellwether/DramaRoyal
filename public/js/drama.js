@@ -16,6 +16,9 @@ var dramaUI = {
   disableGame: function() {
     $('.command').attr('disabled', 'disabled').addClass('disabled');
   },
+  enableGame = function(){
+    $('.command').removeAttr("disabled").removeClass('disabled');
+  }
   setConnectionStatus: function (status){
     dramaUI.domConnectionStatus().text('Status: '+status);
   },
