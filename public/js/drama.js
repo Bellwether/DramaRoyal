@@ -3,6 +3,12 @@ var dramaUI = {
   domChatButton: function(){ return $('#game-console-submit'); },
   domChatBox: function(){ return $('#game-message'); },	
 
+  disableChat: function() {
+    dramaUI.domChatButton().attr('disabled', 'disabled').addClass('disabled');
+  },
+  disableGame: function() {
+    $('.command').attr('disabled', 'disabled').addClass('disabled');
+  },
   setConnectionStatus: function (status){
     dramaUI.domConnectionStatus().text('Status: '+status);
   },
@@ -27,6 +33,26 @@ var Drama = function() {
 	  var options = {'transports': TRANSPORTS};
 	  if (isSecurePage()) options['secure'] = true;
 	  var socket = io.connect('/games', options);	
+	
+	  function onDisconnect() {
+		dramaUI.disableGame();
+		dramaUI.disableChat();
+        dramaUI.setConnectionStatus('disconnected');
+      }	
+	
+	  function onConnectFailed() {	
+        dramaUI.setConnectionStatus('cannot connect to game');
+	  }
+	  function onReconnecting(){
+        dramaUI.setConnectionStatus('reconnecting to game');
+	  };
+	  function onReconnect(){
+        dramaUI.setConnectionStatus('reconnected to game');
+        dramaUI.enableChat();
+	  };
+	  function onReconnectFailure(){
+        dramaUI.setConnectionStatus('failed to reconnect to game');
+	  };	
 	
 	  socket.on('connect', onConnect);
 	  socket.on('connect_failed', onConnectFailed);	
