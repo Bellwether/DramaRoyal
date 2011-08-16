@@ -1,16 +1,82 @@
+var outcomeUI = {
+  init: function(list){	
+    var isAnimating = false;
+    var next = $('#' + list.data('next') );
+    var previous = $('#' + list.data('previous') );
+
+    function movePage(position, sign) {
+      var width = list.children('li').first().width();
+
+      isAnimating = true;
+      list.animate({ 'marginLeft': width * position }, 600, function() {
+        isAnimating = false;
+      });
+    }
+
+    function changePosition(delta) {
+      var currentPage = list.data('page');
+      currentPage = currentPage + delta;
+	
+      movePage(currentPage, delta);
+      list.data('page', currentPage);
+    }
+	
+    function paginate(delta) {
+	  if (isAnimating) return false;
+      var currentPage = list.data('page');
+      var numberOfPages = list.children('li').length;
+      var pageDelta = currentPage+delta;
+	
+      if (pageDelta > 0) return false;
+      if (pageDelta <= -numberOfPages) {
+	    var outcomePanel = $('#turn-outcomes');
+	    outcomePanel.hide();
+	    $('#game-players').show();
+	    return false;
+      }
+	
+      changePosition(delta);
+      return false;
+    }	
+	
+    next.click(function() { paginate(-1); });
+    previous.click(function() { paginate(1); });
+  }	
+};
+
 var dramaUI = {
   domConnectionStatus: function(){ return $('#chat-status'); },
   domChatButton: function(){ return $('#game-console-submit'); },
   domChatBox: function(){ return $('#game-message'); },	
+  domTattleButton: function(){ return $('#player-tattle'); },	
+  domLickButton: function(){ return $('#player-lick'); },	
   stripNonNumeric = function(text) {
     return text.replace(/[^0-9]/g, ''); 
   },
 
+  useTattle: function() {
+    var tattles = dramaUI.domTattleButton().data('count');
+    tattles = parseInt(tattles) - 1;
+    dramaUI.domTattleButton().text('Tattle('+tattles+')');
+    dramaUI.domTattleButton().data('count', tattles);
+  },
+  useLick: function() {
+    var licks = dramaUI.domLickButton().data('count');
+    licks = parseInt(licks) - 1;
+    dramaUI.domLickButton().text('Lick('+licks+')');
+    dramaUI.domLickButton().data('count', licks);
+  },
   printMessage: function(message, userId){
 	var element = $('<p>'+message+'</p>');
     element.appendTo($('#player-chat-'+userId));
   },
-  setPlayerEsteem = function(userId, delta) {
+  setClock: function(time) {
+    $('#turn-timer').html( time ? (time + ' seconds') : '' );
+  },
+  setTurn: function(turn) {
+    $('#game-status').html( turn );
+  },
+  setPlayerEsteem: function(userId, delta) {
     var esteemBox = $('#player-esteem-'+userId);
     var esteem = dramaUI.stripNonNumeric( esteemBox.html() );
     esteem = Math.max( parseInt(esteem) + parseInt(delta), 0 );
@@ -25,10 +91,10 @@ var dramaUI = {
   disableGame: function() {
     $('.command').attr('disabled', 'disabled').addClass('disabled');
   },
-  enableGame = function(){
+  enableGame = function() {
     $('.command').removeAttr("disabled").removeClass('disabled');
   }
-  setConnectionStatus: function (status){
+  setConnectionStatus: function (status) {
     dramaUI.domConnectionStatus().text('Status: '+status);
   },
   initChatControls: function(socket) {
