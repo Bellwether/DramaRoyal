@@ -7,4 +7,14 @@
   &nbsp;&nbsp;
   <h2><%- locals.game.title %></h2>
 
+  <div id='game-players'>
+	<ul id='player-list'>
+      <%- partial('player', { collection: locals.game.players }); %>
+      <% for(var i = 0; i < 6 - locals.game.players.length; i++) { %>	
+	    <li></li>
+      <% } %>
+	</ul>
+  </div>
+
+
 </section>	
