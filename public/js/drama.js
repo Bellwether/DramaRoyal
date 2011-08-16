@@ -50,7 +50,7 @@ var dramaUI = {
   domChatBox: function(){ return $('#game-message'); },	
   domTattleButton: function(){ return $('#player-tattle'); },	
   domLickButton: function(){ return $('#player-lick'); },	
-  stripNonNumeric = function(text) {
+  stripNonNumeric: function(text) {
     return text.replace(/[^0-9]/g, ''); 
   },
 
@@ -91,7 +91,7 @@ var dramaUI = {
   disableGame: function() {
     $('.command').attr('disabled', 'disabled').addClass('disabled');
   },
-  enableGame = function() {
+  enableGame: function() {
     $('.command').removeAttr("disabled").removeClass('disabled');
   }
   setConnectionStatus: function (status) {
