@@ -2,10 +2,19 @@ var dramaUI = {
   domConnectionStatus: function(){ return $('#chat-status'); },
   domChatButton: function(){ return $('#game-console-submit'); },
   domChatBox: function(){ return $('#game-message'); },	
+  stripNonNumeric = function(text) {
+    return text.replace(/[^0-9]/g, ''); 
+  },
 
   printMessage: function(message, userId){
 	var element = $('<p>'+message+'</p>');
-    element.appendTo($('#player-chat-'+playerId));
+    element.appendTo($('#player-chat-'+userId));
+  },
+  setPlayerEsteem = function(userId, delta) {
+    var esteemBox = $('#player-esteem-'+userId);
+    var esteem = dramaUI.stripNonNumeric( esteemBox.html() );
+    esteem = Math.max( parseInt(esteem) + parseInt(delta), 0 );
+    esteemBox.html('Self Esteem: '+esteem);
   },
   enableChat: function() {
     dramaUI.domChatButton().removeAttr("disabled").removeClass('disabled');
