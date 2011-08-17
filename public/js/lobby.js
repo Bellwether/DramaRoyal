@@ -50,7 +50,6 @@ var Lobby = function() {
 	    break;
 	}
   }
-
   function onGamePlayerEvent(data) { 
 	switch (data.event) {
 	  case 'joined':
@@ -59,11 +58,9 @@ var Lobby = function() {
 	    break;
 	}
   }
-
   function onChat(data) { 
 	lobbyUI.printMessage(data.message, data.name);
   };
-
   function onAnnouncement(data) {
 	lobbyUI.printMessage(data.message);
 	if (data.count) lobbyUI.setplayerCount(data.count);
