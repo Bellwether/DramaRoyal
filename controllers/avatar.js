@@ -2,7 +2,9 @@ var usr = require('./../models/user');
 
 module.exports = {
   before_filter: function(req, res, next) {
-	next();
+	res.requireUser(req, res, function(isAuthorized){
+	  if (isAuthorized) next();
+	});
   },
 	
   new: function(req, res) {
