@@ -39,6 +39,7 @@ function userParamsFromGraph(data){
 }
 
 model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFunction, callback) {
+  console.log("@@fb + findOrCreateFromFacebook : "+facebookUserId+", "+oAuthToken)	
   model.findByFbId(facebookUserId, function (err, doc){
     if (doc) {
 	  callback(err, doc);
@@ -51,6 +52,7 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFun
 	    });
 	  });
     } else {
+      console.log("@@fb + ERROR in findOrCreateFromFacebook : "+err)		
 	  callback(err);
     }
   })	
