@@ -481,7 +481,7 @@ var Drama = function() {
 	    socket.on('disconnect', onDisconnect);
 		socket.once('authorized', onAuthorized);
 		
-        socket.emit('authorizeUser', userSessionId);
+        socket.emit('authorizeUser', userSessionId, getGameIdFromUrl());
 	  }
 	
 	  function onConnectFailed() {	

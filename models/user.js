@@ -1,3 +1,4 @@
+var sssn = require('./session');
 var avtr = require('./avatar');
 var mongoose = require('mongoose');
 var graph = require('./../lib/facebook/graph');
@@ -58,6 +59,16 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFun
 model.findByFbId = function(fbId, callback) {
   model.findOne({ fbId: fbId }, function(err, doc){	
 	if (typeof callback === 'function') callback(err, doc);
+  });
+}
+
+model.findBySessionId = function(sessionId, callback) {
+  sssn.Model.findOne({ _id: sessionId }, function(err, doc){	
+	if (doc && doc.userId) {
+	  model.findById(doc.userId, callback);	
+	} else {
+	  if (typeof callback === 'function') callback(err, doc);
+	}
   });
 }
 
