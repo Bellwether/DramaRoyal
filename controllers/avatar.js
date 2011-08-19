@@ -19,7 +19,7 @@ module.exports = {
 	var name = req.body.nick;
     var userId = req.user.getId();
 	
-    usr.User.findById( userId, function(err, doc){
+    usr.Model.findById( userId, function(err, doc){
 	  var canUpdateAvatar = name && doc && !doc.avatar;
 	  if (canUpdateAvatar) {
 		doc.avatar = {nick: name};
