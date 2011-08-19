@@ -21,5 +21,7 @@ module.exports = {
   index: function(req, res) {
 	var authUrl = res.getOAuthDialogUrl();
     res.render('auth/index', {layout: false, oAuthDialogUrl: authUrl});
-  }
+  },
+
+  create: facebookAuthorizeAction
 };
