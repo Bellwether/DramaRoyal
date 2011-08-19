@@ -277,7 +277,7 @@ var Drama = function() {
       return gameAPI.domGameStatus().html().indexOf('next turn') >= 0;
     },
     isPlayerReady: function(userId) {
-	  return $('#player-status-'+userId).html().indexOf('ready') > 0);
+	  return $('#player-status-'+userId).html().indexOf('ready') > 0;
     },
     setPlayerStatus: function(status, playerId) {
 	  gameAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
@@ -296,7 +296,7 @@ var Drama = function() {
       dramaUI.enableGame();
       dramaUI.hideOutcomePanel()
       dramaUI.showPlayerPanel();
-    };
+    },
     turnEnded: function(data) {	
       dramaUI.disableGame();
       gameAPI.clearGameInterval();
@@ -337,7 +337,7 @@ var Drama = function() {
         outcome.description = "And oh what a mess! No girl was better than the others, each as worthless and ashamed as the next."	
       }
       outcomeUI.displayOutcomePage(outcome);
-    }
+    },
     playerQuit: function(data) {
       var id = data.player._id;
 
@@ -346,9 +346,9 @@ var Drama = function() {
       } 
       else {
 	    dramaUI.removePlayer(id);
-      },
-    }
-    playerJoined = function(data){
+      };
+    },
+    playerJoined: function(data){
       var name = data.player._id;
       var id = data.player._id;	
 
@@ -384,8 +384,8 @@ var Drama = function() {
           return false;
 	    }
       });	
-    };
-  }
+    }
+  };
 
   function onChatEvent(data) { 
 	dramaUI.printMessage(data.message, data.userId);
