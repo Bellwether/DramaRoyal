@@ -10,3 +10,9 @@ model = {}
 // this_rating: the rating of this item 
 // 
 // Note: avg_num_votes is used as the “magic” weight in this formula. The higher this value, the more votes it takes to influence the bayesian rating value.
+
+
+// avg number of wins
+// avg health of wins (for wins > 0)
+// this number of wins
+// this win health
