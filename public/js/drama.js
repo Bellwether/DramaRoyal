@@ -9,7 +9,7 @@ var outcomeUI = {
   },
   clearOutcomePages: function() {
 	outcomeUI.domOutcomePages().css({ 'marginLeft': 0}).data('page', 0).empty();
-  }.
+  },
   applyDamage: function(outcome) {	
     var targets = outcome.targets;
 	if (!targets) return;
@@ -175,7 +175,7 @@ var dramaUI = {
   },
   enableGame: function() {
     $('.command').removeAttr("disabled").removeClass('disabled');
-  }
+  },
   blurGame: function() {
     $('.command.selected').removeClass('selected');
   },
@@ -230,7 +230,7 @@ var dramaUI = {
 	    dramaUI.readyToWaiting();
       });
       return false;
-    };
+    });
   }
 }
 
