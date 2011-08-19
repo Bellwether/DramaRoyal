@@ -17,12 +17,13 @@ var schema = new Schema({
 });
 var model = mongoose.model('User', schema);
 
-function userParamsFromGraph(data){
+function userParamsFromGraph(data, oAuthToken){
   var convertGraphObject = function (graphData){	
 	return JSON.parse( JSON.stringify(graphData) );
   }
   var userData = convertGraphObject(data);
 
+  var fbId = userData['id'];
   var name = userData['first_name'];
   var fullName = userData['name'];
   var gender = userData['gender'];
@@ -34,18 +35,17 @@ function userParamsFromGraph(data){
     friendIds.push( friends[idx].id );
   }
 
-  var params = {name: name, full: fullName, fbId: fbId, token: oauthToken, sex: gender}	
+  var params = {name: name, full: fullName, fbId: fbId, token: oAuthToken, sex: gender}	
   return params;
 }
 
 model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFunction, callback) {
-  console.log("@@fb + findOrCreateFromFacebook : "+facebookUserId+", "+oAuthToken)	
   model.findByFbId(facebookUserId, function (err, doc){
     if (doc) {
 	  callback(err, doc);
     } else if (typeof fbGraphFunction === 'function') {
 	  fbGraphFunction(function(userData){
-		var params = userParamsFromGraph(userData)
+		var params = userParamsFromGraph(userData, oAuthToken)
 		var user = new model(params);
 	    user.save(function (err, doc) {
           callback(err, doc);
