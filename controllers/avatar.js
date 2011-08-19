@@ -27,7 +27,7 @@ module.exports = {
 	      res.redirect('/games');
 	    });		
 	  } else {
-		console.log("could not create avatar: "+err)
+		console.log("could not create avatar ("+userId+", "+name+"): "+err+" "+doc);
         res.redirect('/avatars/new');
 	  }
 	});	
