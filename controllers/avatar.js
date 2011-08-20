@@ -20,6 +20,11 @@ module.exports = {
     var userId = req.user.getId();
 	
     usr.Model.findById( userId, function(err, doc){
+	  var aobj = doc.avatar;
+	  var ajson = JSON.stringify(aobj);
+	  console.log("aobj - "+aobj+" "+(aobj === null)+" "+(aobj === undefined))
+	  console.log("ajson - "+ajson+" "+(ajson === null)+" "+(ajson === undefined)+" "+(ajson.length === 0))	
+	
 	  var needsAvatar = doc && (JSON.stringify(doc.avatar).length <= 0);
 	  if (doc) console.log(JSON.stringify(doc.avatar)+": "+(!JSON.stringify(doc.avatar)))
 	  console.log("needs avatar? "+needsAvatar)	
