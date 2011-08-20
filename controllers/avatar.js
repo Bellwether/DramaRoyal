@@ -24,7 +24,7 @@ module.exports = {
 	  var ajson = JSON.stringify(aobj);
 	  console.log("aobj - "+aobj+" "+(aobj === null)+" "+(aobj === undefined))
 	  console.log("ajson ("+ajson.length+") - "+ajson+" "+(ajson === null)+" "+(ajson === undefined)+" "+(ajson.length === 0)+" "+((ajson+'').length === 0))
-	console.log(avatar.nick)
+	console.log(doc.avatar.nick)
 	  var needsAvatar = doc && (JSON.stringify(doc.avatar).length <= 0);
 
 	  console.log("needs avatar? "+needsAvatar)	
