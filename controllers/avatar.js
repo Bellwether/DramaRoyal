@@ -22,15 +22,8 @@ module.exports = {
     usr.Model.findById( userId, function(err, doc){
 	  var aobj = doc.avatar;
 	  var ajson = JSON.stringify(aobj);
-	  console.log("aobj - "+aobj+" "+(aobj === null)+" "+(aobj === undefined))
-	  console.log("ajson ("+ajson.length+") - "+ajson+" "+(ajson === null)+" "+(ajson === undefined)+" "+(ajson.length === 0)+" "+((ajson+'').length === 0))
-	console.log(doc.avatar.nick)
-		console.log(doc.avatar.nick === null)
-				console.log(typeof doc.avatar)		
-				console.log(typeof doc.avatar.nick)
-	  var needsAvatar = doc && (JSON.stringify(doc.avatar).length <= 0);
+	  var needsAvatar = doc && doc.avatar.nick === null;
 
-	  console.log("needs avatar? "+needsAvatar)	
 	  var canUpdateAvatar = name && needsAvatar;
 	  if (canUpdateAvatar) {
 		doc.avatar = {nick: name};
