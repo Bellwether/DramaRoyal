@@ -24,9 +24,8 @@ module.exports = {
     var userId = req.user.getId();
 	
 	function onJoinGame(err, game) {
-		console.log("+++++onJoinGame"+JSON.stringify(game))
       if (game){
-        res.render('game/show',{game: game});
+        res.render('game/show',{game: game, userId: userId});
       } else {
         res.redirect('/games');
       };

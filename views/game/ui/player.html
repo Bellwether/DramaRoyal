@@ -1,9 +1,9 @@
 <% player = JSON.parse(JSON.stringify(player)) %>
-<% var isOwnPlayer = (player.playerId+'' === locals.playerId+'') %>
+<% var isOwnPlayer = (player.userId+'' === locals.userId+'') %>
 
-<li id="<%- player.playerId %>" <%- (isOwnPlayer ? "data-self='true'" : "") %>>
-  <p id="player-chat-<%- player.playerId %>" class='chat-bubble'></p>
-  <div id="player-esteem-<%- player.playerId %>" class='esteem'>
+<li id="<%- player.userId %>" <%- (isOwnPlayer ? "data-self='true'" : "") %>>
+  <p id="player-chat-<%- player.userId %>" class='chat-bubble'></p>
+  <div id="player-esteem-<%- player.userId %>" class='esteem'>
 	Self Esteem: <%= player.esteem %>
   </div>
 
@@ -11,10 +11,10 @@
 
   <span>
     <%- player.name %> 
-    <span id="player-status-<%- player.playerId %>">(<%- player.status %>)</span>
+    <span id="player-status-<%- player.userId %>">(<%- player.status %>)</span>
   </span>
 
-  <div id="player-target-controls-<%- player.playerId %>" class='player-controls'>
+  <div id="player-target-controls-<%- player.userId %>" class='player-controls'>
   <% isPending = locals.game.status === 'pending' %>
 
   <% if ( isOwnPlayer ) { %>
@@ -29,12 +29,12 @@
   <% } else { %>	
 	
     <% isButtonActive = currentAction && 
-                        currentAction.targetId+'' === player.playerId+'' && 
+                        currentAction.targetId+'' === player.userId+'' && 
                         locals.game.isActive() %>
 
-    <button type='button' id='player-<%- player.playerId %>-tease' class='command <%- isButtonActive && currentAction.cmd === "tease" ? 'selected' : '' %>' data-command='tease' <%- isPending ? "disabled='disabled'" : '' %>>Tease</button>
-    <button type='button' id='player-<%- player.playerId %>-scratch' class='command <%- isButtonActive && currentAction.cmd === "scratch" ? 'selected' : '' %>' data-command='scratch' <%- isPending ? "disabled='disabled'" : '' %>>Scratch</button>
-    <button type='button' id='player-<%- player.playerId %>-grab' class='command <%- isButtonActive && currentAction.cmd === "grab" ? 'selected' : '' %>' data-command='grab' <%- isPending ? "disabled='disabled'" : '' %>>Grab</button>
+    <button type='button' id='player-<%- player.userId %>-tease' class='command <%- isButtonActive && currentAction.cmd === "tease" ? 'selected' : '' %>' data-command='tease' <%- isPending ? "disabled='disabled'" : '' %>>Tease</button>
+    <button type='button' id='player-<%- player.userId %>-scratch' class='command <%- isButtonActive && currentAction.cmd === "scratch" ? 'selected' : '' %>' data-command='scratch' <%- isPending ? "disabled='disabled'" : '' %>>Scratch</button>
+    <button type='button' id='player-<%- player.userId %>-grab' class='command <%- isButtonActive && currentAction.cmd === "grab" ? 'selected' : '' %>' data-command='grab' <%- isPending ? "disabled='disabled'" : '' %>>Grab</button>
 
   <% } %>
   </div>

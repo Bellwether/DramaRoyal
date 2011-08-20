@@ -9,7 +9,7 @@
 
   <div id='game-players'>
 	<ul id='player-list'>
-      <% currentAction = locals.game.getActionForTurn( locals.playerId, game.getCurrentTurn() ) %>		
+      <% currentAction = locals.game.getActionForTurn( locals.userId, game.getCurrentTurn() ) %>		
       <%- partial('game/ui/player', { collection: locals.game.players, currentAction: currentAction }) %>
       <% for(var i = 0; i < 6 - locals.game.players.length; i++) { %>	
 	    <li></li>
