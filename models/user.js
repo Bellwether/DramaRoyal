@@ -13,7 +13,7 @@ var schema = new Schema({
   token: String,
   sex: String,
   ts: {type: Date, default: Date.now},
-  avatar: [avtr.Schema]
+  avatar: avtr.Schema
 });
 var model = mongoose.model('User', schema);
 
