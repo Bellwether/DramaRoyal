@@ -20,7 +20,7 @@ module.exports = {
     var userId = req.user.getId();
 	
     usr.Model.findById( userId, function(err, doc){
-	  var needsAvatar = doc && (doc.avatar === null || doc.avatar === undefined);
+	  var needsAvatar = doc && (JSON.stringify(doc.avatar) === null);
 	  var canUpdateAvatar = name && needsAvatar;
 	  if (canUpdateAvatar) {
 		doc.avatar = {nick: name};
