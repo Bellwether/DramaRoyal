@@ -26,7 +26,9 @@ var lobbyUI = {
     var emitChatMessage = function(e){
       e.preventDefault();
       var data = lobbyUI.domChatBox().val();
-      sckt.emit('chat', data, function(){
+      if (!data || data.length === 0) return false;
+
+      sckt.emit('chat', data, function() {
         lobbyUI.printMessage(data, 'me');
       });
       lobbyUI.domChatBox().val('');

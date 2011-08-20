@@ -214,7 +214,9 @@ var dramaUI = {
     var emitChatMessage = function(e){
       e.preventDefault();
       var data = dramaUI.domChatBox().val();
-      sckt.emit('chat', data, function(){
+      if (!data || data.length === 0) return false;
+
+      sckt.emit('chat', data, function() {
         dramaUI.printMessage(data, socket.playerId);
       });
       dramaUI.domChatBox().val('');
