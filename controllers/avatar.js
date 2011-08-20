@@ -20,8 +20,8 @@ module.exports = {
     var userId = req.user.getId();
 	
     usr.Model.findById( userId, function(err, doc){
-	  var needsAvatar = doc && (JSON.stringify(doc.avatar) === null);
-	  if (doc) console.log(JSON.stringify(doc.avatar)+": "+JSON.stringify(doc.avatar) === null)
+	  var needsAvatar = doc && (!JSON.stringify(doc.avatar));
+	  if (doc) console.log(JSON.stringify(doc.avatar)+": "+(!JSON.stringify(doc.avatar)))
 	  console.log("needs avatar? "+needsAvatar)	
 	  var canUpdateAvatar = name && needsAvatar;
 	  if (canUpdateAvatar) {
