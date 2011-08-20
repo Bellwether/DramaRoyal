@@ -2,7 +2,13 @@ var gt = require('./../lib/mechanics/game_tracker');
 
 module.exports = {
   before_filter: function(req, res, next){
-	next();
+	res.requireUser(req, res, function(isAuthorized){
+	  if (isAuthorized) {
+		res.requireAvatar(req, res, function(hasAvatar){
+		  if (hasAvatar) next();
+		});
+	  }
+	});
   },
 	
   index: function(req, res){

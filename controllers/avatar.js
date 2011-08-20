@@ -25,9 +25,11 @@ module.exports = {
 	  var needsAvatar = doc && doc.avatar.nick === null;
 
 	  var canUpdateAvatar = name && needsAvatar;
+	  
 	  if (canUpdateAvatar) {
 		doc.avatar = {nick: name};
 	    doc.save(function (err) {
+		  if (!err) req.user.setAvatar(name);
 	      res.redirect('/games');
 	    });		
 	  } else {
