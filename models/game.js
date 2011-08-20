@@ -59,6 +59,28 @@ model.prototype.createPlayer = function(userId, callback) {
   }
 }
 
+model.prototype.getActionForTurn = function(userId, turn) {
+  var actions = (turn || {}).actions || [];
+  for(var idx = 0; idx < actions.length; idx++) { // does player exist in turn actions?
+    var action = turn.actions[idx];
+    if (userId+'' === action.userId+'' ) {
+      return action;
+    }
+  };
+}
+
+model.prototype.getCurrentTurn = function() {
+  return this.turns[this.turns.length - 1];
+}
+
+model.prototype.isActive = function() {
+  return (this.status === 'active');
+}
+
+model.prototype.isEnded = function() {
+  return (this.status === 'ended');
+}
+
 module.exports = {
   Schema: schema,
   Model: model

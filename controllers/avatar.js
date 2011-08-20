@@ -22,7 +22,7 @@ module.exports = {
     usr.Model.findById( userId, function(err, doc){
 	  var aobj = doc.avatar;
 	  var ajson = JSON.stringify(aobj);
-	  var needsAvatar = doc && doc.avatar.nick === null;
+	  var needsAvatar = doc && (ajson.avatar === undefined || doc.avatar.nick === null);
 
 	  var canUpdateAvatar = name && needsAvatar;
 	  
