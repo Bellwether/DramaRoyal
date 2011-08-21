@@ -28,3 +28,9 @@
 
   <%- partial('game/ui/drama_console') %>
 </section>	
+
+<script type="text/javascript">
+  $(document).ready(function() {
+	Drama.listen('<%- sessionId %>');
+  });
+</script>

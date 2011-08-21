@@ -67,7 +67,7 @@ model.findByFbId = function(fbId, callback) {
 }
 
 model.findBySessionId = function(sessionId, callback) {
-  sssn.Model.findOne({ _id: sessionId }, function(err, doc){	
+  sssn.Model.findBySessionId(sessionId, function(err, doc){
 	if (doc && doc.userId) {
 	  model.findById(doc.userId, callback);	
 	} else {

@@ -435,6 +435,7 @@ var Drama = function() {
 	  var socket = io.connect('/games', options);
 	
 	  function onAuthorized(data) {	
+		console.log(data)
         if (data.authorized) {
 	      function registerSocketEvents(sckt) {
 		    sckt.on('player', onPlayerEvent);
@@ -469,7 +470,7 @@ var Drama = function() {
  
           outcomeUI.init(dramaUI.domOutcomePanel());
         } else {
-	      window.top.location = "/games";
+	      // window.top.location = "/games";
         }
       }
 	
