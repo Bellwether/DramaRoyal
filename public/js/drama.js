@@ -206,6 +206,9 @@ var dramaUI = {
   hidePlayerPanel: function() {
     outcomeUI.domPlayerPanel().hide();
   },
+  enableReadyButton: function() {
+    dramaUI.domReadyButton().removeAttr("disabled");
+  },
   setConnectionStatus: function (status) {
     dramaUI.domConnectionStatus().text('Status: '+status);
   },
@@ -225,7 +228,6 @@ var dramaUI = {
     dramaUI.domChatButton().click(emitChatMessage);
   },
   initReadyControl: function(socket) {
-	console.log("initReadyControl")
 	dramaUI.domReadyButton().click(function (e) {
       e.preventDefault();
       console.log("ready..... ")
@@ -457,6 +459,7 @@ var Drama = function() {
 	          dramaAPI.readyToWaiting();
 	        } else {
               dramaUI.initReadyControl(sckt);
+		      dramaUI.enableReadyButton();
             }
 	      }
 	      registerReadyButton(socket);
