@@ -43,7 +43,9 @@
 
 #player-list li .chat-bubble {
   border:1px solid #eee;
+  overflow-y:auto;
   height:100px;
+  text-align:left;
 }
 
 #player-list li button {

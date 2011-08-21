@@ -124,7 +124,7 @@ var dramaUI = {
   domChatBox: function(){ return $('#game-message'); },	
   domReadyButton: function(){ return $('#player-ready'); },
   domTattleButton: function(){ return $('#player-tattle'); },	
-  domLickButton: function(){ return $('#player-lick'); },	
+  domLickButton: function(){ return $('#player-lick'); },
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
 
   stripNonNumeric: function(text) {
@@ -220,7 +220,7 @@ var dramaUI = {
       if (!data || data.length === 0) return false;
 
       sckt.emit('chat', data, function() {
-        dramaUI.printMessage(data, socket.playerId);
+        dramaUI.printMessage(data, socket.userId);
       });
       dramaUI.domChatBox().val('');
       return false;
@@ -396,7 +396,8 @@ var Drama = function() {
   };
 
   function onChatEvent(data) { 
-	dramaUI.printMessage(data.message, data.userId);
+	var userId = (data.player || {})._id;
+	dramaUI.printMessage(data.message, userId);
   };
   function onPlayerEvent(data) {
     switch (data.event) {
@@ -441,6 +442,7 @@ var Drama = function() {
 	  var socket = io.connect('/games', options);
 	
 	  function onAuthorized(data) {	
+		console.log('onAuthorized '+JSON.stringify(data))
         if (data.authorized) {
 	      function registerSocketEvents(sckt) {
 		    sckt.on('player', onPlayerEvent);
@@ -449,6 +451,8 @@ var Drama = function() {
 		    sckt.on('chat', onChatEvent);
           }
           registerSocketEvents(socket);
+
+          socket.userId = data.userId;
 
           dramaUI.setConnectionStatus('connected');	
           dramaUI.initChatControls(socket, data.userId);
