@@ -8,6 +8,17 @@
   width:700px;	
 }
 
+#title {
+  display:inline-block;	
+  vertical-align:top;
+  width:400px;	
+}
+
+#title a {
+  float:right;	
+  font-weight:bold;
+}
+
 #banner {
   height:60px;
   vertical-align:top;

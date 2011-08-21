@@ -20,7 +20,10 @@
   <body>
 	<div id="container">
       <header id='header'>
-      	<img src='/img/placeholder.png' id='banner' />
+	    <section id='title'>
+          <% if (hasAvatar) { %><a>Oh, it's <em><%- avatarNick %></em></a><% } %>
+      	  <img src='/img/placeholder.png' id='banner' />
+        </section>
         <nav>
           <section id='widgets'>
             [news] [wall] [invite friends] [like]
