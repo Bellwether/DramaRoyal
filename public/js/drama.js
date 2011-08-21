@@ -145,7 +145,7 @@ var dramaUI = {
   },
   printMessage: function(message, userId){
 	var element = $('<p>'+message+'</p>');
-    element.appendTo($('#player-chat-'+userId));
+    element.prependTo($('#player-chat-'+userId));
   },
   setClock: function(time) {
     $('#turn-timer').html( time ? (time + ' seconds') : '' );
@@ -230,10 +230,8 @@ var dramaUI = {
   initReadyControl: function(socket) {
 	dramaUI.domReadyButton().click(function (e) {
       e.preventDefault();
-      console.log("ready..... ")
 
       socket.emit('game', {command: 'ready'}, function(){
-      console.log("readied")
 	    dramaUI.readyToWaiting();
       });
       return false;

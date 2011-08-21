@@ -100,6 +100,22 @@ model.prototype.quitPlayer = function(userId, callback) {
   };
 }
 
+model.prototype.readyPlayer = function(userId, Callback) {
+  var playerParts = this.getPlayerAndIndex(userId);	
+  var player = playerParts[0];
+  var playerIndex = playerParts[1];
+
+  if (player && !this.isEnded()) {	
+    this.players[playerIndex].status = 'ready';
+    this.save(function (err) {
+      if (typeof callback === 'function') callback(err, player);
+    });
+  }
+  else {
+    if (typeof callback === 'function') callback("No player or active game");
+  };
+}
+
 model.prototype.getActionForTurn = function(userId, turn) {
   var actions = (turn || {}).actions || [];
   for(var idx = 0; idx < actions.length; idx++) { // does player exist in turn actions?
@@ -112,6 +128,32 @@ model.prototype.getActionForTurn = function(userId, turn) {
 
 model.prototype.getCurrentTurn = function() {
   return this.turns[this.turns.length - 1];
+}
+
+model.prototype.createTurn = function(callback) {
+  var turn = {cnt: this.turns.length+1, actions: [], ts: Date.now() };
+  this.turns.push(turn);
+  this.save(function(err) {
+	if (typeof callback === 'function') callback(err, turn);
+  });
+}
+
+model.prototype.startTurn = function(callback) {
+  if (this.isEnded()) return;
+
+  this.status = 'active';
+  this.createTurn(function(err, turn) {
+	if (typeof callback === 'function') callback(err, turn);
+  });
+}
+
+model.prototype.endTurn = function(callback) {
+  if (this.isEnded()) return;
+
+  this.status = 'cooldown';
+  this.resolveTurn(function (err, outcome) {
+	if (typeof callback === 'function') callback(err, outcome);
+  })
 }
 
 model.prototype.isInProgress = function() {
