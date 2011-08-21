@@ -108,10 +108,12 @@ model.prototype.readyPlayer = function(userId, Callback) {
   if (player && !this.isEnded()) {	
     this.players[playerIndex].status = 'ready';
     this.save(function (err) {
+	console.log("++++READY NOW "+err)
       if (typeof callback === 'function') callback(err, player);
     });
   }
   else {
+	console.log("++++READY ERR ")	
     if (typeof callback === 'function') callback("No player or active game");
   };
 }
