@@ -100,20 +100,19 @@ model.prototype.quitPlayer = function(userId, callback) {
   };
 }
 
-model.prototype.readyPlayer = function(userId, Callback) {
+model.prototype.readyPlayer = function(userId, callback) {
   var playerParts = this.getPlayerAndIndex(userId);	
   var player = playerParts[0];
   var playerIndex = playerParts[1];
 
   if (player && !this.isEnded()) {	
-    this.players[playerIndex].status = 'ready';
+    this.players[playerIndex].status = 'active';
     this.save(function (err) {
-	console.log("++++READY NOW "+err)
+	console.log("++++READY NOW "+err+" "+player)
       if (typeof callback === 'function') callback(err, player);
     });
   }
   else {
-	console.log("++++READY ERR ")	
     if (typeof callback === 'function') callback("No player or active game");
   };
 }
@@ -180,6 +179,18 @@ model.prototype.isEnded = function() {
 
 model.prototype.hasPlayers = function() {
   return this.players && this.players.length > 0;
+}
+
+model.prototype.hasMinimumPlayers = function() {
+  return this.players.length >= MIN_PLAYERS;
+}
+
+model.prototype.hasAllPlayersReady = function() {
+  for(var idx = 0; idx < this.players.length; idx++) {
+    p = this.players[idx];
+    if (p.status === 'pending') return false;
+  }
+  return true;
 }
 
 module.exports = {
