@@ -225,15 +225,19 @@ var dramaUI = {
     dramaUI.domChatButton().click(emitChatMessage);
   },
   initReadyControl: function(socket) {
+	console.log("initReadyControl")
 	dramaUI.domReadyButton().click(function (e) {
       e.preventDefault();
+      console.log("ready..... ")
 
       socket.emit('game', {command: 'ready'}, function(){
+      console.log("readied")
 	    dramaUI.readyToWaiting();
       });
       return false;
     });
-  }
+  },
+
 }
 
 var Drama = function() {
@@ -435,7 +439,6 @@ var Drama = function() {
 	  var socket = io.connect('/games', options);
 	
 	  function onAuthorized(data) {	
-		console.log(data)
         if (data.authorized) {
 	      function registerSocketEvents(sckt) {
 		    sckt.on('player', onPlayerEvent);
@@ -463,14 +466,14 @@ var Drama = function() {
               var seconds = $.stripNonNumeric( $('#turn-timer').html() );
 	          if (seconds.length > 0) gameAPI.startCountdown( parseInt(seconds) );
             } else {
-              dramaAPI.disableGame();
+              dramaUI.disableGame();
 	        }
 	      }
 	      intiateCountdownIfInProgress();
  
           outcomeUI.init(dramaUI.domOutcomePanel());
         } else {
-	      // window.top.location = "/games";
+	      window.top.location = "/games";
         }
       }
 	

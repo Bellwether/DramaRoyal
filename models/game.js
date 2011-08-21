@@ -59,6 +59,47 @@ model.prototype.createPlayer = function(userId, callback) {
   }
 }
 
+model.prototype.getPlayerAndIndex = function(userId) {
+  for(var idx = 0; idx < this.players.length; idx++) {
+    p = this.players[idx];
+    if (p.userId+'' === userId+'') {
+	  return [p, idx];
+	}
+  }
+  return [false, -1];
+}
+
+model.prototype.getPlayer = function(userId) {
+  for(var idx = 0; idx < this.players.length; idx++) {
+    p = this.players[idx];
+    if (p.userId+'' === userId+'') return p;
+  }
+  return false;
+}
+
+model.prototype.quitPlayer = function(userId, callback) {
+  var playerParts = this.getPlayerAndIndex(userId);	
+  var player = playerParts[0];
+  var playerIndex = playerParts[1];
+
+  if (player && !this.isEnded()) {
+    if (this.isPending()) {
+      this.players[playerIndex].remove();
+    } else if (this.isInProgress()) {
+	  player.status = 'quit';
+	  player.esteem = 0;
+    };
+
+    var game = this;
+    this.save(function (err) {
+      if (typeof callback === 'function') callback(err, game);
+    });	
+  }
+  else {
+    if (typeof callback === 'function') callback("No player or active game");
+  };
+}
+
 model.prototype.getActionForTurn = function(userId, turn) {
   var actions = (turn || {}).actions || [];
   for(var idx = 0; idx < actions.length; idx++) { // does player exist in turn actions?
@@ -73,12 +114,28 @@ model.prototype.getCurrentTurn = function() {
   return this.turns[this.turns.length - 1];
 }
 
+model.prototype.isInProgress = function() {
+  return this.isActive() || this.isCooldown();
+}
+
 model.prototype.isActive = function() {
-  return (this.status === 'active');
+  return this.status === 'active';
+}
+
+model.prototype.isCooldown = function() {
+  return this.status === 'cooldown';
+}
+
+model.prototype.isPending = function() {
+  return this.status === 'pending';
 }
 
 model.prototype.isEnded = function() {
-  return (this.status === 'ended');
+  return this.status === 'ended';
+}
+
+model.prototype.hasPlayers = function() {
+  return this.players && this.players.length > 0;
 }
 
 module.exports = {

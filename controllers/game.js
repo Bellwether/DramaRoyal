@@ -38,14 +38,27 @@ module.exports = {
 	var title = req.body.title;
 	var type = req.body.type;
     var userId = req.user.getId();
-	
-	gt.Main.createGame(title, type, userId, function(err, game){
+
+    function onCreateGame(err, game) {
 	  if (game) {
         res.redirect('/games/'+game._id);
       } else {
 	    console.log("error creating game "+err);
         res.redirect('/games');
       }
-    });
+    }
+	
+	gt.Main.createGame(title, type, userId, onCreateGame);
+  },
+
+  destroy: function(req, res){	
+	var gameId = req.params.id;
+    var userId = req.user.getId();
+
+    function onQuitGame(err, player) {
+      res.redirect('/games');
+    }
+	
+	gt.Main.quitGame(gameId, userId, onQuitGame);
   }
 };

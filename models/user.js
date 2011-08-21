@@ -67,11 +67,14 @@ model.findByFbId = function(fbId, callback) {
 }
 
 model.findBySessionId = function(sessionId, callback) {
-  sssn.Model.findBySessionId(sessionId, function(err, doc){
-	if (doc && doc.userId) {
-	  model.findById(doc.userId, callback);	
+  sssn.Model.findBySessionId(sessionId, function(err, doc){	
+	var sessionValue = doc ? doc.getValue('session') : '{}';
+	var userId = JSON.parse(sessionValue).userId;	
+
+	if (userId) {
+	  model.findById(userId, callback);	
 	} else {
-	  if (typeof callback === 'function') callback(err, doc);
+	  if (typeof callback === 'function') callback(err);
 	}
   });
 }
