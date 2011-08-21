@@ -12,7 +12,9 @@ module.exports = {
   },
 	
   index: function(req, res){
-	res.render();
+    gt.Main.findGames(function (err, docs) {
+      res.render('game/index',{ games: docs });
+    })
   },
 
   new: function(req, res){
