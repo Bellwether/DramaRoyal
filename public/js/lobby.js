@@ -62,6 +62,7 @@ var Lobby = function() {
 	}
   }
   function onChat(data) { 
+	console.log(JSON.stringify(data));
 	lobbyUI.printMessage(data.message, data.name);
   };
   function onAnnouncement(data) {
