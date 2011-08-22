@@ -108,7 +108,6 @@ model.prototype.readyPlayer = function(userId, callback) {
   if (player && !this.isEnded()) {	
     this.players[playerIndex].status = 'active';
     this.save(function (err) {
-	console.log("++++READY NOW "+err+" "+player)
       if (typeof callback === 'function') callback(err, player);
     });
   }

@@ -283,7 +283,7 @@ var Drama = function() {
       return gameAPI.domGameStatus().html().indexOf('next turn') >= 0;
     },
     isPlayerReady: function(userId) {
-	  return $('#player-status-'+userId).html().indexOf('ready') > 0;
+	  return $('#player-status-'+userId).html().indexOf('active') > 0;
     },
     setPlayerStatus: function(status, playerId) {
 	  gameAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
@@ -313,9 +313,10 @@ var Drama = function() {
       dramaUI.blurGame();
     },
     playerReady: function(data) {
+	  console.log("playerReady: "+JSON.stringify(data))
       var id = data.player._id;
       var status = data.player.status;
-      gameAPI.setPlayerStatus('ready', id);
+      gameAPI.setPlayerStatus('active', id);
     },
     gameStarted: function(data){
 	  gameAPI.turnStarted( {"turn":{"cnt":1}} );
@@ -421,6 +422,7 @@ var Drama = function() {
     }
   };
   function onGameEvent(data) {
+	console.log("game event!!!! "+JSON.stringify(data))
     switch (data.event) {
       case 'started':
         gameAPI.gameStarted(data);
@@ -458,7 +460,7 @@ var Drama = function() {
 	
 	      function registerReadyButton(sckt) {
             if (gameAPI.isPlayerReady(data.userId)) {
-	          dramaAPI.readyToWaiting();
+	          dramaUI.readyToWaiting();
 	        } else {
               dramaUI.initReadyControl(sckt);
 		      dramaUI.enableReadyButton();
