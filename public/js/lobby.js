@@ -12,8 +12,9 @@ var lobbyUI = {
     lobbyUI.domPlayerCount().text('('+cnt+')');
   },
   printMessage: function(message, name){
+	console.log("got chat "+name);
     var element = name ? $('<p><b>'+name+':</b> '+message+'</p>') : $('<p>'+message+'</p>');
-    element.appendTo(lobbyUI.domLobbyChat());
+    element.prependTo(lobbyUI.domLobbyChat());
   },
   enableChat: function() {
     lobbyUI.domChatButton().removeAttr("disabled").removeClass('disabled');
