@@ -1,3 +1,63 @@
+var gameUI = {
+  domGameList: function() { return $('#game-list'); },	
+  domGameItem: function(gameId) { return $('#game-'+gameId) },
+  domPlayerItem: function(gameId, playerId) { return $('#game-'+gameId+'-player-'+playerId); },
+  startGame: function(data) {
+    var li = $('#game-'+data.game._id);
+    var link = li.children('a').replaceWith(' (Fighting!)');
+  },
+  endGame: function(data) {
+    gameUI.domGameItem(data.game._id).remove();
+  },
+  newGame: function(data) {
+    var players = data.game.players;
+    var game = data.game;
+    var gid = game._id;
+
+    if ( gameUI.domGameItem(gid).html() != null) return;
+
+    function makeGameElement() { return $('<li id="game-'+gid+'" class="lobby-game"></li>'); } 
+    function makeTitle() { return $('<h5>'+game.title+' </h5>'); }
+    function makeJoinLink() { return $('<a href="/games/'+gid+'">[join drama]</a>'); }
+    function makePlayerList() {
+	  var ul = $('<ul></ul>');
+
+	  for(var idx = 0; idx < players.length; idx++) {
+	    var liId = 'game-'+gid+'-player-'+players[idx]._id;
+	    $('<li id="'+liId+'">'+players[idx].name+'</li>').appendTo(ul);
+	  };	
+	  return ul;
+    }
+
+    var li = makeGameElement();
+    var title = makeTitle();
+    var link = makeJoinLink();
+    var playerList = makePlayerList();
+
+    title.appendTo(li);
+    playerList.appendTo(li);
+    link.appendTo(li);
+    li.appendTo(gameUI.domGameList());
+  },
+  playerLeft: function(data) {
+	var gid = data.game._id;
+	var pid = data.player._id;
+    gameUI.domPlayerItem(gid, pid).remove();
+  },
+  playerJoined: function(data) {
+	var gid = data.game._id
+    var pid = data.player._id._id;
+
+    function makePlayerElement() { 
+	  return $('<li id="'+'game-'+gid+'-player-'+pid+'">Player '+pid+'</li>'); 
+	} 
+
+    var players = gameUI.domGameList(gid).children('ul').first();
+    var player = makePlayerElement();
+    player.appendTo(players);
+  }
+}
+
 var lobbyUI = {
   domConnectionStatus: function(){ return $('#chat-status'); },
   domPlayerCount: function(){ return $('#player-count'); },
@@ -44,20 +104,26 @@ var Lobby = function() {
   var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];
 
   function onGameEvent(data) { 
+	console.log("onGameEvent: "+JSON.stringify(data));
 	switch (data.event) {
-	  case 'new':
+	  case 'new':	
+		gameUI.newGame(data);
 	    break;
 	  case 'started':
+	    gameUI.startGame(data);
 	    break;
 	  case 'ended':
+	    gameUI.endGame(data);
 	    break;
 	}
   }
   function onGamePlayerEvent(data) { 
 	switch (data.event) {
 	  case 'joined':
+	    gameUI.playerJoined(data);
 	    break;			
 	  case 'left':
+	    gameUI.playerLeft(data);
 	    break;
 	}
   }
