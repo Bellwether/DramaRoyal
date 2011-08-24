@@ -44,11 +44,11 @@ model.create = function(params, callback) {
   });
 }
 
-model.prototype.createPlayer = function(userId, callback) {
+model.prototype.createPlayer = function(userId, nick, callback) {
   var isGameJoinable = this.status === 'pending';
 
   if (isGameJoinable)	{
-    var player = {userId: userId};
+    var player = {userId: userId, nick: nick};
     this.players.push(player);
 
     this.save(function (err) {

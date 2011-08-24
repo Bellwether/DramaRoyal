@@ -24,7 +24,7 @@ var gameUI = {
 
 	  for(var idx = 0; idx < players.length; idx++) {
 	    var liId = 'game-'+gid+'-player-'+players[idx]._id;
-	    $('<li id="'+liId+'">'+players[idx].name+'</li>').appendTo(ul);
+	    $('<li id="'+liId+'">'+players[idx].nick+'</li>').appendTo(ul);
 	  };	
 	  return ul;
     }
@@ -128,7 +128,6 @@ var Lobby = function() {
 	}
   }
   function onChat(data) { 
-	console.log(JSON.stringify(data));
 	lobbyUI.printMessage(data.message, data.name);
   };
   function onAnnouncement(data) {

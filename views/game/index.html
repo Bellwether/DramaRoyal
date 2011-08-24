@@ -15,7 +15,7 @@
 	        <h5><%- locals.games[k].title %></h5>
 		    <ul>
 			  <% for(var i = 0; i < locals.games[k].players.length; i++) { %>	
-			    <li id="<%- 'game-'+locals.games[k]._id+'-player-'+locals.games[k].players[i].userId %>"><%- locals.games[k].players[i].name %> </li>
+			    <li id="<%- 'game-'+locals.games[k]._id+'-player-'+locals.games[k].players[i].userId %>"><%- locals.games[k].players[i].nick %> </li>
 			  <% } %>	
 		    </ul>
 	        <%- (locals.games[k].status === 'pending') ? "<a href='/games/"+locals.games[k]._id+"'>[join drama]</a>" : "(Fighting!)" %>
