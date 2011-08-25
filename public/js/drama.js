@@ -144,8 +144,8 @@ var dramaUI = {
     dramaUI.domLickButton().data('count', licks);
   },
   printMessage: function(message, userId){
-	var element = $('<p>'+message+'</p>');
-    element.appendTo($('#player-chat-'+userId));
+	var element = $('<p>'+message+'</p>'); 
+    element.prependTo($('#player-chat-'+userId));
   },
   setClock: function(time) {
     $('#turn-timer').html( time ? (time + ' seconds') : '' );
