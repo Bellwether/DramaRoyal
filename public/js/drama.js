@@ -170,6 +170,9 @@ var dramaUI = {
   disableChat: function() {
     dramaUI.domChatButton().attr('disabled', 'disabled').addClass('disabled');
   },
+  isChatDisabled: function() {
+	dramaUI.domChatButton().attr('disabled') === undefined;
+  },
   disableGame: function() {
     $('.command').attr('disabled', 'disabled').addClass('disabled');
   },
@@ -216,6 +219,8 @@ var dramaUI = {
 	var sckt = socket;
     var emitChatMessage = function(e){
       e.preventDefault();
+      if (dramaUI.isChatDisabled()) return false;
+
       var data = dramaUI.domChatBox().val();
       if (!data || data.length === 0) return false;
 

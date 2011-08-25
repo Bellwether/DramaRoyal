@@ -59,6 +59,14 @@ model.prototype.createPlayer = function(userId, nick, callback) {
   }
 }
 
+model.prototype.getSurvivingPlayers = function() {
+  var surviving = this.players.filter( function(player){
+	var esteem = player.getValue('esteem');
+    return this.getValue('esteem') > 0;
+  })
+  return surviving;	
+}
+
 model.prototype.getPlayerAndIndex = function(userId) {
   for(var idx = 0; idx < this.players.length; idx++) {
     p = this.players[idx];
@@ -130,6 +138,17 @@ model.prototype.getCurrentTurn = function() {
   return this.turns[this.turns.length - 1];
 }
 
+model.prototype.startDrama = function(callback) {
+  if (!this.isPending()) return;
+
+  this.status = 'active';
+  this.start = Date.now();
+
+  this.createTurn(function(err, turn){
+    if (typeof callback === 'function') callback(err, this);
+  });
+}
+
 model.prototype.createTurn = function(callback) {
   var turn = {cnt: this.turns.length+1, actions: [], ts: Date.now() };
   this.turns.push(turn);
@@ -186,8 +205,7 @@ model.prototype.hasMinimumPlayers = function() {
 
 model.prototype.hasAllPlayersReady = function() {
   for(var idx = 0; idx < this.players.length; idx++) {
-    p = this.players[idx];
-    if (p.status === 'pending') return false;
+    if (this.players[idx].getValue('status') === 'pending') return false;
   }
   return true;
 }
