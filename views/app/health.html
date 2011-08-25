@@ -1,0 +1,15 @@
+<% mem = JSON.parse(stats.memoryUsage) %>
+<section id="health">
+  <table>
+	<thead></thead>
+	<tbody>
+	  <tr><th>Platform:</th><td><%- stats.platform %></td></tr>
+	  <tr><th>Load AVG:</th><td><%- stats.loadavg %></td></tr>
+	  <tr><th>Free Memory:</th><td><%- Math.round(stats.freemem / 10000000)/100 %>GB (<%- Math.round((stats.freemem / stats.totalmem)*1000)/10 %>%) </td></tr>
+	  <tr><th>Total Memory:</th><td><%- Math.round(stats.totalmem / 10000000)/100 %>GB</td></tr>	
+	  <tr><th>RSS:</th><td><%- Math.round(mem.rss / 1000000) %>MB</td></tr>
+	  <tr><th>VSIZE:</th><td><%- Math.round(mem.vsize / 1000000) %>MB</td></tr>
+	  <tr><th>Heap Used:</th><td><%- Math.round((mem.heapUsed / mem.heapTotal)*10000)/100 %>%
+	</tbody>
+  </table>
+</section>

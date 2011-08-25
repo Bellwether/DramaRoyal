@@ -44,11 +44,11 @@ model.create = function(params, callback) {
   });
 }
 
-model.prototype.createPlayer = function(userId, callback) {
+model.prototype.createPlayer = function(userId, nick, callback) {
   var isGameJoinable = this.status === 'pending';
 
   if (isGameJoinable)	{
-    var player = {userId: userId};
+    var player = {userId: userId, nick: nick};
     this.players.push(player);
 
     this.save(function (err) {
@@ -57,6 +57,14 @@ model.prototype.createPlayer = function(userId, callback) {
   } else {
 	callback(false);
   }
+}
+
+model.prototype.getSurvivingPlayers = function() {
+  var surviving = this.players.filter( function(player){
+	var esteem = player.getValue('esteem');
+    return this.getValue('esteem') > 0;
+  })
+  return surviving;	
 }
 
 model.prototype.getPlayerAndIndex = function(userId) {
@@ -100,6 +108,22 @@ model.prototype.quitPlayer = function(userId, callback) {
   };
 }
 
+model.prototype.readyPlayer = function(userId, callback) {
+  var playerParts = this.getPlayerAndIndex(userId);	
+  var player = playerParts[0];
+  var playerIndex = playerParts[1];
+
+  if (player && !this.isEnded()) {	
+    this.players[playerIndex].status = 'active';
+    this.save(function (err) {
+      if (typeof callback === 'function') callback(err, player);
+    });
+  }
+  else {
+    if (typeof callback === 'function') callback("No player or active game");
+  };
+}
+
 model.prototype.getActionForTurn = function(userId, turn) {
   var actions = (turn || {}).actions || [];
   for(var idx = 0; idx < actions.length; idx++) { // does player exist in turn actions?
@@ -112,6 +136,43 @@ model.prototype.getActionForTurn = function(userId, turn) {
 
 model.prototype.getCurrentTurn = function() {
   return this.turns[this.turns.length - 1];
+}
+
+model.prototype.startDrama = function(callback) {
+  if (!this.isPending()) return;
+
+  this.status = 'active';
+  this.start = Date.now();
+
+  this.createTurn(function(err, turn){
+    if (typeof callback === 'function') callback(err, this);
+  });
+}
+
+model.prototype.createTurn = function(callback) {
+  var turn = {cnt: this.turns.length+1, actions: [], ts: Date.now() };
+  this.turns.push(turn);
+  this.save(function(err) {
+	if (typeof callback === 'function') callback(err, turn);
+  });
+}
+
+model.prototype.startTurn = function(callback) {
+  if (this.isEnded()) return;
+
+  this.status = 'active';
+  this.createTurn(function(err, turn) {
+	if (typeof callback === 'function') callback(err, turn);
+  });
+}
+
+model.prototype.endTurn = function(callback) {
+  if (this.isEnded()) return;
+
+  this.status = 'cooldown';
+  this.resolveTurn(function (err, outcome) {
+	if (typeof callback === 'function') callback(err, outcome);
+  })
 }
 
 model.prototype.isInProgress = function() {
@@ -136,6 +197,17 @@ model.prototype.isEnded = function() {
 
 model.prototype.hasPlayers = function() {
   return this.players && this.players.length > 0;
+}
+
+model.prototype.hasMinimumPlayers = function() {
+  return this.players.length >= MIN_PLAYERS;
+}
+
+model.prototype.hasAllPlayersReady = function() {
+  for(var idx = 0; idx < this.players.length; idx++) {
+    if (this.players[idx].getValue('status') === 'pending') return false;
+  }
+  return true;
 }
 
 module.exports = {

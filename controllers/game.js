@@ -24,6 +24,7 @@ module.exports = {
   show: function(req, res){
 	var gameId = req.params.id;
     var userId = req.user.getId();
+    var nick = req.user.avatar();
 	
 	function onJoinGame(err, game) {
       if (game){
@@ -33,13 +34,14 @@ module.exports = {
       };
 	}
 	
-	gt.Main.joinGame(gameId, userId, onJoinGame);
+	gt.Main.joinGame(gameId, userId, nick, onJoinGame);
   },
 
   create: function(req, res){
 	var title = req.body.title;
 	var type = req.body.type;
     var userId = req.user.getId();
+    var nick = req.user.avatar();
 
     function onCreateGame(err, game) {
 	  if (game) {
@@ -50,7 +52,7 @@ module.exports = {
       }
     }
 	
-	gt.Main.createGame(title, type, userId, onCreateGame);
+	gt.Main.createGame(title, type, userId, nick, onCreateGame);
   },
 
   destroy: function(req, res){	

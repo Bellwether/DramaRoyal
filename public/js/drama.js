@@ -144,7 +144,7 @@ var dramaUI = {
     dramaUI.domLickButton().data('count', licks);
   },
   printMessage: function(message, userId){
-	var element = $('<p>'+message+'</p>'); 
+	var element = $('<p>'+message+'</p>');
     element.prependTo($('#player-chat-'+userId));
   },
   setClock: function(time) {
@@ -169,6 +169,9 @@ var dramaUI = {
   },
   disableChat: function() {
     dramaUI.domChatButton().attr('disabled', 'disabled').addClass('disabled');
+  },
+  isChatDisabled: function() {
+	dramaUI.domChatButton().attr('disabled') === undefined;
   },
   disableGame: function() {
     $('.command').attr('disabled', 'disabled').addClass('disabled');
@@ -216,6 +219,8 @@ var dramaUI = {
 	var sckt = socket;
     var emitChatMessage = function(e){
       e.preventDefault();
+      if (dramaUI.isChatDisabled()) return false;
+
       var data = dramaUI.domChatBox().val();
       if (!data || data.length === 0) return false;
 
@@ -230,10 +235,8 @@ var dramaUI = {
   initReadyControl: function(socket) {
 	dramaUI.domReadyButton().click(function (e) {
       e.preventDefault();
-      console.log("ready..... ")
 
       socket.emit('game', {command: 'ready'}, function(){
-      console.log("readied")
 	    dramaUI.readyToWaiting();
       });
       return false;
@@ -285,7 +288,7 @@ var Drama = function() {
       return gameAPI.domGameStatus().html().indexOf('next turn') >= 0;
     },
     isPlayerReady: function(userId) {
-	  return $('#player-status-'+userId).html().indexOf('ready') > 0;
+	  return $('#player-status-'+userId).html().indexOf('active') > 0;
     },
     setPlayerStatus: function(status, playerId) {
 	  gameAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
@@ -315,9 +318,10 @@ var Drama = function() {
       dramaUI.blurGame();
     },
     playerReady: function(data) {
+	  console.log("playerReady: "+JSON.stringify(data))
       var id = data.player._id;
       var status = data.player.status;
-      gameAPI.setPlayerStatus('ready', id);
+      gameAPI.setPlayerStatus('active', id);
     },
     gameStarted: function(data){
 	  gameAPI.turnStarted( {"turn":{"cnt":1}} );
@@ -423,6 +427,7 @@ var Drama = function() {
     }
   };
   function onGameEvent(data) {
+	console.log("game event!!!! "+JSON.stringify(data))
     switch (data.event) {
       case 'started':
         gameAPI.gameStarted(data);
@@ -460,7 +465,7 @@ var Drama = function() {
 	
 	      function registerReadyButton(sckt) {
             if (gameAPI.isPlayerReady(data.userId)) {
-	          dramaAPI.readyToWaiting();
+	          dramaUI.readyToWaiting();
 	        } else {
               dramaUI.initReadyControl(sckt);
 		      dramaUI.enableReadyButton();
