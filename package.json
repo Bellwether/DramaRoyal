@@ -4,10 +4,10 @@
   "author": "Travis Dunn <cmd@travisdunn.com>",
   "version": "0.1.0",
   "dependencies": {	
-    "socket.io": ">= 0.7.9",
+    "socket.io": ">= 0.7.11",
     "express": "2.4.x",
     "ejs": "0.4.x",
-    "mongoose": "1.7.x",
+    "mongoose": ">= 1.7.4",
     "connect-mongo": "0.1.x",
     "connect-assetmanager": "0.0.x"
   },

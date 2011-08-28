@@ -188,14 +188,19 @@ model.prototype.resolveTurn = function(callback, turn) {
 	return; 
   }
 	
+  var game = this;	
   var turn = (turn === undefined) ? this.getCurrentTurn() : turn;
-  var outcome = re.Resolve(this, turn);
+  re.Resolve(game, turn, function(err, outcome) {
+	if (err) {
+	  doCallback(callback, err);	
+	} else {
+	  if (game.isGameOver()) game.status = 'ended';
+	  game.save(function(err){
+		doCallback(callback, err, outcome);
+	  });
+	}
+  })
 
-  if (this.isGameOver()) this.status = 'ended';
-
-  this.save(function(err){
-	doCallback(callback, err, outcome);
-  });
 /*
 
   // prepare turn result data
