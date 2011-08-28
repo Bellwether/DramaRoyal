@@ -46,13 +46,14 @@ var gameUI = {
   },
   playerJoined: function(data) {
 	var gid = data.game._id
-    var pid = data.player._id._id;
+    var pid = data.player._id;
+    var nick = data.player.nick;
 
     function makePlayerElement() { 
-	  return $('<li id="'+'game-'+gid+'-player-'+pid+'">Player '+pid+'</li>'); 
+	  return $('<li id="'+'game-'+gid+'-player-'+pid+'">'+nick+'</li>'); 
 	} 
 
-    var players = gameUI.domGameList(gid).children('ul').first();
+    var players = gameUI.domGameItem(gid).children('ul').first();
     var player = makePlayerElement();
     player.appendTo(players);
   }
@@ -72,7 +73,6 @@ var lobbyUI = {
     lobbyUI.domPlayerCount().text('('+cnt+')');
   },
   printMessage: function(message, name){
-	console.log("got chat "+name);
     var element = name ? $('<p><b>'+name+':</b> '+message+'</p>') : $('<p>'+message+'</p>');
     element.prependTo(lobbyUI.domLobbyChat());
   },
@@ -118,6 +118,7 @@ var Lobby = function() {
 	}
   }
   function onGamePlayerEvent(data) { 
+	console.log("onGamePlayerEvent: "+JSON.stringify(data));
 	switch (data.event) {
 	  case 'joined':
 	    gameUI.playerJoined(data);

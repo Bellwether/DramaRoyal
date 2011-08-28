@@ -4,6 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var plyr = require('./player')
 var trn = require('./turn');
+var re = require('./../lib/mechanics/resolution_engine');
 
 var GAME_TYPES = ['public', 'private', 'friends'];
 var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended'];
@@ -12,6 +13,12 @@ var MIN_PLAYERS = 3;
 var MAX_TURNS = 50;
 var TURN_DURATION = 60;
 var COOLDOWN_DURATION = 30;
+
+function doCallback(callback, err, data) {
+  if (typeof callback === 'function') {
+	callback(err, data);	
+  }
+}
 
 function required(val) { return val && val.length; }
 function maxPlayers(val) { return !val || !val.length || val.length <= MAX_PLAYERS; }
@@ -40,7 +47,7 @@ model.create = function(params, callback) {
   game = new model(params);
 
   game.save(function (err) {
-    if (typeof callback === 'function') callback(err, game);
+	doCallback(callback, err, game);
   });
 }
 
@@ -52,10 +59,10 @@ model.prototype.createPlayer = function(userId, nick, callback) {
     this.players.push(player);
 
     this.save(function (err) {
-      callback(err, player);
+	  doCallback(callback, err, player);
     });
   } else {
-	callback(false);
+	doCallback(callback, "Cannot join");
   }
 }
 
@@ -100,11 +107,11 @@ model.prototype.quitPlayer = function(userId, callback) {
 
     var game = this;
     this.save(function (err) {
-      if (typeof callback === 'function') callback(err, game);
+      doCallback(callback, err, game);
     });	
   }
   else {
-    if (typeof callback === 'function') callback("No player or active game");
+	doCallback(callback, "No player or active game");
   };
 }
 
@@ -116,11 +123,11 @@ model.prototype.readyPlayer = function(userId, callback) {
   if (player && !this.isEnded()) {	
     this.players[playerIndex].status = 'active';
     this.save(function (err) {
-      if (typeof callback === 'function') callback(err, player);
+	  doCallback(callback, err, player);
     });
   }
   else {
-    if (typeof callback === 'function') callback("No player or active game");
+	doCallback(callback, "No player or active game");
   };
 }
 
@@ -145,7 +152,7 @@ model.prototype.startDrama = function(callback) {
   this.start = Date.now();
 
   this.createTurn(function(err, turn){
-    if (typeof callback === 'function') callback(err, this);
+	doCallback(callback, err, this);
   });
 }
 
@@ -153,7 +160,7 @@ model.prototype.createTurn = function(callback) {
   var turn = {cnt: this.turns.length+1, actions: [], ts: Date.now() };
   this.turns.push(turn);
   this.save(function(err) {
-	if (typeof callback === 'function') callback(err, turn);
+	doCallback(callback, err, turn);
   });
 }
 
@@ -162,7 +169,7 @@ model.prototype.startTurn = function(callback) {
 
   this.status = 'active';
   this.createTurn(function(err, turn) {
-	if (typeof callback === 'function') callback(err, turn);
+	doCallback(callback, err, turn);
   });
 }
 
@@ -171,8 +178,55 @@ model.prototype.endTurn = function(callback) {
 
   this.status = 'cooldown';
   this.resolveTurn(function (err, outcome) {
-	if (typeof callback === 'function') callback(err, outcome);
+	doCallback(callback, err, outcome);
   })
+}
+
+model.prototype.resolveTurn = function(callback, turn) {
+  if (this.isEnded()) {
+	doCallback(callback, "Cannot resolve turns when ended");
+	return; 
+  }
+	
+  var turn = (turn === undefined) ? this.getCurrentTurn() : turn;
+  var outcome = re.Resolve(this, turn);
+
+  if (this.isGameOver()) this.status = 'ended';
+
+  this.save(function(err){
+	doCallback(callback, err, outcome);
+  });
+/*
+
+  // prepare turn result data
+  var results = trn.processResults(this);
+
+  // apply any damage
+  trn.applyDamage(this, results);
+
+  for(var key in results) {
+	var player = this.getPlayer( key );
+	var action = results[key].action.cmd;
+	
+	// deplete player licks for model
+	if (action === 'lick') {
+	  var newLicks = player.getValue('licks') - 1;
+	  player.setValue('licks', newLicks);
+	  player.licks = newLicks;
+	}
+	
+	// deplete player tattles for model
+	if (action === 'tattle') {
+	  var newTattles = player.getValue('tattles') - 1;
+	  player.setValue('tattles', newTattles);
+	  player.tattles = newTattles;
+	}
+  };
+
+  // group player actions for easier processing by the clients 
+  var outcome = trn.groupOutcomes(results);
+
+*/
 }
 
 model.prototype.isInProgress = function() {
@@ -193,6 +247,10 @@ model.prototype.isPending = function() {
 
 model.prototype.isEnded = function() {
   return this.status === 'ended';
+}
+
+model.prototype.isGameOver = function() {
+  return this.getSurvivingPlayers().length <= 2;
 }
 
 model.prototype.hasPlayers = function() {
