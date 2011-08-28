@@ -33,15 +33,15 @@ var outcomeUI = {
       }
     }
   },
-  applyLicks: function(outcome) {
-    var licks = outcome.licks;
-	if (!licks) return;
+  applyMeds: function(outcome) {
+    var meds = outcome.meds;
+	if (!meds) return;
 	
-    for(var idx = 0; idx < licks.length; idx++) {
-	  var playerItem = $('li#'+licks[idx]);
+    for(var idx = 0; idx < meds.length; idx++) {
+	  var playerItem = $('li#'+meds[idx]);
 	  var ownPlayerExists = playerItem.data('self');
       if (ownPlayerExists){
-	    dramaUI.useLick( outcome.licks[idx] );
+	    dramaUI.useMed( outcome.meds[idx] );
 	    break;
       }
     }	
@@ -68,7 +68,7 @@ var outcomeUI = {
       outcomeUI.displayOutcomePage(outcome);
       outcomeUI.applyDamage(outcome);
       outcomeUI.applyTattles(outcome);
-      outcomeUI.applyLicks(outcome);
+      outcomeUI.applyMeds(outcome);
       outcomeUI.applyHumiliation(outcome);
     }
     dramaUI.hidePlayerPanel();
@@ -124,7 +124,7 @@ var dramaUI = {
   domChatBox: function(){ return $('#game-message'); },	
   domReadyButton: function(){ return $('#player-ready'); },
   domTattleButton: function(){ return $('#player-tattle'); },	
-  domLickButton: function(){ return $('#player-lick'); },
+  domMedButton: function(){ return $('#player-lick'); },
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
 
   stripNonNumeric: function(text) {
@@ -137,11 +137,11 @@ var dramaUI = {
     dramaUI.domTattleButton().text('Tattle('+tattles+')');
     dramaUI.domTattleButton().data('count', tattles);
   },
-  useLick: function() {
-    var licks = dramaUI.domLickButton().data('count');
-    licks = parseInt(licks) - 1;
-    dramaUI.domLickButton().text('Lick('+licks+')');
-    dramaUI.domLickButton().data('count', licks);
+  useMed: function() {
+    var meds = dramaUI.domMedButton().data('count');
+    meds = parseInt(meds) - 1;
+    dramaUI.domMedButton().text('Med('+meds+')');
+    dramaUI.domMedButton().data('count', meds);
   },
   printMessage: function(message, userId){
 	var element = $('<p>'+message+'</p>');

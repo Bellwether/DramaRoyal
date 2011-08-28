@@ -24,7 +24,7 @@
 
     <button type='button' id='player-cower' class='command <%- isButtonActive && currentAction.cmd === "cower" ? 'selected' : '' %>' data-command='cower' <%- isPending ? "disabled='disabled'" : '' %>>Cower</button>
     <button type='button' id='player-tattle' class='command <%- isButtonActive && currentAction.cmd === "tattle" ? 'selected' : '' %>' data-command='tattle' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.tattles %>'>Tattle(<%- player.tattles %>)</button>
-    <button type='button' id='player-lick' class='command <%- isButtonActive && currentAction.cmd === "lick" ? 'selected' : '' %>' data-command='lick' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.licks %>'>Lick(<%- player.licks %>)</button>
+    <button type='button' id='player-lick' class='command <%- isButtonActive && currentAction.cmd === "lick" ? 'selected' : '' %>' data-command='lick' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.meds %>'>Med(<%- player.meds %>)</button>
 
   <% } else { %>	
 	

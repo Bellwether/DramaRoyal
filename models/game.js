@@ -213,11 +213,11 @@ model.prototype.resolveTurn = function(callback, turn) {
 	var player = this.getPlayer( key );
 	var action = results[key].action.cmd;
 	
-	// deplete player licks for model
-	if (action === 'lick') {
-	  var newLicks = player.getValue('licks') - 1;
-	  player.setValue('licks', newLicks);
-	  player.licks = newLicks;
+	// deplete player meds for model
+	if (action === 'med') {
+	  var newMeds = player.getValue('meds') - 1;
+	  player.setValue('meds', newMeds);
+	  player.meds = newMeds;
 	}
 	
 	// deplete player tattles for model

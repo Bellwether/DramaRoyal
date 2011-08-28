@@ -9,7 +9,7 @@ var schema = new Schema({
   status: { type: String, default: 'pending', enum: playerStatus},
   esteem: { type: Number, default: 10 },
   tattles: { type: Number, default: 2 },
-  licks: { type: Number, default: 3 }
+  meds: { type: Number, default: 3 }
 });
 var model = mongoose.model('Player', schema);
 
