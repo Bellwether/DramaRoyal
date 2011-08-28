@@ -186,8 +186,8 @@ var dramaUI = {
     $('.command').remove();
   },
   removePlayer: function(userId) {
-	$('#player-list li').each(function(i) {
-      var itemExists = $(this).attr('id') === id.toString();
+	$('#player-list li').each(function(li) {
+      var itemExists = $(this).attr('id') === userId.toString();
 	  if (itemExists) {
         $(this).html('').attr('id', null);
         return false;
@@ -361,7 +361,7 @@ var Drama = function() {
       };
     },
     playerJoined: function(data){
-      var name = data.player._id;
+      var name = data.player.nick;
       var id = data.player._id;	
 
       function makePlayerElement(li) { 
@@ -370,7 +370,7 @@ var Drama = function() {
 	    var chatBubble = $("<p id='player-chat-"+id+"' class='chat-bubble'></p>");
 	    var esteem = $("<div id='player-esteem-"+id+"' class='esteem'>Self Esteem: 10</div>");
 	    var img = $("<img class='paperdoll' src='/img/placeholder.png' />");
-	    var title = $("<span>"+id+" <span id='player-status-"+id+"'>(pending)</span></span>");
+	    var title = $("<span>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"'></div");
 	    var tease = $("<button type='button' class='command' data-command='tease' disabled='disabled'>Tease</button>");
@@ -404,6 +404,7 @@ var Drama = function() {
 	dramaUI.printMessage(data.message, userId);
   };
   function onPlayerEvent(data) {
+	console.log("player event!!!! "+JSON.stringify(data))
     switch (data.event) {
 	    case 'joined':
 	      gameAPI.playerJoined(data);
@@ -417,6 +418,7 @@ var Drama = function() {
 	  }
   };
   function onTurnEvent(data) {
+	console.log("turn event!!!! "+JSON.stringify(data))
     switch (data.event) {
       case 'started':	
         gameAPI.turnStarted(data);
