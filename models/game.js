@@ -200,38 +200,6 @@ model.prototype.resolveTurn = function(callback, turn) {
 	  });
 	}
   })
-
-/*
-
-  // prepare turn result data
-  var results = trn.processResults(this);
-
-  // apply any damage
-  trn.applyDamage(this, results);
-
-  for(var key in results) {
-	var player = this.getPlayer( key );
-	var action = results[key].action.cmd;
-	
-	// deplete player meds for model
-	if (action === 'med') {
-	  var newMeds = player.getValue('meds') - 1;
-	  player.setValue('meds', newMeds);
-	  player.meds = newMeds;
-	}
-	
-	// deplete player tattles for model
-	if (action === 'tattle') {
-	  var newTattles = player.getValue('tattles') - 1;
-	  player.setValue('tattles', newTattles);
-	  player.tattles = newTattles;
-	}
-  };
-
-  // group player actions for easier processing by the clients 
-  var outcome = trn.groupOutcomes(results);
-
-*/
 }
 
 model.prototype.isInProgress = function() {
