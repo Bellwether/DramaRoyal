@@ -53,8 +53,14 @@ model.create = function(params, callback) {
 
 model.prototype.createPlayer = function(userId, nick, callback) {
   var isGameJoinable = this.status === 'pending';
+  var existingPlayer = this.getPlayer(userId) && this.status === 'active';
 
-  if (isGameJoinable)	{
+
+console.log("existingPlayer "+existingPlayer)
+console.log("isGameJoinable "+isGameJoinable)
+  if (existingPlayer) {
+	doCallback(callback, "Already playing", existingPlayer);
+  } else if (isGameJoinable) {
     var player = {userId: userId, nick: nick};
     this.players.push(player);
 

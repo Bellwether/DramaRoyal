@@ -27,6 +27,7 @@ module.exports = {
     var nick = req.user.avatar();
 	
 	function onJoinGame(err, game) {
+	  console.log("onJoinGame onJoinGame "+err+" "+game)	
       if (game) {
         res.render('game/show',{game: game, userId: userId});
       } else {
