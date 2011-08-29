@@ -7,7 +7,7 @@ var trn = require('./turn');
 var re = require('./../lib/mechanics/resolution_engine');
 
 var GAME_TYPES = ['public', 'private', 'friends'];
-var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended'];
+var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
 var MAX_TURNS = 50;
@@ -228,6 +228,18 @@ model.prototype.isGameOver = function() {
 
 model.prototype.hasPlayers = function() {
   return this.players && this.players.length > 0;
+}
+
+model.prototype.hasActivePlayers = function() {
+  if (this.players.length < 1) return false;
+  var activeCount = 0;
+  for (var idx = 0; idx < this.players.length; idx++) {
+	var stat = this.players[idx].status;
+	if (stat === 'active' || stat === 'pending') {
+	  activeCount = activeCount+1;
+	};
+  }
+  return activeCount > 0;
 }
 
 model.prototype.hasMinimumPlayers = function() {
