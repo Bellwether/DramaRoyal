@@ -107,7 +107,9 @@
 }
 
 #outcome-pages {
-  list-style:none;	
+  list-style:none;
+  margin-left:0;
+  padding-left:0;
   white-space:nowrap;
 }
 #outcome-pages li {

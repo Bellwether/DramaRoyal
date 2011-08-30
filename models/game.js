@@ -195,7 +195,6 @@ model.prototype.resolveTurn = function(callback, turn) {
   var game = this;	
   var turn = (turn === undefined) ? this.getCurrentTurn() : turn;
   re.Resolve(game, turn, function(err, outcome) {
-	console.log("outcome "+(err ? err : '')+" ::::::: "+JSON.stringify(outcome));
 	if (err) {
 	  doCallback(callback, err);	
 	} else {
@@ -210,7 +209,6 @@ model.prototype.resolveTurn = function(callback, turn) {
 model.prototype.quit = function(callback) {
   this.status = 'quit';
   this.save(function(err, doc){
-	console.log(err)
 	doCallback(callback, err, doc);
   });  
 }
