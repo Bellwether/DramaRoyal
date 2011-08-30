@@ -11,7 +11,7 @@ var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
 var MAX_TURNS = 50;
-var TURN_DURATION = 60;
+var TURN_DURATION = 5;
 var COOLDOWN_DURATION = 30;
 
 function doCallback(callback, err, data) {
@@ -55,9 +55,6 @@ model.prototype.createPlayer = function(userId, nick, callback) {
   var isGameJoinable = this.status === 'pending';
   var existingPlayer = this.getPlayer(userId) && this.status === 'active';
 
-
-console.log("existingPlayer "+existingPlayer)
-console.log("isGameJoinable "+isGameJoinable)
   if (existingPlayer) {
 	doCallback(callback, "Already playing", existingPlayer);
   } else if (isGameJoinable) {
@@ -75,7 +72,7 @@ console.log("isGameJoinable "+isGameJoinable)
 model.prototype.getSurvivingPlayers = function() {
   var surviving = this.players.filter( function(player){
 	var esteem = player.getValue('esteem');
-    return this.getValue('esteem') > 0;
+    return esteem > 0;
   })
   return surviving;	
 }
@@ -157,8 +154,9 @@ model.prototype.startDrama = function(callback) {
   this.status = 'active';
   this.start = Date.now();
 
+  var self = this;
   this.createTurn(function(err, turn){
-	doCallback(callback, err, this);
+	doCallback(callback, err, self);
   });
 }
 
@@ -197,6 +195,7 @@ model.prototype.resolveTurn = function(callback, turn) {
   var game = this;	
   var turn = (turn === undefined) ? this.getCurrentTurn() : turn;
   re.Resolve(game, turn, function(err, outcome) {
+	console.log("outcome "+(err ? err : '')+" ::::::: "+JSON.stringify(outcome));
 	if (err) {
 	  doCallback(callback, err);	
 	} else {
@@ -206,6 +205,14 @@ model.prototype.resolveTurn = function(callback, turn) {
 	  });
 	}
   })
+}
+
+model.prototype.quit = function(callback) {
+  this.status = 'quit';
+  this.save(function(err, doc){
+	console.log(err)
+	doCallback(callback, err, doc);
+  });  
 }
 
 model.prototype.isInProgress = function() {
@@ -261,5 +268,7 @@ model.prototype.hasAllPlayersReady = function() {
 
 module.exports = {
   Schema: schema,
-  Model: model
+  Model: model,
+  TurnDuration: TURN_DURATION,
+  CooldownDuration: COOLDOWN_DURATION
 }
