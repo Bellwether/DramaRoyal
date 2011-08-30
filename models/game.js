@@ -11,7 +11,7 @@ var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
 var MAX_TURNS = 50;
-var TURN_DURATION = 5;
+var TURN_DURATION = 15;
 var COOLDOWN_DURATION = 30;
 
 function doCallback(callback, err, data) {
@@ -144,6 +144,53 @@ model.prototype.getActionForTurn = function(userId, turn) {
   };
 }
 
+model.prototype.createAction = function(userId, targetId, command, callback) {
+  var player = this.getPlayer(userId);
+  var target = this.getPlayer(targetId);
+	
+  var notActive = this.status !== 'active';
+  var playerNotActive = player && player.status !== 'active';
+  var missingPlayerOrTarget = !player || !target;
+  var targetAlreadyHumiliated = target && target.esteem === 0;
+  var medsDepleted = command === 'med' && player.meds < 1;
+  var tattlesDepleted = command === 'tattle' && player.tattles < 1;
+
+  if (notActive || playerNotActive || missingPlayerOrTarget || 
+	  targetAlreadyHumiliated || medsDepleted || tattlesDepleted) {
+		
+	doCallback(callback, "Could not create action");
+	return;
+  }
+
+  var turn = this.getCurrentTurn();
+  var isTargetingSelf = userId+'' === targetId+'';
+  if (isTargetingSelf) {
+	targetId = null;
+  }
+ 
+  var self = this;
+  function removeExistingPlayerAction() {
+    for(var idx = 0; idx < turn.actions.length; idx++) {
+	  var actionForPlayer = turn.actions[idx].playerId+'' === userId+'';
+      if (actionForPlayer)	{
+	    turn.actions[idx].remove(); 
+	    break;
+      }
+    }
+  }
+  function addNewAction(action) {
+    removeExistingPlayerAction();
+
+    turn.actions.push(action);
+    self.save(function (err) {
+      doCallback(callback, err, action);	
+    });	
+  }
+
+  var action = {userId: userId, cmd: command, targetId: targetId};
+  addNewAction(action)
+}
+
 model.prototype.getCurrentTurn = function() {
   return this.turns[this.turns.length - 1];
 }
@@ -263,6 +310,15 @@ model.prototype.hasAllPlayersReady = function() {
   }
   return true;
 }
+
+model.prototype.hasAllPlayersActedForTurn = function() {
+  var turn = this.getCurrentTurn();
+  if (!turn) return;
+
+  var allPlayersActed = (turn.actions.length === this.players.length);
+  return allPlayersActed;
+}
+
 
 module.exports = {
   Schema: schema,

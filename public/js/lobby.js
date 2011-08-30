@@ -14,7 +14,7 @@ var gameUI = {
     var game = data.game;
     var gid = game._id;
 
-    if ( gameUI.domGameItem(gid).html() != null) return;
+    if ( gameUI.domGameItem(gid).html() !== null) return;
 
     function makeGameElement() { return $('<li id="game-'+gid+'" class="lobby-game"></li>'); } 
     function makeTitle() { return $('<h5>'+game.title+' </h5>'); }
@@ -101,7 +101,7 @@ var lobbyUI = {
 
 var Lobby = function() {
   var LOBBY_CHANNEL = 'lobby';
-  var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];
+  var TRANSPORTS = ['flashsocket','xhr-polling','jsonp-polling','htmlfile'];
 
   function onGameEvent(data) { 
 	console.log("onGameEvent: "+JSON.stringify(data));

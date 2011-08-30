@@ -242,7 +242,25 @@ var dramaUI = {
       return false;
     });
   },
+  initGameControls: function(socket) {
+    var gameAction = function(e){
+      e.preventDefault();
+      var btn = $(this);
+      var cmd = btn.data('command');
+      var userId = btn.parents('li').attr('id');
+      var packet = {command: 'action', action: {command: cmd, targetId: userId }};
+      console.log("sending game command: "+JSON.stringify(packet));
 
+      socket.emit('game', packet, function(){
+	    console.log("game command sent and acknowledged!!!")
+	    $('.command.selected').removeClass('selected');
+	    btn.addClass('selected');
+      });
+
+      return false;
+    };
+    $('.command').live('click', gameAction);	
+  }
 }
 
 var Drama = function() {
@@ -370,7 +388,7 @@ var Drama = function() {
 	    var chatBubble = $("<p id='player-chat-"+id+"' class='chat-bubble'></p>");
 	    var esteem = $("<div id='player-esteem-"+id+"' class='esteem'>Self Esteem: 10</div>");
 	    var img = $("<img class='paperdoll' src='/img/placeholder.png' />");
-	    var title = $("<span>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
+	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"'></div");
 	    var tease = $("<button type='button' class='command' data-command='tease' disabled='disabled'>Tease</button>");
@@ -463,7 +481,8 @@ var Drama = function() {
 
           dramaUI.setConnectionStatus('connected');	
           dramaUI.initChatControls(socket, data.userId);
-          dramaUI.enableChat(socket);	
+          dramaUI.enableChat(socket);
+          dramaUI.initGameControls(socket);
 	
 	      function registerReadyButton(sckt) {
             if (gameAPI.isPlayerReady(data.userId)) {
@@ -476,7 +495,7 @@ var Drama = function() {
 	      registerReadyButton(socket);
 
           function intiateCountdownIfInProgress() {
-	        if ( gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown() ) {
+	        if (gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown()) {
               var seconds = $.stripNonNumeric( $('#turn-timer').html() );
 	          if (seconds.length > 0) gameAPI.startCountdown( parseInt(seconds) );
             } else {
