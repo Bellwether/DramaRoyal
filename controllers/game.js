@@ -27,7 +27,6 @@ module.exports = {
     var nick = req.user.avatar();
 	
 	function onJoinGame(err, game) {
-	  console.log("onJoinGame onJoinGame "+err+" "+game)	
       if (game) {
         res.render('game/show',{game: game, userId: userId});
       } else {
@@ -60,7 +59,9 @@ module.exports = {
 	var gameId = req.params.id;
     var userId = req.user.getId();
 
-    function onQuitGame(err, player) {
+    function onQuitGame(err, game) {
+	  console.log("onQuitGame: "+err+" - game is "+(game ? game.status : ''))
+	  console.log("onQuitGame: "+JSON.stringify(game.players))
       res.redirect('/games');
     }
 	

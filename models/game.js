@@ -157,7 +157,7 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
 
   if (notActive || playerNotActive || missingPlayerOrTarget || 
 	  targetAlreadyHumiliated || medsDepleted || tattlesDepleted) {
-		
+	console.log(notActive+" "+playerNotActive+" "+missingPlayerOrTarget+" "+targetAlreadyHumiliated+" "+medsDepleted+" "+tattlesDepleted)
 	doCallback(callback, "Could not create action");
 	return;
   }
@@ -169,11 +169,11 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
   }
  
   var self = this;
-  function removeExistingPlayerAction() {
+  function removeExistingPlayerAction() {	
     for(var idx = 0; idx < turn.actions.length; idx++) {
-	  var actionForPlayer = turn.actions[idx].playerId+'' === userId+'';
+	  var actionForPlayer = turn.actions[idx].userId+'' === userId+'';
       if (actionForPlayer)	{
-	    turn.actions[idx].remove(); 
+	    self.turns[turn.cnt-1].actions[idx].remove(); 
 	    break;
       }
     }
@@ -318,7 +318,6 @@ model.prototype.hasAllPlayersActedForTurn = function() {
   var allPlayersActed = (turn.actions.length === this.players.length);
   return allPlayersActed;
 }
-
 
 module.exports = {
   Schema: schema,

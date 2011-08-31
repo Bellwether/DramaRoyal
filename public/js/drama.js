@@ -134,13 +134,13 @@ var dramaUI = {
   useTattle: function() {
     var tattles = dramaUI.domTattleButton().data('count');
     tattles = parseInt(tattles) - 1;
-    dramaUI.domTattleButton().text('Tattle('+tattles+')');
+    dramaUI.domTattleButton().text('Tattle:'+tattles);
     dramaUI.domTattleButton().data('count', tattles);
   },
   useMed: function() {
     var meds = dramaUI.domMedButton().data('count');
     meds = parseInt(meds) - 1;
-    dramaUI.domMedButton().text('Med('+meds+')');
+    dramaUI.domMedButton().text('Med:'+meds);
     dramaUI.domMedButton().data('count', meds);
   },
   printMessage: function(message, userId){
@@ -390,7 +390,7 @@ var Drama = function() {
 	    var img = $("<img class='paperdoll' src='/img/placeholder.png' />");
 	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
-	    var ctrlDiv = $("<div id='player-target-controls-"+id+"'></div");
+	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");
 	    var tease = $("<button type='button' class='command' data-command='tease' disabled='disabled'>Tease</button>");
 	    var scratch = $("<button type='button' class='command' data-command='scratch' disabled='disabled'>Scratch</button>");
 	    var grab = $("<button type='button' class='command' data-command='grab' disabled='disabled'>Grab</button>");

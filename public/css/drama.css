@@ -50,7 +50,6 @@
 
 #player-list li .player-nick {
   display: inline-block;
-  float: right;
   overflow: hidden;
   position: relative;
   text-align:center;
@@ -99,6 +98,8 @@
 }
 
 .player-controls {
+  position: relative;
+  top: -20px;	
   white-space:nowrap;	
 }
 
