@@ -128,7 +128,7 @@ var dramaUI = {
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
 
   stripNonNumeric: function(text) {
-    return text.replace(/[^0-9]/g, ''); 
+    return (text || '').replace(/[^0-9]/g, ''); 
   },
 
   useTattle: function() {
