@@ -15,7 +15,7 @@ var outcomeUI = {
 	if (!targets) return;
 	
     for(var idx = 0; idx < targets.length; idx++) {
-      var userId = targets[idx];
+      var userId = targets[idx].userId;
       var esteem = parseInt(outcome.esteem);
       if (esteem != 0) dramaUI.setPlayerEsteem(userId, esteem);
     }	
