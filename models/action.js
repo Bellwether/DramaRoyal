@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 var schema = new Schema({
-  userId: Number,	
+  userId: ObjectId,
   cmd: String,
-  targetId: Number
+  targetId: ObjectId
 });
 
 module.exports = {

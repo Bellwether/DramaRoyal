@@ -183,6 +183,7 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
 
     turn.actions.push(action);
     self.save(function (err) {
+	  console.log(JSON.stringify(action))
       doCallback(callback, err, action);	
     });	
   }
