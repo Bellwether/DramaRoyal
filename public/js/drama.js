@@ -2,7 +2,11 @@ var outcomeUI = {
   domPlayerPanel: function(){ return $('#game-players'); },
   domOutcomePanel: function(){ return $('#turn-outcomes'); },
   domOutcomeList: function(){ return outcomeUI.domOutcomePanel().children('ul').first(); },
-  domOutcomePages: function() { return $('#outcome-pages'); },
+  domOutcomePages: function() { return $('#outcome-pages'); },	
+  domPlayerStatus: function(playerId) { return $('#player-status-'+playerId); },
+  setPlayerStatus: function(status, playerId) {
+	  outcomeAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
+  },
   displayOutcomePage: function(outcome) {
     var li = $('<li><p>'+outcome.description+'</p></li>');
     li.appendTo(outcomeUI.domOutcomeList());
@@ -55,7 +59,7 @@ var outcomeUI = {
 	  var playerElement = $('li#'+targetId);
 	
 	  playerElement.data('humilated', true);
-	  dramaUI.setPlayerStatus('humiliated', targetId);
+	  outcomeUI.setPlayerStatus('humiliated', targetId);
 	  dramaUI.disableTargetPlayer(targerId);
     }	
   },
@@ -359,12 +363,14 @@ var Drama = function() {
       var outcome = {'description': 'GAME OVER! '};
       if (data.winners) {
 	    if (data.winners.length === 1) {
-	      outcome.description =	outcome.description + data.winners[0].name+" knew she was best as she watched other girls weep in defeat.";
+	      outcome.description =	outcome.description + data.winners[0].nick+" knew she was best as she watched other girls weep in defeat.";
+	      gameAPI.setPlayerStatus('winner', data.winners[0]._id);
 	    }
 	    else {
 	      for(var idx = 0; idx < data.winners.length; idx++) {
-		    outcome.description = outcome.description + data.winners[idx].name;
+		    outcome.description = outcome.description + data.winners[idx].nick;
 		    if (idx < data.winners.length - 1) outcome.description = outcome.description + ' and ';
+		    gameAPI.setPlayerStatus('winner', data.winners[idx]._id);
 	      }	
 	      outcome.description = outcome.description + " laughed in victory while the others cired.";
 	    }
@@ -378,7 +384,7 @@ var Drama = function() {
       var id = data.player._id;
 
       if ( gameAPI.isGameInProgress() ) {
-        dramaUI.setPlayerStatus('quit', id);
+        gameUI.setPlayerStatus('quit', id);
       } 
       else {
 	    dramaUI.removePlayer(id);
