@@ -5,7 +5,7 @@ var outcomeUI = {
   domOutcomePages: function() { return $('#outcome-pages'); },	
   domPlayerStatus: function(playerId) { return $('#player-status-'+playerId); },
   setPlayerStatus: function(status, playerId) {
-	  outcomeAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
+	  outcomeUI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
   },
   displayOutcomePage: function(outcome) {
     var li = $('<li><p>'+outcome.description+'</p></li>');
@@ -60,7 +60,7 @@ var outcomeUI = {
 	
 	  playerElement.data('humilated', true);
 	  outcomeUI.setPlayerStatus('humiliated', targetId);
-	  dramaUI.disableTargetPlayer(targerId);
+	  dramaUI.disableTargetPlayer(targetId);
     }	
   },
   displayOutcome: function(data) {
@@ -372,7 +372,7 @@ var Drama = function() {
 		    if (idx < data.winners.length - 1) outcome.description = outcome.description + ' and ';
 		    gameAPI.setPlayerStatus('winner', data.winners[idx]._id);
 	      }	
-	      outcome.description = outcome.description + " laughed in victory while the others cired.";
+	      outcome.description = outcome.description + " laughed in victory while the others cried in shame.";
 	    }
       } 
       else {

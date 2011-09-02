@@ -11,7 +11,7 @@ module.exports = {
 	});
   },
 	
-  index: function(req, res){
+  index: function(req, res) {
     gt.Main.findGames(function (err, docs) {
       res.render('game/index',{ games: docs });
     })
@@ -60,8 +60,6 @@ module.exports = {
     var userId = req.user.getId();
 
     function onQuitGame(err, game) {
-	  console.log("onQuitGame: "+err+" - game is "+(game ? game.status : ''))
-	  console.log("onQuitGame: "+JSON.stringify(game.players))
       res.redirect('/games');
     }
 	
