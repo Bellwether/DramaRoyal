@@ -197,6 +197,9 @@ var dramaUI = {
   readyToWaiting: function() {	
     dramaUI.domReadyButton().attr('disabled', 'disabled').unbind().text('waiting...');
   },
+  removeReadyControl: function() {
+	dramaUI.domReadyButton().remove();
+  },
   hideOutcomePanel: function() {
     outcomeUI.domOutcomePanel().hide();
   },
@@ -342,6 +345,7 @@ var Drama = function() {
       gameAPI.setPlayerStatus('active', id);
     },
     gameStarted: function(data){
+	  dramaUI.removeReadyControl();
 	  gameAPI.turnStarted( {"turn":{"cnt":1}} );
     },
     gameEnded: function(data) {
