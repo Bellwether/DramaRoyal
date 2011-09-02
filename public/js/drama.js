@@ -254,10 +254,12 @@ var dramaUI = {
       var packet = {command: 'action', action: {command: cmd, targetId: userId }};
       console.log("sending game command: "+JSON.stringify(packet));
 
-      socket.emit('game', packet, function(){
-	    console.log("game command sent and acknowledged!!!")
-	    $('.command.selected').removeClass('selected');
-	    btn.addClass('selected');
+      socket.emit('game', packet, function(err, doc){
+	    console.log("game command sent and acknowledged!!! "+err+" "+JSON.stringify(doc))
+	    if (!err) {
+	      $('.command.selected').removeClass('selected');
+	      btn.addClass('selected');
+	    };
       });
 
       return false;

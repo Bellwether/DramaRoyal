@@ -12,7 +12,7 @@ module.exports = {
   },
 
   show: function(req, res) {
-    res.render();
+	res.render();
   },
 
   create: function(req, res) {	

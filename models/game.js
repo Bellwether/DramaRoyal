@@ -154,12 +154,26 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
   var targetAlreadyHumiliated = target && target.esteem === 0;
   var medsDepleted = command === 'med' && player.meds < 1;
   var tattlesDepleted = command === 'tattle' && player.tattles < 1;
+  var usingMedsAtFullEsteem = command === 'med' && player.esteem >= plyr.DefaultEsteem;
 
-  if (notActive || playerNotActive || missingPlayerOrTarget || 
-	  targetAlreadyHumiliated || medsDepleted || tattlesDepleted) {
-	console.log(notActive+" "+playerNotActive+" "+missingPlayerOrTarget+" "+targetAlreadyHumiliated+" "+medsDepleted+" "+tattlesDepleted)
+  if (playerNotActive || missingPlayerOrTarget) {
 	doCallback(callback, "Could not create action");
 	return;
+  } else if (notActive) {
+	doCallback(callback, "Game is inactive");
+	return;		
+  } else if (targetAlreadyHumiliated) {
+	doCallback(callback, "Target already humiliated");
+	return;	
+  } else if (medsDepleted) {
+	doCallback(callback, "No remaining meds");
+	return;	
+  } else if (tattlesDepleted) {
+	doCallback(callback, "No remaining tattles");
+	return;	
+  } else if (usingMedsAtFullEsteem) {
+	doCallback(callback, "Cannot take meds at full esteem");	
+    return;
   }
 
   var turn = this.getCurrentTurn();
@@ -167,6 +181,7 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
   if (isTargetingSelf) {
 	targetId = null;
   }
+
  
   var self = this;
   function removeExistingPlayerAction() {	
