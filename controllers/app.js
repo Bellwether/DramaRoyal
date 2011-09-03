@@ -1,9 +1,9 @@
 module.exports = {
-  get_privacy: function(req, res){
-	res.render();
+  get_privacy: function(req, res) {
+	res.render('app/privacy');
   },
-  get_tos: function(req, res){
-	res.render();
+  get_tos: function(req, res) {
+	res.render('app/tos');
   },
   get_health: function(req, res) {
 	var os = require('os');
@@ -15,6 +15,9 @@ module.exports = {
 	  totalmem: os.totalmem()
 	}
     res.render('app/health',{'stats': stats});
+  },
+  get_help: function(req, res) {
+	res.render('app/help');
   },
   index: function(req, res){
 	res.render();
