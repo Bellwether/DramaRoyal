@@ -4,6 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var plyr = require('./player')
 var trn = require('./turn');
+var scr = require('./score').Model;
 var re = require('./../lib/mechanics/resolution_engine');
 
 var GAME_TYPES = ['public', 'private', 'friends'];
@@ -261,12 +262,44 @@ model.prototype.resolveTurn = function(callback, turn) {
 	if (err) {
 	  doCallback(callback, err);	
 	} else {
-	  if (game.isGameOver()) game.status = 'ended';
-	  game.save(function(err){
+	  game.saveAfterTurn(function (err){
 		doCallback(callback, err, outcome);
 	  });
 	}
   })
+}
+
+model.prototype.saveAfterTurn = function(callback) {
+  if (this.isGameOver()) this.status = 'ended';
+
+  this.save(function(err, doc){
+	doCallback(callback, err, doc);
+  });	
+}
+
+model.prototype.scoreWinners = function(callback) {
+  var scores = [];
+
+  var winners = this.getSurvivingPlayers();
+  if (winners.length > 2) {	
+    doCallback(callback, "Too many surviving players");
+	return;
+  }
+  var firstWinner = winners[0];
+  var secondWinner = (winners.length > 1) ? winners[1] : null;
+
+  scr.createScore(this._id, firstWinner, function(err, firstDoc) {	
+    if (firstDoc) scores.push(firstDoc);
+
+	if (secondWinner) {
+	  scr.createScore(this._id, secondWinner, function(err, secondDoc) {
+		if (secondDoc) scores.push(secondDoc);
+		doCallback(callback, err, scores);
+	  });
+	} else {
+	  doCallback(callback, err, scores);
+	}
+  });
 }
 
 model.prototype.quit = function(callback) {
