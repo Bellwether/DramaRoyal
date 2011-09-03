@@ -2,9 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
+var CUTOFF_DAYS = 7;
+
 var schema = new Schema({
-  userId: ObjectId,
+  userId: {type: ObjectId, index: true},
   gameId: ObjectId,
+  nick: String,
   pop: Number,
   score: Number,
   totalOwnScores: Number,
@@ -14,99 +17,97 @@ var schema = new Schema({
   numWins: Number,
   numWinners: Number,
   avgScore: Number,
-  active: {type: Boolean, default: true},
+  active: {type: Boolean, default: true, index: true},
   ts: {type: Date, default: Date.now()}
 });
 
-// schema.pre('save', function (next) {
-//   var params = {'userId': this.userId, 'ts': {$lt: expiredAt}};
-//     gm.update(params, {'status': 'ended'}, {multi: true}, function(err, doc) {  	
-//   next();
-// })
+schema.pre('save', function (next) {
+  // deactivate old score (if any) for user
+  var params = {'userId': this.userId};
+  model.update(params, {'active': false}, {multi: true}, function(err, doc) {  	
+    next();
+  });
+})
 
 var model = mongoose.model('Score', schema);
 
-
-var CUTOFF_DAYS = 30;
 function getCutoffDate() {
   var cutoffAt = new Date(Date.now());
   cutoffAt.setDate(cutoffAt.getDate() - CUTOFF_DAYS);
   return cutoffAt;
 }
 
+function parameterizeScore(params, userDoc, callback) {
+  model.getScoreSumAndWinCount(function (err, totalScores, numWins){
+	totalScores = totalScores ? totalScores : 0;
+	numWins = numWins ? numWins : 0;
+	params.totalOwnScores = userDoc ? userDoc.totalOwnScores+params.score : params.score;
+	params.numOwnWins = userDoc ? userDoc.numOwnWins+1 : 1;
+	params.avgOwnScore = params.totalOwnScores / params.numOwnWins;
+	params.totalScores = totalScores+params.score;
+	
+	model.getWinnerCount(function (err, winnerCount) {
+	  if (!err) {
+	    params.numWins = numWins;
+	    params.numWinners = winnerCount ? winnerCount+1 : 1;
+	    params.avgScore = params.totalScores / params.numWins;
+	    model.setPopularity(params);
+	    callback(err, params);
+	  } else {
+	    callback(err, params);
+	  }
+	});
+  });	
+}
+
+model.getScoreSumAndWinCount = function(callback) {
+  function scoreMap() { 
+	emit('totalScore', this.score); 
+  } 
+
+  function scoreReduce(previous, scores) { 
+	var count = 0; 
+    for (var i in scores) {
+      count += scores[i];
+    }
+	return count; 
+  }; 
+
+  function mapReduceScore(err, result) {
+	if (err) {
+	  callback(err);
+	} else {
+	  var doc = result["documents"][0];
+	  var sum = doc["results"][0].value;
+	  var winCount = doc["counts"].input;
+	
+	  callback(err, sum, winCount);
+	}
+  }
+	
+  var cutoffAt = getCutoffDate();
+  var command = { 
+    mapreduce: "scores",
+    map: scoreMap.toString(),
+    reduce: scoreReduce.toString(),
+    query: {'ts': {$gt: cutoffAt}},
+    out: {inline : 1}
+  };
+	
+  mongoose.connection.db.executeDbCommand(command, mapReduceScore);
+}
+
 model.getWinnerCount = function(callback) {
-  return 1;	
+  var cutoffAt = getCutoffDate();
+  var params = {'active': true, 'ts': {$gt: cutoffAt}};
+
+  var query = model.count(params, function(err, num){
+    callback(err, num)
+  });
 }
 
 model.getBayesianScore = function(avgWins, avgScore, wins, score) {
   return ((avgWins * avgScore) + (wins * score)) / (avgWins + wins);
-}
-
-model.setPopularity = function(params) {
-  var score = params.score;
-  var wins = params.numOwnWins;
-  var avgScore = params.totalScores / params.numWins;
-  var avgWins = params.wins / params.winners;
-
-  params.pop = model.getBayesianScore(avgWins, avgScore, wins, score);
-}
-
-model.findHighScores = function(callback) {
-  var cutoffAt = getCutoffDate();
-  var params = {'ts': {$gt: cutoffAt}};
-
-  	
-}
-
-model.findFirsts = function(userId, callback) {
-  var query = model.findOne().sort('ts', 1);
-  query.exec(function(err, globalScore) {
-	query = model.findOne({userId: userId}).sort('ts', 1);
-	query.exec(function(err, userScore) {
-      callback(err, globalScore, userScore);
-    });
-  });
-}
-
-model.prototype.createScore = function(gameId, player, callback) {
-  var esteem = player.esteem;
-  if (esteem < 1) {
-    callback("Cannot score with no esteem");
-    return;
-  }
-
-  var userId = player.userId;
-  model.findFirsts(function (err, globalDoc, userDoc) {
-	if (!err) {
-	  var params = {userId: userId, gameId: gameId, score: esteem};
-	  if (globalDoc) {		
-		prams.totalOwnScores = userDoc ? userDoc.totalOwnScores+params.score : params.score;
-		prams.numOwnWins = userDoc ? userDoc.numOwnWins+1 : 1;
-		prams.avgOwnScore = params.totalOwnScores / prams.numOwnWins;
-		prams.totalScores = globalDoc.totalScores+params.score;
-		prams.numWins = globalDoc.numWins+1;
-		prams.numWinners = model.getWinnerCount();
-		prams.avgScore = prams.totalScores / prams.numWins;
-	  } else {
-		prams.totalOwnScores = 1;
-		prams.numOwnWins = 1;
-		prams.avgOwnScore = params.score;
-		prams.totalScores = params.score;
-		prams.numWins = 1;
-		prams.numWinners = 1;
-		prams.avgScore = params.score;
-	  }
-	  model.setPopularity(params);
-	
-	  score = new model(params);
-	  score.save(function (err, doc) {
-		callback(err, doc);
-	  });
-	} else {
-	  callback(err);
-	}
-  });
-}
 
 // br = ( (avg_num_votes * avg_rating) + (this_num_votes * this_rating) ) / (avg_num_votes + this_num_votes)
 // 
@@ -120,17 +121,60 @@ model.prototype.createScore = function(gameId, player, callback) {
 // Note: avg_num_votes is used as the “magic” weight in this formula. The higher this value, the more votes it takes to influence the bayesian rating value.
 
 
-// avg number of wins
-// avg health of wins (for wins > 0)
-// this number of wins
-// this win health
+}
 
+model.setPopularity = function(params) {
+  var score = params.score;
+  var wins = params.numOwnWins;
+  var avgScore = params.totalScores / params.numWins;
+  var avgWins = params.numWins / params.numWinners;
 
-// need to store:
-// personal score for current game
-// personal average score
-// global average scores
-// if score is current high score average
+  params.pop = model.getBayesianScore(avgWins, avgScore, wins, score);
+}
+
+model.findHighScores = function(callback) {
+  var cutoffAt = getCutoffDate();
+  var params = {'active': true, 'ts': {$gt: cutoffAt}};
+
+  var query = model.find(params).sort('pop', -1).limit(25);
+  query.exec(function(err, docs) {
+	callback(err, docs);
+  })
+}
+
+model.findLastUserScore = function(userId, callback) {
+  var params = {'userId': userId, 'active': true};
+  model.findOne(params, function(err, doc) {
+    callback(err, doc);
+  });
+}
+
+model.createScore = function(gameId, player, callback) {
+  var esteem = player.esteem;
+  if (esteem < 1) {
+    callback("Cannot score with no esteem");
+    return;
+  }
+
+  var userId = player.userId;
+  var nick = player.nick
+
+  function onLastUserScore(err, userDoc) {
+	if (!err) {
+	  var params = {'userId': userId, 'gameId': gameId, 'score': esteem, 'nick': nick};
+	  parameterizeScore(params, userDoc, function(err, scheme) {
+	    score = new model(scheme);
+	    score.save(function (err, scoreDoc) {
+		  callback(err, scoreDoc);
+        });
+	  });	
+	} else {
+	  callback(err);
+	}
+  }
+
+  model.findLastUserScore(userId, onLastUserScore);
+}
 
 module.exports = {
   Schema: schema,

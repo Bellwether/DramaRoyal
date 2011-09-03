@@ -1,0 +1,8 @@
+<section id="leaderboards">
+  <table id='popularity' class='leaderboard'>
+	<caption>LEADERBOARD: Most Popular Girls</caption>
+	<tr><th>Rank</th><th>Name</th><th>Popularity</th><th>Wins</th><th>Average Score</th></tr>
+	
+	<%- partial('score/score', { collection: locals.scores }) %>
+  </table>
+</section>
