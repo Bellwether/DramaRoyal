@@ -11,7 +11,7 @@ var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
 var MAX_TURNS = 50;
-var TURN_DURATION = 15;
+var TURN_DURATION = 60;
 var COOLDOWN_DURATION = 30;
 
 function doCallback(callback, err, data) {
