@@ -40,6 +40,7 @@ module.exports = {
   create: function(req, res){
 	var title = req.body.title;
 	var type = req.body.type;
+	var pace = req.body.pace;
     var userId = req.user.getId();
     var nick = req.user.avatar();
 
@@ -52,7 +53,7 @@ module.exports = {
       }
     }
 	
-	gt.Main.createGame(title, type, userId, nick, onCreateGame);
+	gt.Main.createGame(title, type, pace, userId, nick, onCreateGame);
   },
 
   destroy: function(req, res){	

@@ -38,18 +38,22 @@ function getCutoffDate() {
 }
 
 function parameterizeScore(params, userDoc, callback) {
-  model.getScoreSumAndWinCount(function (err, totalScores, numWins){
+  model.getScoreSumAndWinCount(function (err, totalScores, numWins){	
+    console.log(numWins)
 	totalScores = totalScores ? totalScores : 0;
-	numWins = numWins ? numWins : 0;
+	numWins = numWins ? numWins : 1;
 	params.totalOwnScores = userDoc ? userDoc.totalOwnScores+params.score : params.score;
 	params.numOwnWins = userDoc ? userDoc.numOwnWins+1 : 1;
 	params.avgOwnScore = params.totalOwnScores / params.numOwnWins;
 	params.totalScores = totalScores+params.score;
 	
 	model.getWinnerCount(function (err, winnerCount) {
+	  console.log(winnerCount)
 	  if (!err) {
 	    params.numWins = numWins;
 	    params.numWinners = winnerCount ? winnerCount+1 : 1;
+	
+	    console.log("params.avgScore = "+params.totalScores+" / "+params.numWins+";")
 	    params.avgScore = params.totalScores / params.numWins;
 	    model.setPopularity(params);
 	    callback(err, params);
@@ -166,7 +170,6 @@ model.createScore = function(gameId, player, callback) {
 	  parameterizeScore(params, userDoc, function(err, scheme) {	
 	    console.log(scheme)
 	    score = new model(scheme);
-	    console.log(score)
 	    score.save(function (err, scoreDoc) {
 		  console.log("tried saving user score: "+err+" "+JSON.stringify(scoreDoc))
 		  callback(err, scoreDoc);

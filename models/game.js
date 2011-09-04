@@ -9,6 +9,7 @@ var re = require('./../lib/mechanics/resolution_engine');
 
 var GAME_TYPES = ['public', 'private', 'friends'];
 var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
+var GAME_SPEEDS = ['fast', 'slow'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
 var MAX_TURNS = 50;
@@ -29,6 +30,7 @@ var schema = new Schema({
   title: {type: String, validate: required},
   type: { type: String, default: 'pending', enum: GAME_TYPES, validate: required},
   status: { type: String, default: 'pending', enum: GAME_STATUS, validate: required },
+  pace: { type: String, default: 'fast', enum: GAME_SPEEDS},
   start: Date,
   end: Date,
   players: { type: [plyr.Schema], validate: maxPlayers},
@@ -212,6 +214,14 @@ model.prototype.getCurrentTurn = function() {
   return this.turns[this.turns.length - 1];
 }
 
+model.prototype.getTurnDuration = function() {
+  return (this.pace === 'fast') ? TURN_DURATION : TURN_DURATION * 2;
+}
+
+model.prototype.getCooldownDuration = function() {
+  return (this.pace === 'fast') ? COOLDOWN_DURATION : COOLDOWN_DURATION + 15;
+}
+
 model.prototype.startDrama = function(callback) {
   if (!this.isPending()) return;
 
@@ -370,7 +380,5 @@ model.prototype.hasAllPlayersActedForTurn = function() {
 
 module.exports = {
   Schema: schema,
-  Model: model,
-  TurnDuration: TURN_DURATION,
-  CooldownDuration: COOLDOWN_DURATION
+  Model: model
 }
