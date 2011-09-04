@@ -284,7 +284,7 @@ var Drama = function() {
 
   var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];	
   var ONE_SECOND = 1000;
-  var TURN_DURATION = parseInt($('#game').attr('data-turn-duration'));
+  var TURN_DURATION = parseInt($('#game').attr('data-duration'));
 
   var gameAPI = {
     gameInterval: null,
@@ -295,7 +295,7 @@ var Drama = function() {
 	},
 	setGameInterval: function(seconds, time) {
       gameAPI.gameInterval = setInterval(function() {
-        var seconds = time % TURN_DURATION;
+        var seconds = time % parseInt($('#game').attr('data-duration'));
         if (seconds < 10) seconds = "0" + seconds; 
         dramaUI.setClock(seconds);
         time--;
@@ -329,7 +329,7 @@ var Drama = function() {
       gameAPI.setGameInterval(seconds, time);
     },
     turnStarted: function(data) {
-      gameAPI.startCountdown(TURN_DURATION);
+      gameAPI.startCountdown(parseInt($('#game').attr('data-duration')));
 
       dramaUI.setTurn('Turn  ' + data.turn.cnt);
       dramaUI.enableGame();
