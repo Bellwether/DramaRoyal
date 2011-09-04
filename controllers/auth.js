@@ -1,16 +1,14 @@
-var appKey = '153494728049768';
-var canvasAppUrl = "https://apps.facebook.com/dramaroyal";
-var appProfilePageUrl = 'https://www.facebook.com/apps/application.php?id='+appKey;
+var cnfg = require('./../lib/facebook/config');
 
 var facebookAuthorizeAction = function(req, res) {
   var code = req.query.code;
   var error = req.query.error;
 
   if (code) {
-    res.redirect(canvasAppUrl);
+    res.redirect(cnfg.CanvasAppUrl);
   } 
   else {
-    res.redirect(appProfilePageUrl);
+    res.redirect(cnfg.AppProfilePageUrl);
   }
 }
 

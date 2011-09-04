@@ -48,6 +48,12 @@
   text-align:left;
 }
 
+#player-list li .chat-bubble p {
+font-size: 10px;
+line-height:11px;
+margin: 0 0 3px 0;
+}
+
 #player-list li .player-nick {
   display: inline-block;
   overflow: hidden;

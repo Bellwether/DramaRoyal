@@ -18,7 +18,7 @@ var schema = new Schema({
   numWinners: Number,
   avgScore: Number,
   active: {type: Boolean, default: true, index: true},
-  ts: {type: Date, default: Date.now()}
+  ts: {type: Date, default: Date.now(), index: true}
 });
 
 schema.pre('save', function (next) {
