@@ -166,6 +166,7 @@ model.createScore = function(gameId, player, callback) {
 	  parameterizeScore(params, userDoc, function(err, scheme) {
 	    score = new model(scheme);
 	    score.save(function (err, scoreDoc) {
+		  console.log("tried saving user score: "+err+" "+JSON.stringify(doc))
 		  callback(err, scoreDoc);
         });
 	  });	
