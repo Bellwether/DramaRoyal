@@ -77,9 +77,10 @@ model.getScoreSumAndWinCount = function(callback) {
 	if (err) {
 	  callback(err);
 	} else {
+	  console.log("mapreducescore: "+JSON.stringify(result))
 	  var doc = result["documents"][0];
-	  var sum = doc["results"][0].value;
-	  var winCount = doc["counts"].input;
+	  var sum = doc["results"][0] ? doc["results"][0].value : 0;
+	  var winCount = doc["counts"] ? doc["counts"].input : 0;
 	
 	  callback(err, sum, winCount);
 	}
