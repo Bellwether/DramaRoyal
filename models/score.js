@@ -163,8 +163,10 @@ model.createScore = function(gameId, player, callback) {
   function onLastUserScore(err, userDoc) {
 	if (!err) {
 	  var params = {'userId': userId, 'gameId': gameId, 'score': esteem, 'nick': nick};
-	  parameterizeScore(params, userDoc, function(err, scheme) {
+	  parameterizeScore(params, userDoc, function(err, scheme) {	
+	    console.log(scheme)
 	    score = new model(scheme);
+	    console.log(score)
 	    score.save(function (err, scoreDoc) {
 		  console.log("tried saving user score: "+err+" "+JSON.stringify(scoreDoc))
 		  callback(err, scoreDoc);
