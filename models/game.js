@@ -336,7 +336,7 @@ model.prototype.isPending = function() {
 }
 
 model.prototype.isEnded = function() {
-  return this.status === 'ended';
+  return this.status === 'ended' || this.turns.length >= MAX_TURNS;
 }
 
 model.prototype.isGameOver = function() {
