@@ -513,6 +513,7 @@ var Drama = function() {
 	        if (gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown()) {
               var seconds = $.stripNonNumeric( $('#turn-timer').html() );
 	          if (seconds.length > 0) gameAPI.startCountdown( parseInt(seconds) );
+              dramaUI.enableGame();
             } else {
               dramaUI.disableGame();
 	        }

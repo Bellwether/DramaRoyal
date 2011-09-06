@@ -44,7 +44,16 @@ function userParamsFromGraph(data, oAuthToken){
 model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFunction, callback) {
   model.findByFbId(facebookUserId, function (err, doc){
     if (doc) {
-	  callback(err, doc);
+	  var hasTokenChanged = doc.token !== oAuthToken;
+	  if (hasTokenChanged) {
+		console.log("FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
+		doc.token = oAuthToken;
+	    doc.save(function (err, doc) {
+          callback(err, doc);
+	    });
+	  } else {
+	    callback(err, doc);
+	  };
     } else if (typeof fbGraphFunction === 'function') {
 	  fbGraphFunction(function(userData){
 		var params = userParamsFromGraph(userData, oAuthToken)
