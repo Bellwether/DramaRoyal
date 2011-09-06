@@ -169,3 +169,19 @@ button.command:disabled, input.command:disabled {
   filter:alpha(opacity=50); 
   opacity:.50; 
 }
+
+#help {
+  font-size:70%;
+}
+
+#help p {
+  margin: 6px 0;	
+}
+
+#help h2 {
+  margin:2px 0 6px 0;
+}
+
+#help h3 {
+  margin:2px 0 3px 0;	
+}
