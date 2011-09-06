@@ -21,7 +21,7 @@
 	<div id="container">
       <header id='header'>
 	    <section id='title'>
-          <% if (hasAvatar) { %><a>Oh, it's <em><%- avatarNick %></em></a><% } %>
+          <% if (hasAvatar) { %>Oh, it's <a><em><%- avatarNick %></em></a><% } %>
       	  <img src='/img/placeholder.png' id='banner' />
         </section>
         <nav>
@@ -34,7 +34,7 @@
 	        <% } else if (hasAvatar) { %>
 	          <a href='/games'>Homeroom</a>
 	        <% } else { %>
-	          <a href='/avatars/new'>Register</a>
+	          <a href='/avatars/new'>Sign In</a>
 		    <% } %>
 	        <a href='/profiles/me'>Profile</a>
 	        <a href='/games'>Shop</a>
