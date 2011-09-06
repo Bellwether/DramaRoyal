@@ -206,6 +206,7 @@ var dramaUI = {
   },
   hideOutcomePanel: function() {
     outcomeUI.domOutcomePanel().hide();
+    dramaUI.domChatBox().focus();
   },
   showOutcomePanel: function() {
     outcomeUI.domOutcomePanel().show();
@@ -234,7 +235,7 @@ var dramaUI = {
       sckt.emit('chat', data, function() {
         dramaUI.printMessage(data, socket.userId);
       });
-      dramaUI.domChatBox().val('');
+      dramaUI.domChatBox().val('').focus();
       return false;
     };
     dramaUI.domChatButton().click(emitChatMessage);
@@ -264,6 +265,7 @@ var dramaUI = {
 	      $('.command.selected').removeClass('selected');
 	      btn.addClass('selected');
 	    };
+	    dramaUI.domChatBox().focus();
       });
 
       return false;

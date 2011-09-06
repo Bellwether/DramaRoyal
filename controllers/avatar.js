@@ -8,7 +8,9 @@ module.exports = {
   },
 	
   new: function(req, res) {
-    res.render();
+	res.requireNoAvatar(req, res, function(hasNoAvatar){
+	  if (hasNoAvatar) res.render();
+	});
   },
 
   show: function(req, res) {
