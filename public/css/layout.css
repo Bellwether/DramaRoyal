@@ -15,14 +15,15 @@
 }
 
 #title a {
-  float:right;	
+  left:300px;	
+  position:absolute;	
   font-weight:bold;
 }
 
 #banner {
-  height:60px;
+  height:75px;
   vertical-align:top;
-  width:400px;	
+  width:275px;	
 }
 
 header nav {

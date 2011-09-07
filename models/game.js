@@ -187,23 +187,40 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
 
  
   var self = this;
-  function removeExistingPlayerAction() {	
+  function removeExistingPlayerAction() {
+	var wasFound = false;	
     for(var idx = 0; idx < turn.actions.length; idx++) {
 	  var actionForPlayer = turn.actions[idx].userId+'' === userId+'';
       if (actionForPlayer)	{
 	    self.turns[turn.cnt-1].actions[idx].remove(); 
+	    wasFound = true;
 	    break;
       }
     }
+    return wasFound;
   }
   function addNewAction(action) {
-    removeExistingPlayerAction();
+    var wasRemoved = removeExistingPlayerAction();
 
-    turn.actions.push(action);
-    self.save(function (err) {
-	  console.log(JSON.stringify(action))
-      doCallback(callback, err, action);	
-    });	
+    if (wasRemoved) {
+	  // mongoose must save twice, once for pop and once for push
+      self.save(function (err) {
+        turn.actions.push(action);
+        self.save(function (err) {
+	      console.log(JSON.stringify(action))
+          doCallback(callback, err, action);	
+        });	
+      });
+    } else {
+	  turn.actions.push(action);
+      self.save(function (err) {
+        console.log(JSON.stringify(action))
+        doCallback(callback, err, action);
+      });
+	}
+
+	
+
   }
 
   var action = {userId: userId, cmd: command, targetId: targetId};
