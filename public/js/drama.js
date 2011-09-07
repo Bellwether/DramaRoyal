@@ -402,7 +402,7 @@ var Drama = function() {
 	
 	    var chatBubble = $("<p id='player-chat-"+id+"' class='chat-bubble'></p>");
 	    var esteem = $("<div id='player-esteem-"+id+"' class='esteem'>Self Esteem: 10</div>");
-	    var img = $("<img class='paperdoll' src='/img/placeholder.png' />");
+	    var img = $("<img class='paperdoll' src='/img/avatars/normalstance.png' />");
 	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");
