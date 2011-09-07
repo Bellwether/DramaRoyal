@@ -284,7 +284,7 @@ var Drama = function() {
 	return location.protocol.indexOf('https') === 0;
   };
 
-  var TRANSPORTS = ['websocket','flashsocket','xhr-polling','jsonp-polling','htmlfile'];	
+  var TRANSPORTS = ['flashsocket','xhr-polling','jsonp-polling','htmlfile'];	
   var ONE_SECOND = 1000;
   var TURN_DURATION = parseInt($('#game').attr('data-duration'));
 
