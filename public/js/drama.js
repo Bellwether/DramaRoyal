@@ -178,9 +178,20 @@ var dramaUI = {
   },
   setPlayerEsteem: function(userId, delta) {
     var esteemBox = $('#player-esteem-'+userId);
-    var esteem = dramaUI.stripNonNumeric( esteemBox.html() );
-    esteem = Math.max( parseInt(esteem) + parseInt(delta), 0 );
-    esteemBox.html('Self Esteem: '+esteem);
+    var esteem = esteemBox.children('li').length;
+
+    if (delta < 0){
+	  for (idx = 0; idx > delta; idx--) {
+		if (esteemBox.children.length === 0) break;
+		esteemBox.children('li:last').remove();
+	  }
+    } else if (delta > 0) {
+	  for (idx = 0; idx < delta; idx++) {
+	    var li = $("<li>&hearts;</li>")
+	    li.appendTo(esteemBox);
+	    console.log(esteemBox.children('li').length)
+	  }
+    }
   },
   disableTargetPlayer: function(targetId) {	
     $('#player-'+targetId+'-tease').remove();
@@ -422,7 +433,13 @@ var Drama = function() {
         li.attr('id', id);
 	
 	    var chatBubble = $("<p id='player-chat-"+id+"' class='chat-bubble'></p>");
-	    var esteem = $("<div id='player-esteem-"+id+"' class='esteem'>Self Esteem: 10</div>");
+	    var esteem = "<ul id='player-esteem-"+id+"' class='esteem'>";
+	    for (idx = 0; idx < 10; idx++) {
+		  esteem = esteem + "<li>&hearts;</li>";
+	    }
+	    esteem = esteem + "</div>";
+	    esteem = $(esteem);
+	
 	    var img = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
 	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 

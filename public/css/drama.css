@@ -36,9 +36,19 @@
   width:110px;
 }
 
-#player-list .esteem {position:relative;
-  margin-bottom:-20px;	
-  float:right;	
+#player-list .esteem {
+  color:red;
+  font-size:11px;
+  margin:0 0 0 90px;	
+  padding:0;
+  position:absolute;
+  list-style:none;
+}
+
+#player-list .esteem li {
+  height:10px;
+  float:none;
+  width:10px;
 }
 
 #player-list li .chat-bubble {

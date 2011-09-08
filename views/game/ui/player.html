@@ -3,9 +3,9 @@
 
 <li id="<%- player.userId %>" <%- (isOwnPlayer ? "data-self='true'" : "") %>>
   <p id="player-chat-<%- player.userId %>" class='chat-bubble'></p>
-  <div id="player-esteem-<%- player.userId %>" class='esteem'>
-	Self Esteem: <%= player.esteem %>
-  </div>
+  <ul id="player-esteem-<%- player.userId %>" class='esteem'>
+	<% for (var idx = 0; idx < player.esteem; idx++) { %><li>&hearts;</li><% } %>
+  </ul>
 
   <img id="paperdoll-<%- player.userId %>" class='paperdoll' src="<%- player.status === 'active' || player.status === 'pending' ? '/img/avatars/normalstance.png' : '/img/avatars/defeatedstance.png' %>" />
 
