@@ -1,3 +1,7 @@
+var avatarUI = {
+  defeatedStance: "/img/avatars/defeatedstance.png"
+}
+
 var outcomeUI = {
   domPlayerPanel: function(){ return $('#game-players'); },
   domOutcomePanel: function(){ return $('#turn-outcomes'); },
@@ -60,7 +64,8 @@ var outcomeUI = {
 	
 	  playerElement.data('humilated', true);
 	  outcomeUI.setPlayerStatus('humiliated', targetId);
-	  dramaUI.disableTargetPlayer(targetId);
+	  dramaUI.disableTargetPlayer(targetId);	
+	  dramaUI.domPaperdoll(targetId).attr('src', avatarUI.defeatedStance);
     }	
   },
   displayOutcome: function(data) {
@@ -82,6 +87,14 @@ var outcomeUI = {
     var isAnimating = false;
     var next = $('#' + list.data('next') );
     var previous = $('#' + list.data('previous') );
+
+    function setNextAboutToClose(aboutToClose) {
+	  if (aboutToClose === true) {
+		next.html('Close');
+	  } else {
+		next.html('Next');
+      };
+    }
 
     function movePage(position, sign) {
       var width = list.children('li').first().width();
@@ -107,18 +120,23 @@ var outcomeUI = {
       var pageDelta = currentPage+delta;
 	
       if (pageDelta > 0) return false;
-      if (pageDelta <= -numberOfPages) {
+      var closingPanel = pageDelta <= -numberOfPages;
+      if (closingPanel) {
 	    dramaUI.hideOutcomePanel()
 	    dramaUI.showPlayerPanel();
+	    setNextAboutToClose();
 	    return false;
-      }
-	
+      } 
+
+      var isAboutToClosePanel = pageDelta === -numberOfPages+1;
+      setNextAboutToClose(isAboutToClosePanel);
+
       changePosition(delta);
       return false;
     }	
 	
-    next.click(function() { paginate(-1); });
-    previous.click(function() { paginate(1); });
+    next.click(function() { return paginate(-1); });
+    previous.click(function() { return paginate(1); });
   }	
 };
 
@@ -130,6 +148,7 @@ var dramaUI = {
   domTattleButton: function(){ return $('#player-tattle'); },	
   domMedButton: function(){ return $('#player-lick'); },
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
+  domPaperdoll: function(userId){ return $('#paperdoll-'+userId); },
 
   stripNonNumeric: function(text) {
     return (text || '').replace(/[^0-9]/g, ''); 
@@ -386,7 +405,9 @@ var Drama = function() {
     playerQuit: function(data) {
       var id = data.player._id;
 
-      if ( gameAPI.isGameInProgress() ) {
+      if (gameAPI.isGameInProgress()) {
+	    disableTargetPlayer(id);
+		dramaUI.domPaperdoll(id).attr('src', avatarUI.defeatedStance);
         gameUI.setPlayerStatus('quit', id);
       } 
       else {
@@ -402,7 +423,7 @@ var Drama = function() {
 	
 	    var chatBubble = $("<p id='player-chat-"+id+"' class='chat-bubble'></p>");
 	    var esteem = $("<div id='player-esteem-"+id+"' class='esteem'>Self Esteem: 10</div>");
-	    var img = $("<img class='paperdoll' src='/img/avatars/normalstance.png' />");
+	    var img = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
 	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");

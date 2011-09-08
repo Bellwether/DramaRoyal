@@ -46,16 +46,18 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFun
     if (doc) {
 	  var hasTokenChanged = doc.token !== oAuthToken;
 	  if (hasTokenChanged) {
-		console.log("FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
+		console.log("@@fb FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
 		doc.token = oAuthToken;
 	    doc.save(function (err, doc) {
           callback(err, doc);
 	    });
 	  } else {
+		console.log("FOUND user by FB ID: "+facebookUserId)
 	    callback(err, doc);
 	  };
     } else if (typeof fbGraphFunction === 'function') {
 	  fbGraphFunction(function(userData){
+		console.log("@@fb fbGraphFunction RESULTS : "+JSON.stringify(userData))
 		var params = userParamsFromGraph(userData, oAuthToken)
 		var user = new model(params);
 	    user.save(function (err, doc) {

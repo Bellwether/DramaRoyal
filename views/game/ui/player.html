@@ -7,7 +7,7 @@
 	Self Esteem: <%= player.esteem %>
   </div>
 
-  <img class='paperdoll' src='/img/avatars/normalstance.png' />
+  <img id="paperdoll-<%- player.userId %>" class='paperdoll' src="<%- player.status === 'active' || player.status === 'pending' ? '/img/avatars/normalstance.png' : '/img/avatars/defeatedstance.png' %>" />
 
   <span class='player-nick'>
     <%- player.nick %> 

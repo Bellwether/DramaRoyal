@@ -5,9 +5,11 @@ var facebookAuthorizeAction = function(req, res) {
   var error = req.query.error;
 
   if (code) {
+	console.log("@@fb FACEBOOK AUTHORIZATION APPROVED WITH CODE ++++++++++++ !")
     res.redirect(cnfg.CanvasAppUrl);
   } 
   else {
+	console.log("@@fb FACEBOOK AUTHORIZATION REFUSED -------------- ! "+error)
     res.redirect(cnfg.AppProfilePageUrl);
   }
 }
