@@ -189,7 +189,6 @@ var dramaUI = {
 	  for (idx = 0; idx < delta; idx++) {
 	    var li = $("<li>&hearts;</li>")
 	    li.appendTo(esteemBox);
-	    console.log(esteemBox.children('li').length)
 	  }
     }
   },
