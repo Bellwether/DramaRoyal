@@ -195,3 +195,18 @@ button.command:disabled, input.command:disabled {
 #help h3 {
   margin:2px 0 3px 0;	
 }
+
+.leaderboard {
+  margin-top:10px;	
+  width:600px;
+}
+
+.leaderboard th {
+  text-align:left;	
+}
+
+.leaderboard caption {
+  font-size:16px;	
+  margin:5px 0;	
+  text-align:left;
+}
