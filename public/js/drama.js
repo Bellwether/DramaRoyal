@@ -65,7 +65,7 @@ var outcomeUI = {
 	  playerElement.data('humilated', true);
 	  outcomeUI.setPlayerStatus('humiliated', targetId);
 	  dramaUI.disableTargetPlayer(targetId);	
-	  dramaUI.domPaperdoll(targetId).attr('src', avatarUI.defeatedStance);
+	  dramaUI.humiliateAvatar(targetId);
     }	
   },
   displayOutcome: function(data) {
@@ -149,11 +149,16 @@ var dramaUI = {
   domMedButton: function(){ return $('#player-lick'); },
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
   domPaperdoll: function(userId){ return $('#paperdoll-'+userId); },
+  domPaperdollArms: function(userId){ return $('#paperdoll-'+userId+'-arms'); },
 
   stripNonNumeric: function(text) {
     return (text || '').replace(/[^0-9]/g, ''); 
   },
 
+  humiliateAvatar: function(userId) {	
+	dramaUI.domPaperdollArms(id).remove();
+	dramaUI.domPaperdoll(id).attr('src', avatarUI.defeatedStance);
+  },
   useTattle: function() {
     var tattles = dramaUI.domTattleButton().data('count');
     tattles = parseInt(tattles) - 1;
@@ -417,7 +422,7 @@ var Drama = function() {
 
       if (gameAPI.isGameInProgress()) {
 	    disableTargetPlayer(id);
-		dramaUI.domPaperdoll(id).attr('src', avatarUI.defeatedStance);
+	    dramaUI.humiliateAvatar(id);
         gameUI.setPlayerStatus('quit', id);
       } 
       else {
@@ -439,7 +444,9 @@ var Drama = function() {
 	    esteem = esteem + "</div>";
 	    esteem = $(esteem);
 	
-	    var img = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
+	    var dollDiv = $("<div class='doll'></div>")
+	    var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/basicarms.png'>");
+	    var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
 	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");
@@ -449,7 +456,9 @@ var Drama = function() {
 
 	    chatBubble.appendTo(li);
 	    esteem.appendTo(li);
-	    img.appendTo(li);
+	    dollArmsImg.appendTo(dollDiv);
+	    dollImg.appendTo(dollDiv);
+	    dollDiv.appendTo(li);
 	    title.appendTo(li);
 
 	    tease.appendTo(ctrlDiv);

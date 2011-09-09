@@ -31,11 +31,6 @@
   width:110px;
 }
 
-#player-list .paperdoll {
-  height:150px;	
-  width:110px;
-}
-
 #player-list .esteem {
   color:red;
   font-size:11px;
@@ -209,4 +204,21 @@ button.command:disabled, input.command:disabled {
   font-size:16px;	
   margin:5px 0;	
   text-align:left;
+}
+
+.doll {
+  display:inline-block;
+  margin:0;	
+  padding:0;
+}
+
+.paperdoll {
+  height:150px;	
+  width:110px;
+}
+
+.paperdoll-arms {
+  position:absolute;
+  margin-top:-15px;
+  width:110px;	
 }
