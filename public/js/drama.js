@@ -1,5 +1,19 @@
 var avatarUI = {
-  defeatedStance: "/img/avatars/defeatedstance.png"
+  defeatedStance: "/img/avatars/defeatedstance.png",
+  getPaperdoll: function(id, stance) {
+    var dollDiv = $("<div class='doll'></div>")
+
+    if (stance === 'defeated') {
+      var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/defeatedstance.png' />");
+      dollImg.appendTo(dollDiv);
+    } else {
+      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/basicarms.png'>");
+      var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
+      dollArmsImg.appendTo(dollDiv);
+      dollImg.appendTo(dollDiv);
+    }
+    return dollDiv;
+  }
 }
 
 var outcomeUI = {
@@ -12,15 +26,45 @@ var outcomeUI = {
 	  outcomeUI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
   },
   displayOutcomePage: function(outcome) {
-    var li = $('<li><p>'+outcome.description+'</p></li>');
+	var list = outcomeUI.domOutcomeList();
+    var li = $('<li></li>');
     var desciptionPara = $('<p>'+outcome.description+'</p>');
+    desciptionPara.appendTo(li);
+    console.log(outcome.description.length)
+
+    function addTarget(target) {
+      var isAttacked = outcome.attackers.length > 0;
+	  if (isAttacked) {
+	  } else {
+	    var paperdoll = avatarUI.getPaperdoll(0)
+	    paperdoll.appendTo(li);
+      }
+    }
+
+    function addAttacker(attacker) {
+	  var paperdoll = avatarUI.getPaperdoll(0)
+	  paperdoll.appendTo(li);
+    }
+
+    console.log(JSON.stringify(outcome.targets));
     if (outcome.targets) {
-	  for (var idx = 0; idx < outcome.targets; idx++) {
-		
+	  for (var idx = 0; idx < outcome.targets.length; idx++) {
+		var target = outcome.targets[idx];
+		console.log("add target "+target.userId)
+		addTarget(target);
 	  }
     }
 
-    li.appendTo(outcomeUI.domOutcomeList());
+    console.log(JSON.stringify(outcome.attackers));
+    if (outcome.attackers) {
+	  for (var idx = 0; idx < outcome.attackers.length; idx++) {
+		var attacker = outcome.attackers[idx];
+		console.log("add attacker "+attacker.userId)
+		addAttacker(attacker);
+	  }
+    }
+
+    li.appendTo(list);
   },
   clearOutcomePages: function() {
 	outcomeUI.domOutcomePages().css({ 'marginLeft': 0}).data('page', 0).empty();
@@ -350,7 +394,7 @@ var Drama = function() {
         }
       }, ONE_SECOND);		
 	},
-    domGameStatus: function(){ return $('#outcome-pages'); },
+    domGameStatus: function(){ return $('#game-status'); },
     domPlayerStatus: function(playerId) { return $('#player-status-'+playerId); },
     isGameInProgress: function() {
       return gameAPI.domGameStatus().html().indexOf('Turn') >= 0;
@@ -451,9 +495,7 @@ var Drama = function() {
 	    esteem = esteem + "</div>";
 	    esteem = $(esteem);
 	
-	    var dollDiv = $("<div class='doll'></div>")
-	    var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/basicarms.png'>");
-	    var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
+	    var paperdoll = avatarUI.getPaperdoll(id);
 	    var title = $("<span class='player-nick'>"+name+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");
@@ -463,9 +505,7 @@ var Drama = function() {
 
 	    chatBubble.appendTo(li);
 	    esteem.appendTo(li);
-	    dollArmsImg.appendTo(dollDiv);
-	    dollImg.appendTo(dollDiv);
-	    dollDiv.appendTo(li);
+	    paperdoll.appendTo(li);
 	    title.appendTo(li);
 
 	    tease.appendTo(ctrlDiv);
@@ -564,7 +604,7 @@ var Drama = function() {
 
           function intiateCountdownIfInProgress() {
 	        if (gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown()) {
-              var seconds = $.stripNonNumeric( $('#turn-timer').html() );
+              var seconds = dramaUI.stripNonNumeric( $('#turn-timer').html() );
 	          if (seconds.length > 0) gameAPI.startCountdown( parseInt(seconds) );
               dramaUI.enableGame();
             } else {
