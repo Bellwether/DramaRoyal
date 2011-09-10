@@ -8,16 +8,16 @@ var avatarUI = {
     if (stance === 'defeated') {
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/defeatedstance.png' />");
     } else if (stance === 'scratch') {
-      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/scratcharms.png'>");
+      var dollArmsImg = $("<img id='paperdoll-"+id+"-arms' class='paperdoll-arms' src='/img/avatars/scratcharms.png'>");
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
     } else if (stance === 'grab') {
-      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/grabbingarms.png'>");
+      var dollArmsImg = $("<img id='paperdoll-"+id+"-arms' class='paperdoll-arms' src='/img/avatars/grabbingarms.png'>");
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
     } else if (stance === 'tease' || stance === 'tattle') {
-      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/tellingarms.png'>");
+      var dollArmsImg = $("<img id='paperdoll-"+id+"-arms' class='paperdoll-arms' src='/img/avatars/tellingarms.png'>");
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
     } else {
-      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/basicarms.png'>");
+      var dollArmsImg = $("<img id='paperdoll-"+id+"-arms' class='paperdoll-arms' src='/img/avatars/basicarms.png'>");
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
     }
 
