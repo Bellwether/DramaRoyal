@@ -1,0 +1,24 @@
+[{
+  "title":"Puritan Allowance",
+  "slug":"puritan_allowance",
+  "description":"Your parents wish that you learn the value of money by depriving you of it, but recognize in this day and age that a nominal stipend is deemed necessary for a sustenance-based social life.",
+  "price":100,
+  "url":"https://dramaroyal.com/perks/puritan_allowance",
+  "image":"https://dramaroyal.com/img/perks/puritan-allowance.png"
+ },
+ {
+  "title":"Colorful Language: Blue",
+  "slug":"colorful_language_blue",
+  "description":"Vulgarity and voice are much more powerful when heard in blue. With colorful language, you'll have the option set your chat text to appear blue.",
+  "price":50,
+  "url":"https://dramaroyal.com/perks/puritan_allowance",
+  "image":"https://dramaroyal.com/img/perks/puritan-allowance.png"
+ },
+ {
+  "title":"Colorful Language: Green",
+  "slug":"colorful_language_green",
+  "description":"Vulgarity and voice are much more powerful when heard in green. With colorful language, you'll have the option set your chat text to appear green.",
+  "price":50,
+  "url":"https://dramaroyal.com/perks/puritan_allowance",
+  "image":"https://dramaroyal.com/img/perks/puritan-allowance.png"
+}]

@@ -16,7 +16,8 @@ var schema = new Schema({
   ts: {type: Date, default: Date.now},
   avatar: {
 	nick: String
-  }
+  },
+  money: {type: Number, default: 0}
 });
 var model = mongoose.model('User', schema);
 
