@@ -221,3 +221,11 @@ button.command:disabled, input.command:disabled {
   margin-top:-15px;
   width:110px;	
 }
+
+.doll.flip .paperdoll, .doll.flip .paperdoll-arms {
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: fliph; /*IE*/
+}

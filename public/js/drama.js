@@ -2,16 +2,27 @@ var avatarUI = {
   defeatedStance: "/img/avatars/defeatedstance.png",
   getPaperdoll: function(id, stance) {
     var dollDiv = $("<div class='doll'></div>")
+    var dollArmsImg;
+    var dollImg;
 
     if (stance === 'defeated') {
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/defeatedstance.png' />");
-      dollImg.appendTo(dollDiv);
+    } else if (stance === 'scratch') {
+      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/scratcharms.png'>");
+      var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
+    } else if (stance === 'grab') {
+      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/grabbingarms.png'>");
+      var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
+    } else if (stance === 'tease' || stance === 'tattle') {
+      var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/tellingarms.png'>");
+      var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
     } else {
       var dollArmsImg = $("<img id='paperdoll-"+id+">-arms' class='paperdoll-arms' src='/img/avatars/basicarms.png'>");
       var dollImg = $("<img id='paperdoll-"+id+"' class='paperdoll' src='/img/avatars/normalstance.png' />");
-      dollArmsImg.appendTo(dollDiv);
-      dollImg.appendTo(dollDiv);
     }
+
+    if (dollArmsImg) dollArmsImg.appendTo(dollDiv);
+    if (dollImg) dollImg.appendTo(dollDiv);
     return dollDiv;
   }
 }
@@ -33,26 +44,15 @@ var outcomeUI = {
     console.log(outcome.description.length)
 
     function addTarget(target) {
-      var isAttacked = outcome.attackers.length > 0;
-	  if (isAttacked) {
-	  } else {
-	    var paperdoll = avatarUI.getPaperdoll(0)
-	    paperdoll.appendTo(li);
-      }
+      var paperdoll = avatarUI.getPaperdoll(0)
+      paperdoll.addClass('flip');
+      paperdoll.appendTo(li);
     }
 
     function addAttacker(attacker) {
-	  var paperdoll = avatarUI.getPaperdoll(0)
+	  var paperdoll = avatarUI.getPaperdoll(0, attacker.cmd);
+	  paperdoll.css("margin-left","-20px");
 	  paperdoll.appendTo(li);
-    }
-
-    console.log(JSON.stringify(outcome.targets));
-    if (outcome.targets) {
-	  for (var idx = 0; idx < outcome.targets.length; idx++) {
-		var target = outcome.targets[idx];
-		console.log("add target "+target.userId)
-		addTarget(target);
-	  }
     }
 
     console.log(JSON.stringify(outcome.attackers));
@@ -61,6 +61,15 @@ var outcomeUI = {
 		var attacker = outcome.attackers[idx];
 		console.log("add attacker "+attacker.userId)
 		addAttacker(attacker);
+	  }
+    }
+
+    console.log(JSON.stringify(outcome.targets));
+    if (outcome.targets) {
+	  for (var idx = 0; idx < outcome.targets.length; idx++) {
+		var target = outcome.targets[idx];
+		console.log("add target "+target.userId)
+		addTarget(target);
 	  }
     }
 
