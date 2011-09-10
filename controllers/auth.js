@@ -6,7 +6,7 @@ var facebookAuthorizeAction = function(req, res) {
 
   if (code) {
 	console.log("@@fb FACEBOOK AUTHORIZATION APPROVED WITH CODE ++++++++++++ !")
-    res.redirect(cnfg.CanvasAppUrl);
+    res.redirect(cnfg.CanvasAppGamesUrl);
   } 
   else {
 	console.log("@@fb FACEBOOK AUTHORIZATION REFUSED -------------- ! "+error)
