@@ -13,6 +13,13 @@ var outcomeUI = {
   },
   displayOutcomePage: function(outcome) {
     var li = $('<li><p>'+outcome.description+'</p></li>');
+    var desciptionPara = $('<p>'+outcome.description+'</p>');
+    if (outcome.targets) {
+	  for (var idx = 0; idx < outcome.targets; idx++) {
+		
+	  }
+    }
+
     li.appendTo(outcomeUI.domOutcomeList());
   },
   clearOutcomePages: function() {

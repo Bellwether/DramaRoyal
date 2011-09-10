@@ -7,7 +7,8 @@ var schema = new Schema({
   description: String,
   image: String,
   url: String,
-  points: Number
+  points: Number,
+  order: Number
 });
 
 module.exports = {

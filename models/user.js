@@ -1,5 +1,6 @@
 var sssn = require('./session');
 var avtr = require('./avatar');
+var acvment = require('./achievement');
 var mongoose = require('mongoose');
 var graph = require('./../lib/facebook/graph');
 var Schema = mongoose.Schema;
