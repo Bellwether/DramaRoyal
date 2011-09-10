@@ -9,6 +9,7 @@ module.exports = {
 	
   new: function(req, res) {
 	res.requireNoAvatar(req, res, function(hasNoAvatar){
+		console.log("auth++ requireNoAvatar hasNoAvatar? "+hasNoAvatar)
 	  if (hasNoAvatar) res.render();
 	});
   },

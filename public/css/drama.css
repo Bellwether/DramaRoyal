@@ -229,3 +229,23 @@ button.command:disabled, input.command:disabled {
   transform: scaleX(-1);
   filter: fliph; /*IE*/
 }
+
+.ribbon {
+  border-color: #cc0000 transparent #cc0000 transparent;
+  border-style: solid;
+  border-width: 16px;
+  position: relative;
+  width: 250px;
+}
+
+.ribbon:before {
+  background-color: red;
+  border-top: 5px solid #fff;
+  content: "";
+  height: 42px;
+  left: 0;
+  margin: 0 10%;
+  position: absolute;
+  top: -16px;
+  width: 80%;
+}
