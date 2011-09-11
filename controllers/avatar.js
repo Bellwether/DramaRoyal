@@ -3,18 +3,21 @@ var usr = require('./../models/user');
 module.exports = {
   before_filter: function(req, res, next) {
 	res.requireUser(req, res, function(isAuthorized){
+	  console.log("AUTH requireUser isAuthorized? "+isAuthorized)
 	  if (isAuthorized) next();
 	});
   },
 	
   new: function(req, res) {
 	res.requireNoAvatar(req, res, function(hasNoAvatar){
-		console.log("auth++ requireNoAvatar hasNoAvatar? "+hasNoAvatar)
+		console.log("AUTH requireNoAvatar hasNoAvatar? "+hasNoAvatar)
 	  if (hasNoAvatar) res.render();
 	});
   },
 
-  show: function(req, res) {
+  show: function(req, res) {	
+    var userId = req.user.getId();
+
 	res.render();
   },
 

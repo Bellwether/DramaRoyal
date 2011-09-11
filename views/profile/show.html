@@ -1,9 +1,28 @@
 <section id="player-profile">
-  <h2><%- player.avatar.nick %></h2>
-  <h5>Guardian: <%- player.name %></h5>
-	
+  <h2><%= player.avatar.nick %></h2>
+  <h5>Legal Guardian: <%= player.name %></h5>
+  <h6>
+    <% var seniority = parseInt(((new Date()) - (new Date(player.ts.getFullYear(), player.ts.getMonth(), player.ts.getDate())) )/1000/60/60/24) %>
+    Enrolled for <%- Math.max(seniority, 1) %> <%- seniority > 1 ? 'days' : 'day' %>
+  </h6>
+
   <div class='doll'>
 	<img class='paperdoll-arms' src='/img/avatars/basicarms.png'>
     <img class='paperdoll' src="/img/avatars/normalstance.png" />
   </div>
+
+  <ul id="profile-score">
+	<li>
+	  <h5>Popularity</h5>
+	  <span><%- score ? Math.round(score.pop*Math.pow(10,3))/Math.pow(10,3) : 0 %></span>
+	</li>
+	<li>
+	  <h5>Win Count</h5>
+	  <span><%- score ? score.numOwnWins : 0 %></span>
+	</li>
+	<li>
+	  <h5>Average Esteem</h5>
+	  <span><%- score ? Math.round(score.avgOwnScore*Math.pow(10,2))/Math.pow(10,2) : 0 %></span>
+	</li>	
+  </ul>
 </section>

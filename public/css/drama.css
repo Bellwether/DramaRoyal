@@ -229,3 +229,23 @@ button.command:disabled, input.command:disabled {
   transform: scaleX(-1);
   filter: fliph; /*IE*/
 }
+
+#profile-score {
+  list-style:none;	
+  margin:none;
+  padding:none;
+}
+
+#profile-score li {
+  display:inline-block;	
+  text-align:center;
+}
+
+#profile-score li h5 {
+  background-color:#ccc;	
+  margin:0;
+}
+
+#profile-score li span {
+  font-size:24px;	
+}
