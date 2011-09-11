@@ -1,7 +1,14 @@
 [{
   "title":"Hall Pass",
   "description":"If not the keys to the kingdom at least a sovereign's privacy in the palace, a hall pass will allow you to create a password-protected drama. Once the drama begins, your hall pass will disappear.",
-  "price":3
-  "type":"consumable"
+  "price":5,
+  "type":"consumable",
+  "image":"https://dramaroyal.com/img/items/hall-pass.png"
+},
+{
+  "title":"Acrylic Nails",
+  "description":"Contrary to salon assurances acrylics can be quit dangerous (when applied quickly to the face). Acrylic nails can be used during a drama when making a scratch, where if your attack succeeds yours nails will deal +1 self esteem damage to the victim. After dealing damage, however, the nails are destroyed.",
+  "price":15,
+  "type":"consumable",
   "image":"https://dramaroyal.com/img/items/hall-pass.png"
 }]

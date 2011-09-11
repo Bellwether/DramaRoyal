@@ -1,0 +1,8 @@
+<li>
+  <h5><%= item.title %></h5>
+  <p><%= item.description %></p>
+  <form id="item-form" method="post" action="/items">	
+    <input type="hidden" name="id" value="<%- item._id %>" />
+    <input class="buy-button" type="submit" value="buy for &ETH;<%- item.price %> drama coins" />
+  </form>	
+</li>	
