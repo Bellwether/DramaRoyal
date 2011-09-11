@@ -72,8 +72,8 @@ var lobbyUI = {
   setplayerCount: function(cnt){
     lobbyUI.domPlayerCount().text('('+cnt+')');
   },
-  printMessage: function(message, name){
-    var element = name ? $('<p><b>'+name+':</b> '+message+'</p>') : $('<p>'+message+'</p>');
+  printMessage: function(message, name, userId){
+    var element = name ? $("<p><a href='/profiles/"+userId+"'>"+name+'</a>: '+message+'</p>') : $('<p>'+message+'</p>');
     element.prependTo(lobbyUI.domLobbyChat());
   },
   enableChat: function() {
@@ -90,7 +90,7 @@ var lobbyUI = {
       if (!data || data.length === 0) return false;
 
       sckt.emit('chat', data, function() {
-        lobbyUI.printMessage(data, 'me');
+        lobbyUI.printMessage(data, 'me', 'me');
       });
       lobbyUI.domChatBox().val('');
       return false;
@@ -129,7 +129,7 @@ var Lobby = function() {
 	}
   }
   function onChat(data) { 
-	lobbyUI.printMessage(data.message, data.name);
+	lobbyUI.printMessage(data.message, data.name, data.userId);
   };
   function onAnnouncement(data) {
 	lobbyUI.printMessage(data.message);
