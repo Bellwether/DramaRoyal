@@ -14,14 +14,13 @@
 	<% if (isProductionEnv) {%>
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<% } %>
-	<script src="/js/9/minified.js"></script>
-	<link rel="stylesheet" href="/css/9/minified.css">
+	<script src="/js/10/minified.js"></script>
+	<link rel="stylesheet" href="/css/10/minified.css">
   </head>
   <body>
 	<div id="container">
       <header id='header'>
 	    <section id='title'>
-          <% if (hasAvatar) { %><a><em><%= avatarNick %></em></a><% } %>
       	  <img src='/img/title-small.png' id='banner' />
         </section>
         <nav>
@@ -37,10 +36,14 @@
 	          <a href='/avatars/new'>Sign In</a>
 		    <% } %>
 	        <a href='/profiles/me'>Profile</a>
-	        <a href='/games'>Shop</a>
+	        Shop
 	        <a href='/scores'>Leaderboard</a>
 	        <a href='/help'>[?]</a>
 	      </section>
+	
+	      <section id='hud'>
+            <% if (hasAvatar) { %>Signed in as <strong><%= avatarNick %></strong><% } %>
+          </section>
 	    </nav>
       </header>
       <section id="main" role="main">
