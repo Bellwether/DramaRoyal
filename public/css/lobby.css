@@ -28,10 +28,11 @@
 
 #game-list {
   border:1px solid #eee;	
+  height:350px;
   list-style:none;
   margin:0;
   overflow-y:scroll;
-  height:350px;
+  padding:0;
   width:300px;
 }
 
@@ -39,12 +40,18 @@
   font-size:10px;	
   list-style:none;
   margin:0;
+  padding:0;
 }
 
 .lobby-game {
   border-bottom:1px solid #eee;	
   margin:2px 5px; 	
   padding-bottom:5px;
+}
+
+.lobby-game h5 {
+  font-size:14px;	
+  margin: 5px 0 3px 0;	
 }
 
 #chat-controls {
