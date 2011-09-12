@@ -66,6 +66,9 @@ var lobbyUI = {
   domChatButton: function(){ return $('#lobby-console-submit'); },
   domChatBox: function(){ return $('#lobby-message'); },
 
+  stripChatHTML: function(message) {
+    return (message || '').replace(/<\/?[^>]+>/gi, '');
+  },
   setConnectionStatus: function (status){
     lobbyUI.domConnectionStatus().text('Status: '+status);
   },
@@ -73,7 +76,8 @@ var lobbyUI = {
     lobbyUI.domPlayerCount().text('('+cnt+')');
   },
   printMessage: function(message, name, userId){
-    var element = name ? $("<p><a href='/profiles/"+userId+"'>"+name+'</a>: '+message+'</p>') : $('<p>'+message+'</p>');
+	var msg = lobbyUI.stripChatHTML(message);
+    var element = name ? $("<p><a href='/profiles/"+userId+"'>"+name+'</a>: '+msg+'</p>') : $('<p>'+msg+'</p>');
     element.prependTo(lobbyUI.domLobbyChat());
   },
   enableChat: function() {
@@ -90,7 +94,7 @@ var lobbyUI = {
       if (!data || data.length === 0) return false;
 
       sckt.emit('chat', data, function() {
-        lobbyUI.printMessage(data, 'me', 'me');
+        lobbyUI.printMessage(lobbyUI.stripChatHTML(data), 'me', 'me');
       });
       lobbyUI.domChatBox().val('');
       return false;
