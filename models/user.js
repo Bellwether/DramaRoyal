@@ -65,7 +65,11 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFun
 	  };
     } else if (typeof fbGraphFunction === 'function') {
 	  fbGraphFunction(function(userData){
-		console.log("@@fb fbGraphFunction RESULTS : "+JSON.stringify(userData))
+		var tmp = userData;
+		tmp['friends'] = [];
+		console.log("@@fb fbGraphFunction RESULTS : "+JSON.stringify(tmp))
+		
+		
 		var params = userParamsFromGraph(userData, oAuthToken)
 		var user = new model(params);
 	    user.save(function (err, doc) {
