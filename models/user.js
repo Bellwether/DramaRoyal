@@ -7,6 +7,12 @@ var Schema = mongoose.Schema;
 
 function required(val) { return val && val.length; }
 
+function doCallback(callback, err, data) {
+  if (typeof callback === 'function') {
+	callback(err, data);	
+  }
+}
+
 var schema = new Schema({
   name: {type: String, validate: required},
   full: String,
@@ -51,11 +57,11 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFun
 		console.log("@@fb FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
 		doc.token = oAuthToken;
 	    doc.save(function (err, doc) {
-          callback(err, doc);
+          doCallback(callback, err, doc);
 	    });
 	  } else {
 		console.log("FOUND user by FB ID: "+facebookUserId)
-	    callback(err, doc);
+          doCallback(callback, err, doc);
 	  };
     } else if (typeof fbGraphFunction === 'function') {
 	  fbGraphFunction(function(userData){
@@ -63,19 +69,19 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFun
 		var params = userParamsFromGraph(userData, oAuthToken)
 		var user = new model(params);
 	    user.save(function (err, doc) {
-          callback(err, doc);
+          doCallback(callback, err, doc);
 	    });
 	  });
     } else {
-      console.log("@@fb + ERROR in findOrCreateFromFacebook : "+err)		
-	  callback(err);
+      console.log("@@fb + ERROR in findOrCreateFromFacebook : "+err)			
+      doCallback(callback, err);
     }
   })	
 }
 
 model.findByFbId = function(fbId, callback) {
-  model.findOne({ fbId: fbId }, function(err, doc){	
-	if (typeof callback === 'function') callback(err, doc);
+  model.findOne({ fbId: fbId }, function(err, doc) {
+    doCallback(callback, err, doc);
   });
 }
 
@@ -86,16 +92,32 @@ model.findBySessionId = function(sessionId, callback) {
 
 	if (userId) {
 	  model.findById(userId, callback);	
-	} else {
-	  if (typeof callback === 'function') callback(err);
+	} else {	
+      doCallback(callback, err);
 	}
   });
 }
 
 model.findById = function(id, callback) {
-  model.findOne({ _id: id }, function(err, doc){	
-	if (typeof callback === 'function') callback(err, doc);
+  model.findOne({ _id: id }, function(err, doc) {	
+    doCallback(callback, err, doc);
   });
+}
+
+model.updateNick = function(userId, name, callback) {
+  model.findById(userId, function(err, doc){
+    var needsAvatar = doc && (doc.avatar === undefined || doc.avatar.nick === null);
+    var canUpdateAvatar = name && needsAvatar;
+  
+    if (canUpdateAvatar) {
+	  doc.avatar = {nick: name};
+      doc.save(function (err, doc) {
+	    doCallback(callback, err, doc);
+      });		
+    } else {
+      doCallback(callback, "Cannot update existing avatar");
+    }
+  });	
 }
 
 module.exports = {

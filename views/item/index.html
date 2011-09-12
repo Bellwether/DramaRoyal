@@ -1,4 +1,6 @@
 <section id="items">
+  <h3>You have <span class='coins'><%- locals.money %> drama coins</span> to shop with.</h3>
+	
   <ul>
 	<%- partial('item/item', { collection: locals.items }) %>
   </ul>

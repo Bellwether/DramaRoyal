@@ -2,6 +2,10 @@ a {
   text-decoration:none;	
 }
 
+input[disabled=disabled] {
+  cursor:default;
+}
+
 #game h2 {
  font-size: 18px;
 }

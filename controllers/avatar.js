@@ -1,4 +1,4 @@
-var usr = require('./../models/user');
+var usr = require('./../models/user').Model;
 
 module.exports = {
   before_filter: function(req, res, next) {
@@ -10,7 +10,7 @@ module.exports = {
 	
   new: function(req, res) {
 	res.requireNoAvatar(req, res, function(hasNoAvatar){
-		console.log("AUTH requireNoAvatar hasNoAvatar? "+hasNoAvatar)
+	  console.log("AUTH requireNoAvatar hasNoAvatar? "+hasNoAvatar)
 	  if (hasNoAvatar) res.render();
 	});
   },
@@ -25,23 +25,13 @@ module.exports = {
 	var name = req.body.nick;
     var userId = req.user.getId();
 	
-    usr.Model.findById( userId, function(err, doc){
-	  var aobj = doc.avatar;
-	  var ajson = JSON.stringify(aobj);
-	  var needsAvatar = doc && (ajson.avatar === undefined || doc.avatar.nick === null);
-
-	  var canUpdateAvatar = name && needsAvatar;
-	  
-	  if (canUpdateAvatar) {
-		doc.avatar = {nick: name};
-	    doc.save(function (err) {
-		  if (!err) req.user.setAvatar(name);
-	      res.redirect('/games');
-	    });		
+    usr.updateNick(userId, name, function(err, doc) {
+	  if (err) {	
+		req.user.setAvatar(name);
+	    res.redirect('/games');
 	  } else {
-		console.log("could not create avatar ("+userId+", "+name+"): "+err+" "+doc+" "+doc.avatar);
-
-        res.redirect('/avatars/new');
+		console.log("AUTH could not create avatar ("+userId+", "+name+"): "+err);
+		res.redirect('/avatars/new');
 	  }
 	});	
   }
