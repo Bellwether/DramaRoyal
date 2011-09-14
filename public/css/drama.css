@@ -151,6 +151,7 @@ margin: 0 0 3px 0;
 #outcome-pages li {
   display:inline-block;	
   height:300px;
+  vertical-align:top;
   width:700px; 
 }
 #outcome-pages li p {

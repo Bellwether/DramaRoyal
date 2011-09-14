@@ -216,8 +216,8 @@ var dramaUI = {
   },
 
   humiliateAvatar: function(userId) {	
-	dramaUI.domPaperdollArms(id).remove();
-	dramaUI.domPaperdoll(id).attr('src', avatarUI.defeatedStance);
+	dramaUI.domPaperdollArms(userId).remove();
+	dramaUI.domPaperdoll(userId).attr('src', avatarUI.defeatedStance);
   },
   useTattle: function() {
     var tattles = dramaUI.domTattleButton().data('count');

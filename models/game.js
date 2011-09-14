@@ -12,6 +12,7 @@ var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
 var GAME_SPEEDS = ['fast', 'slow'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
+var MIN_TURNS = 3;
 var MAX_TURNS = 50;
 var TURN_DURATION = 60;
 var COOLDOWN_DURATION = 30;
@@ -28,9 +29,10 @@ function maxPlayers(val) { return !val || !val.length || val.length <= MAX_PLAYE
 var schema = new Schema({
   userId: String,
   title: {type: String, validate: required},
-  type: { type: String, default: 'pending', enum: GAME_TYPES, validate: required},
-  status: { type: String, default: 'pending', enum: GAME_STATUS, validate: required },
-  pace: { type: String, default: 'fast', enum: GAME_SPEEDS},
+  type: {type: String, default: 'pending', enum: GAME_TYPES, validate: required},
+  status: {type: String, default: 'pending', enum: GAME_STATUS, validate: required },
+  pace: {type: String, default: 'fast', enum: GAME_SPEEDS},
+  money: {type: Number, default: 0},
   start: Date,
   end: Date,
   players: { type: [plyr.Schema], validate: maxPlayers},
@@ -70,14 +72,6 @@ model.prototype.createPlayer = function(userId, nick, callback) {
   } else {
 	doCallback(callback, "Cannot join");
   }
-}
-
-model.prototype.getSurvivingPlayers = function() {
-  var surviving = this.players.filter( function(player){
-	var esteem = player.getValue('esteem');
-    return esteem > 0;
-  })
-  return surviving;	
 }
 
 model.prototype.getPlayerAndIndex = function(userId) {
@@ -239,6 +233,22 @@ model.prototype.getCooldownDuration = function() {
   return (this.pace === 'fast') ? COOLDOWN_DURATION : COOLDOWN_DURATION + 15;
 }
 
+model.prototype.getSurvivingPlayers = function() {
+  var surviving = this.players.filter( function(player){
+	var esteem = player.esteem;
+    return parseInt(esteem) > 0;
+  })
+  return surviving;	
+}
+
+model.prototype.getDefeatedPlayers = function() {
+  var defeated = this.players.filter( function(player){
+	var esteem = player.esteem;
+    return parseInt(esteem) === 0;
+  })
+  return defeated;	
+}
+
 model.prototype.startDrama = function(callback) {
   if (!this.isPending()) return;
 
@@ -302,6 +312,30 @@ model.prototype.saveAfterTurn = function(callback) {
   this.save(function(err, doc){
 	doCallback(callback, err, doc);
   });	
+}
+
+model.prototype.setMoney = function(callback) {
+  var lids = [];
+  var losers = this.getDefeatedPlayers();
+  for (var idx = 0; idx < losers.length; idx++) { 
+	lids.push(losers[idx].userId);
+  }
+
+  var self = this;
+  var scores = scr.findLastUserScores(lids, function(err, docs) {
+	console.log("scr.findLastUserScores "+err+" "+docs.length)
+	if (err || docs.length < 1) {
+	  doCallback(callback, err);
+	} else {
+	  var tally = 0;
+	  for (var idx = 0; idx < docs.length; idx++) { 
+		tally = tally + docs[idx].pop; 
+	  }
+	  tally = tally / docs.length;
+	  self.money = Math.max(parseInt(tally), 1);
+	  doCallback(callback, null, self.money);
+	}
+  });
 }
 
 model.prototype.scoreWinners = function(callback) {
@@ -393,6 +427,10 @@ model.prototype.hasAllPlayersActedForTurn = function() {
 
   var allPlayersActed = (turn.actions.length === this.players.length);
   return allPlayersActed;
+}
+
+model.prototype.hasMinimumTurns = function() {
+  return this.turns.length >= MIN_TURNS;
 }
 
 module.exports = {

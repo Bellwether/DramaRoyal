@@ -38,8 +38,7 @@ function getCutoffDate() {
 }
 
 function parameterizeScore(params, userDoc, callback) {
-  model.getScoreSumAndWinCount(function (err, totalScores, numWins){	
-    console.log(numWins)
+  model.getScoreSumAndWinCount(function (err, totalScores, numWins) {	
 	totalScores = totalScores ? totalScores : 0;
 	numWins = numWins ? numWins : 1;
 	params.totalOwnScores = userDoc ? userDoc.totalOwnScores+params.score : params.score;
@@ -48,12 +47,10 @@ function parameterizeScore(params, userDoc, callback) {
 	params.totalScores = totalScores+params.score;
 	
 	model.getWinnerCount(function (err, winnerCount) {
-	  console.log(winnerCount)
 	  if (!err) {
 	    params.numWins = numWins;
 	    params.numWinners = winnerCount ? winnerCount+1 : 1;
 	
-	    console.log("params.avgScore = "+params.totalScores+" / "+params.numWins+";")
 	    params.avgScore = params.totalScores / params.numWins;
 	    model.setPopularity(params);
 	    callback(err, params);
@@ -154,6 +151,13 @@ model.findLastUserScore = function(userId, callback) {
   });
 }
 
+model.findLastUserScores = function(userIds, callback) {
+  var params = {'userId': {'$in': userIds}, 'active': true};
+  model.find(params, function(err, docs) {
+    callback(err, docs);
+  });
+}
+
 model.createScore = function(gameId, player, callback) {
   var esteem = player.esteem;
   if (esteem < 1) {
@@ -167,8 +171,7 @@ model.createScore = function(gameId, player, callback) {
   function onLastUserScore(err, userDoc) {
 	if (!err) {
 	  var params = {'userId': userId, 'gameId': gameId, 'score': esteem, 'nick': nick};
-	  parameterizeScore(params, userDoc, function(err, scheme) {	
-	    console.log(scheme)
+	  parameterizeScore(params, userDoc, function(err, scheme) {
 	    score = new model(scheme);
 	    score.save(function (err, scoreDoc) {
 		  console.log("tried saving user score: "+err+" "+JSON.stringify(scoreDoc))
