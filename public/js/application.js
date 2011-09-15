@@ -35,7 +35,7 @@ $(document).ready(function() {
 	
 	  var msg = "I'm pretending to be a scurrilous schoolgirl in the treacherous game of Drama Royal. Won't you pretend on the internets with me?";
 	  var title = 'Call Them Out By Luring Them In';
-	  var filters = 'app_non_users';
+	  var filters = ['app_non_users'];
 	
 	  FB.ui({
 	    title: title,
