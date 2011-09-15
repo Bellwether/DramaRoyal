@@ -16,6 +16,7 @@ $(document).ready(function() {
   $('a[data-method="delete"], button[data-method="delete"]').live('click', LiveClick);
 
   function onFacebookScriptLoaded(data, textStatus) {
+	console.log("loaded facebook script")
 	var key = '153494728049768';
 	
     FB.init({ 
@@ -29,6 +30,7 @@ $(document).ready(function() {
     // Facebook Invite Friends Dialog
     // REF: https://developers.facebook.com/docs/reference/dialogs/requests/
     $('#fb-invite-request').click( function(event) {
+	  console.log("clicked invite friends")
 	  event.preventDefault();
 	
 	  var msg = "I'm pretending to be a scurrilous schoolgirl in the treacherous game of Drama Royal. Won't you pretend on the internets with me?";
