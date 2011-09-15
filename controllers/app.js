@@ -1,6 +1,23 @@
-function isSentByRequest(req) {
-  var request_ids = req.params.request_ids;
-  return (request_ids || '').length > 0;
+var fbg = require('./../lib/facebook/graph').GraphAPI();
+
+function getRequestIds(req) {
+  return (req.query && req.query.request_ids) || 
+         (req.body && req.body.request_ids);
+}
+
+function clearFBRequests(req, res) {
+  var fbId = res.facebookSession.userId();
+  if (!fbId) return;
+
+  var request_ids = getRequestIds(req).split(',');
+  for (var idx = 0; idx < request_ids.length; idx++) {
+    var rid = request_ids[idx];
+    var graphClearFunction = fbg.clearRequest(fbId, rid)();
+  }
+}
+
+function isSentByFBRequest(req) {
+  return (getRequestIds(req) || '').length > 0;
 }
 
 module.exports = {
@@ -29,7 +46,10 @@ module.exports = {
   },
 
   index: function(req, res){
-	var sentByRequest = isSentByRequest(req);
+	// all facebook user requests link back to the root canvas page, so handle those here
+	var sentByRequest = isSentByFBRequest(req);
+	if (sentByRequest) clearFBRequests(req, res);
+	
 	res.render('app/index', {'sentByRequest': sentByRequest});
   }
 };
