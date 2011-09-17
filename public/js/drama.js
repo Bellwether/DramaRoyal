@@ -547,7 +547,7 @@ var Drama = function() {
 	dramaUI.printMessage(data.message, userId);
   };
   function onPlayerEvent(data) {
-	console.log("player event!!!! "+JSON.stringify(data))
+	if (window.console) console.log("player event!!!! "+JSON.stringify(data))
     switch (data.event) {
 	    case 'joined':
 	      gameAPI.playerJoined(data);
@@ -561,7 +561,7 @@ var Drama = function() {
 	  }
   };
   function onTurnEvent(data) {
-	console.log("turn event!!!! "+JSON.stringify(data))
+	if (window.console) console.log("turn event!!!! "+JSON.stringify(data))
     switch (data.event) {
       case 'started':	
         gameAPI.turnStarted(data);
@@ -572,7 +572,7 @@ var Drama = function() {
     }
   };
   function onGameEvent(data) {
-	console.log("game event!!!! "+JSON.stringify(data))
+	if (window.console) console.log("game event!!!! "+JSON.stringify(data))
     switch (data.event) {
       case 'started':
         gameAPI.gameStarted(data);
@@ -618,6 +618,13 @@ var Drama = function() {
 	      }
 	      registerReadyButton(socket);
 
+	      function registerConfirmPageDeparture() {
+			// $(window).unload(function() {
+			//   // quit player
+			// });		
+	      }
+	      registerConfirmPageDeparture();
+		
           function intiateCountdownIfInProgress() {
 	        if (gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown()) {
               var seconds = dramaUI.stripNonNumeric( $('#turn-timer').html() );
@@ -628,6 +635,7 @@ var Drama = function() {
 	        }
 	      }
 	      intiateCountdownIfInProgress();
+	
  
           outcomeUI.init(dramaUI.domOutcomePanel());
         } else {
