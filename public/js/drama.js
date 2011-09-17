@@ -618,12 +618,14 @@ var Drama = function() {
 	      }
 	      registerReadyButton(socket);
 
+          /*
 	      function registerConfirmPageDeparture() {
-			// $(window).unload(function() {
-			//   // quit player
-			// });		
+			$(window).unload(function() {
+			  // quit player
+			});		
 	      }
 	      registerConfirmPageDeparture();
+		  */
 		
           function intiateCountdownIfInProgress() {
 	        if (gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown()) {

@@ -20,11 +20,6 @@ var schema = new Schema({
 
 var model = mongoose.model('Item', schema);
 
-module.exports = {
-  Schema: schema,
-  Model: model
-}
-
 model.prototype.purchase = function(userId, callback) {
   var params = {'_id': this._id, 'title': this.title, 'type': this.type};
   var price = this.price;
@@ -45,4 +40,17 @@ model.prototype.purchase = function(userId, callback) {
 	  doCallback(callback, err);
 	}
   });  
+}
+
+model.findForUserId = function(id, callback) {
+  usr.findById(id, ['items'], function (err, docs){
+    // docs is an array of partially-`init`d documents
+    console.log("item findForUserId "+JSON.stringify(docs));
+    doCallback(callback, err, docs)
+  })	
+}
+
+module.exports = {
+  Schema: schema,
+  Model: model
 }

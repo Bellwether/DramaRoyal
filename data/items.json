@@ -10,5 +10,12 @@
   "description":"Contrary to salon assurances acrylics can be quit dangerous (when applied quickly to the face). Acrylic nails can be used during a drama when making a scratch, where if your attack succeeds yours nails will deal +1 self esteem damage to the victim. After dealing damage, however, the nails are destroyed.",
   "price":15,
   "type":"consumable",
-  "image":"https://dramaroyal.com/img/items/hall-pass.png"
+  "image":"https://dramaroyal.com/img/items/acrylic-nails.png"
+},
+{
+  "title":"Hairpin",
+  "description":"An assassin's weapon excused by fashion and practicality, this dangerous hook will gouge the face of a schoolgirl to extreme effect. Hairpins can be used during a drama when making a scratch, where if your attack succeeds yours nails will deal +2 self esteem damage to the victim. After dealing damage, however, the hairpin is destroyed.",
+  "price":40,
+  "type":"consumable",
+  "image":"https://dramaroyal.com/img/items/hairpin.png"
 }]
