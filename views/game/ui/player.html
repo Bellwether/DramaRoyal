@@ -7,19 +7,19 @@
 	<% for (var idx = 0; idx < player.esteem; idx++) { %><li>&hearts;</li><% } %>
   </ul>
 
-  <div class='doll'>
-	<% if (player.status === 'active' || player.status === 'pending') { %>
-	  <img id="paperdoll-<%- player.userId %>-arms" class='paperdoll-arms' src='/img/avatars/basicarms.png'>
-	<% } %>
-    <img id="paperdoll-<%- player.userId %>" class='paperdoll' src="<%- player.status === 'active' || player.status === 'pending' ? '/img/avatars/normalstance.png' : '/img/avatars/defeatedstance.png' %>" />
-  </div>
-
   <span class='player-nick'>
     <a href="<%- 'https://apps.facebook.com/dramaroyal/profiles/' + player.userId %>" target="_blank">
       <%= player.nick %>
     </a>
     <span id="player-status-<%- player.userId %>">(<%- player.status %>)</span>
   </span>
+
+  <div class='doll'>
+	<% if (player.status === 'active' || player.status === 'pending') { %>
+	  <img id="paperdoll-<%- player.userId %>-arms" class='paperdoll-arms' src='/img/avatars/basicarms.png'>
+	<% } %>
+    <img id="paperdoll-<%- player.userId %>" class='paperdoll' src="<%- player.status === 'active' || player.status === 'pending' ? '/img/avatars/normalstance.png' : '/img/avatars/defeatedstance.png' %>" />
+  </div>
 
   <div id="player-target-controls-<%- player.userId %>" class='player-controls'>
   <% isPending = locals.game.status === 'pending' %>

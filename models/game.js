@@ -12,6 +12,7 @@ var GAME_STATUS = ['pending', 'active', 'cooldown', 'ended', 'quit'];
 var GAME_SPEEDS = ['fast', 'slow'];
 var MAX_PLAYERS = 6;
 var MIN_PLAYERS = 3;
+var MIN_WINNERS = 2;
 var MIN_TURNS = 3;
 var MAX_TURNS = 50;
 var TURN_DURATION = 60;
@@ -391,7 +392,7 @@ model.prototype.isEnded = function() {
 }
 
 model.prototype.isGameOver = function() {
-  return this.getSurvivingPlayers().length <= 2;
+  return this.hasMinimumSurvivors();
 }
 
 model.prototype.hasPlayers = function() {
@@ -412,6 +413,11 @@ model.prototype.hasActivePlayers = function() {
 
 model.prototype.hasMinimumPlayers = function() {
   return this.players.length >= MIN_PLAYERS;
+}
+
+model.prototype.hasMinimumSurvivors = function() {
+  var survivorCount = this.getSurvivingPlayers().length
+  return survivorCount > 0 && survivorCount <= MIN_WINNERS;
 }
 
 model.prototype.hasAllPlayersReady = function() {

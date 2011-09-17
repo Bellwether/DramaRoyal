@@ -108,7 +108,6 @@ var Lobby = function() {
   var TRANSPORTS = ['flashsocket','xhr-polling','jsonp-polling','htmlfile'];
 
   function onGameEvent(data) { 
-	console.log("onGameEvent: "+JSON.stringify(data));
 	switch (data.event) {
 	  case 'new':	
 		gameUI.newGame(data);
@@ -122,7 +121,6 @@ var Lobby = function() {
 	}
   }
   function onGamePlayerEvent(data) { 
-	console.log("onGamePlayerEvent: "+JSON.stringify(data));
 	switch (data.event) {
 	  case 'joined':
 	    gameUI.playerJoined(data);

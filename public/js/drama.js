@@ -33,6 +33,9 @@ var outcomeUI = {
   domOutcomeList: function(){ return outcomeUI.domOutcomePanel().children('ul').first(); },
   domOutcomePages: function() { return $('#outcome-pages'); },	
   domPlayerStatus: function(playerId) { return $('#player-status-'+playerId); },
+  isVisible: function() {
+    return outcomeUI.domOutcomePanel().is(":visible");
+  },
   setPlayerStatus: function(status, playerId) {
 	  outcomeUI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
   },
@@ -41,7 +44,6 @@ var outcomeUI = {
     var li = $('<li></li>');
     var desciptionPara = $('<p>'+outcome.description+'</p>');
     desciptionPara.appendTo(li);
-    console.log(outcome.description.length)
 
     function addTarget(target) {
       var paperdoll = avatarUI.getPaperdoll(0)
@@ -59,7 +61,6 @@ var outcomeUI = {
     if (outcome.attackers) {
 	  for (var idx = 0; idx < outcome.attackers.length; idx++) {
 		var attacker = outcome.attackers[idx];
-		console.log("add attacker "+attacker.userId)
 		addAttacker(attacker);
 	  }
     }
@@ -68,7 +69,6 @@ var outcomeUI = {
     if (outcome.targets) {
 	  for (var idx = 0; idx < outcome.targets.length; idx++) {
 		var target = outcome.targets[idx];
-		console.log("add target "+target.userId)
 		addTarget(target);
 	  }
     }
@@ -140,21 +140,23 @@ var outcomeUI = {
       outcomeUI.applyMeds(outcome);
       outcomeUI.applyHumiliation(outcome);
     }
+
+    if (data.length === 1) outcomeUI.setNextAboutToClose(true);
+
     dramaUI.hidePlayerPanel();
     dramaUI.showOutcomePanel();
   },
+  setNextAboutToClose: function	(aboutToClose) {
+	if (aboutToClose === true) {
+	  outcomeUI.next.html('Close');
+	} else {
+	  outcomeUI.next.html('Next');
+    };
+  },
   init: function(list){	
     var isAnimating = false;
-    var next = $('#' + list.data('next') );
-    var previous = $('#' + list.data('previous') );
-
-    function setNextAboutToClose(aboutToClose) {
-	  if (aboutToClose === true) {
-		next.html('Close');
-	  } else {
-		next.html('Next');
-      };
-    }
+    var next = outcomeUI.next = $('#' + list.data('next') );
+    var previous = outcomeUI.previous = $('#' + list.data('previous') );
 
     function movePage(position, sign) {
       var width = list.children('li').first().width();
@@ -180,16 +182,17 @@ var outcomeUI = {
       var pageDelta = currentPage+delta;
 	
       if (pageDelta > 0) return false;
-      var closingPanel = pageDelta <= -numberOfPages;
+      var closingPanel = (numberOfPages === 1 && delta === -1) || 
+                         (pageDelta <= -numberOfPages);
       if (closingPanel) {
-	    dramaUI.hideOutcomePanel()
+	    dramaUI.hideOutcomePanel();
 	    dramaUI.showPlayerPanel();
-	    setNextAboutToClose();
+	    outcomeUI.setNextAboutToClose();
 	    return false;
       } 
 
       var isAboutToClosePanel = pageDelta === -numberOfPages+1;
-      setNextAboutToClose(isAboutToClosePanel);
+      outcomeUI.setNextAboutToClose(isAboutToClosePanel);
 
       changePosition(delta);
       return false;
@@ -353,8 +356,7 @@ var dramaUI = {
       var packet = {command: 'action', action: {command: cmd, targetId: userId }};
       console.log("sending game command: "+JSON.stringify(packet));
 
-      socket.emit('game', packet, function(err, doc){
-	    console.log("game command sent and acknowledged!!! "+err+" "+JSON.stringify(doc))
+      socket.emit('game', packet, function(err, doc) {
 	    if (!err) {
 	      $('.command.selected').removeClass('selected');
 	      btn.addClass('selected');
@@ -442,7 +444,6 @@ var Drama = function() {
       dramaUI.blurGame();
     },
     playerReady: function(data) {
-	  console.log("playerReady: "+JSON.stringify(data))
       var id = data.player._id;
       var status = data.player.status;
       gameAPI.setPlayerStatus('active', id);
@@ -475,15 +476,24 @@ var Drama = function() {
       else {
         outcome.description = "And oh what a mess! No girl was better than the others, each as worthless and ashamed as the next."	
       }
-      outcomeUI.displayOutcomePage(outcome);
+
+      if (!outcomeUI.isVisible()) {
+	    outcomeUI.clearOutcomePages();
+	    outcomeUI.displayOutcomePage(outcome);
+	    outcomeUI.setNextAboutToClose(true);
+        dramaUI.hidePlayerPanel();
+        dramaUI.showOutcomePanel();
+      } else {
+	    outcomeUI.displayOutcomePage(outcome);
+      }
     },
     playerQuit: function(data) {
       var id = data.player._id;
 
       if (gameAPI.isGameInProgress()) {
-	    disableTargetPlayer(id);
+	    dramaUI.disableTargetPlayer(id);
 	    dramaUI.humiliateAvatar(id);
-        gameUI.setPlayerStatus('quit', id);
+        gameAPI.setPlayerStatus('quit', id);
       } 
       else {
 	    dramaUI.removePlayer(id);
@@ -515,8 +525,8 @@ var Drama = function() {
 
 	    chatBubble.appendTo(li);
 	    esteem.appendTo(li);
-	    paperdoll.appendTo(li);
 	    title.appendTo(li);
+	    paperdoll.appendTo(li);
 
 	    tease.appendTo(ctrlDiv);
 	    scratch.appendTo(ctrlDiv);
@@ -585,7 +595,6 @@ var Drama = function() {
 	  var socket = io.connect('/games', options);
 	
 	  function onAuthorized(data) {	
-		console.log('onAuthorized '+JSON.stringify(data))
         if (data.authorized) {
 	      function registerSocketEvents(sckt) {
 		    sckt.on('player', onPlayerEvent);

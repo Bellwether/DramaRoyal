@@ -43,7 +43,7 @@ input[disabled=disabled] {
 #player-list .esteem {
   color:red;
   font-size:11px;
-  margin:0 0 0 90px;	
+  margin:20px 0 0 90px;	
   padding:0;
   position:absolute;
   list-style:none;
@@ -70,12 +70,17 @@ margin: 0 0 3px 0;
 
 #player-list li .player-nick {
   display: inline-block;
+  line-height:11px;
+  margin-top:-10px;
   overflow: hidden;
-  position: relative;
+  position: absolute;
   text-align:center;
-  top: -20px;
   white-space:nowrap;
-  width:90px;
+  width:105px;
+}
+
+#player-list li .player-nick a {
+ display:block;	
 }
 
 #player-list li .player-nick span {
@@ -119,7 +124,7 @@ margin: 0 0 3px 0;
 
 .player-controls {
   position: relative;
-  top: -20px;	
+  top: -5px;	
   white-space:nowrap;	
 }
 
