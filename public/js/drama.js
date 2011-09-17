@@ -57,7 +57,6 @@ var outcomeUI = {
 	  paperdoll.appendTo(li);
     }
 
-    console.log(JSON.stringify(outcome.attackers));
     if (outcome.attackers) {
 	  for (var idx = 0; idx < outcome.attackers.length; idx++) {
 		var attacker = outcome.attackers[idx];
@@ -65,7 +64,6 @@ var outcomeUI = {
 	  }
     }
 
-    console.log(JSON.stringify(outcome.targets));
     if (outcome.targets) {
 	  for (var idx = 0; idx < outcome.targets.length; idx++) {
 		var target = outcome.targets[idx];
@@ -354,7 +352,6 @@ var dramaUI = {
       var cmd = btn.data('command');
       var userId = btn.parents('li').attr('id');
       var packet = {command: 'action', action: {command: cmd, targetId: userId }};
-      console.log("sending game command: "+JSON.stringify(packet));
 
       socket.emit('game', packet, function(err, doc) {
 	    if (!err) {
