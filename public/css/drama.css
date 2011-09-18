@@ -246,14 +246,17 @@ button.command:disabled, input.command:disabled {
 }
 
 .bio {
-  margin-left:125px;
+  margin:10px 0 0 125px;
   position:absolute;
   width:200px;	
 }
 
+#player-profile h5, #player-profile h6 {
+  margin:0;
+}
+
 .bio h6 {
   font-size:14px;	
-  margin:0;	
 }
 
 .bio h6 a { 
@@ -262,15 +265,15 @@ button.command:disabled, input.command:disabled {
 }
 
 .bio textarea {
-  height:125px;	
+  height:115px;	
   margin-top:3px;
   width:140px;
 }
 
 #profile-score {
   list-style:none;	
-  margin:none;
-  padding:none;
+  margin:10px 0 0 0;
+  padding:0;
 }
 
 #profile-score li {

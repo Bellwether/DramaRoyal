@@ -252,7 +252,7 @@ model.prototype.getDefeatedPlayers = function() {
 
 model.prototype.getPlayerIds = function() {
   var ids = [];
-  for (var idx = 0; idx < this.players.length; idx++) { ids.push(this.players[idx]._id); }
+  for (var idx = 0; idx < this.players.length; idx++) { ids.push(this.players[idx].userId); }
   return ids;
 }
 

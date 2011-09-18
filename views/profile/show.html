@@ -32,6 +32,10 @@
 	  <span><%- score ? Math.round(score.pop*Math.pow(10,3))/Math.pow(10,3) : 0 %></span>
 	</li>
 	<li>
+	  <h5>Dramas Played</h5>
+	  <span><%- player.dramaCnt || 0 %></span>
+	</li>
+	<li>
 	  <h5>Win Count</h5>
 	  <span><%- score ? score.numOwnWins : 0 %></span>
 	</li>
