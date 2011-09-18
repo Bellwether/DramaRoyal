@@ -34,5 +34,15 @@ module.exports = {
 		res.redirect('/avatars/new');
 	  }
 	});	
+  },
+
+  update: function(req, res) {	
+	var bio = req.body.bio;
+    var userId = req.user.getId();
+    
+    usr.updateBio(userId, bio, function(err, doc) {
+	  console.log("updateBio "+err+" "+JSON.stringify(doc))
+      res.send(err ? 422 : 200);
+    });
   }
 };

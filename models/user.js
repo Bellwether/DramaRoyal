@@ -23,7 +23,8 @@ var schema = new Schema({
   avatar: {
 	nick: String
   },
-  money: {type: Number, default: 0}
+  money: {type: Number, default: 0},
+  dramaCnt: {type: Number, default: 0}
 });
 var model = mongoose.model('User', schema);
 
@@ -116,6 +117,25 @@ model.updateNick = function(userId, name, callback) {
       });		
     } else {
       doCallback(callback, "Cannot update existing avatar");
+    }
+  });	
+}
+
+model.updateBio = function(userId, bio, callback) {
+  model.findById(userId, function(err, doc){
+    var hasAvatar = doc && doc.avatar;
+  
+    if (hasAvatar) {
+	console.log(JSON.stringify(doc.avatar))
+	console.log(bio)
+	  doc.avatar = {nick: doc.avatar.nick, bio: bio};
+	console.log(JSON.stringify(doc.avatar))
+      doc.save(function (err, doc) {
+	console.log(JSON.stringify(doc.avatar))
+	    doCallback(callback, err, doc);
+      });		
+    } else {
+      doCallback(callback, "Avatar required for bio");
     }
   });	
 }

@@ -5,12 +5,13 @@ var scr = require('./../models/score').Model;
 module.exports = {
   show: function(req, res) {
 	var userId = req.params.id;
-	if (userId === 'me') userId = req.user.getId();
+	var isOwnUser = userId === 'me';
+	if (isOwnUser) userId = req.user.getId();
 	
     usr.Model.findOne({_id: userId}, function(err, doc) {
 	  if (!err && doc) {
 		scr.findLastUserScore(userId, function (err, scoreDoc) {
-          res.render('profile/show',{player: doc, score: scoreDoc});
+          res.render('profile/show',{player: doc, score: scoreDoc, isOwnUser: isOwnUser});
 		})
       } else {	
         res.redirect('/');

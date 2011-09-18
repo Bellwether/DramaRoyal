@@ -245,6 +245,28 @@ button.command:disabled, input.command:disabled {
   filter: fliph; /*IE*/
 }
 
+.bio {
+  margin-left:125px;
+  position:absolute;
+  width:200px;	
+}
+
+.bio h6 {
+  font-size:14px;	
+  margin:0;	
+}
+
+.bio h6 a { 
+  cursor:pointer;
+  font-size:11px;
+}
+
+.bio textarea {
+  height:125px;	
+  margin-top:3px;
+  width:140px;
+}
+
 #profile-score {
   list-style:none;	
   margin:none;
@@ -263,4 +285,10 @@ button.command:disabled, input.command:disabled {
 
 #profile-score li span {
   font-size:24px;	
+}
+
+#like-button {
+	position: absolute;
+	margin-top: -28px;
+	margin-left: 160px;	
 }

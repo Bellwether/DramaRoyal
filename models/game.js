@@ -250,6 +250,12 @@ model.prototype.getDefeatedPlayers = function() {
   return defeated;	
 }
 
+model.prototype.getPlayerIds = function() {
+  var ids = [];
+  for (var idx = 0; idx < this.players.length; idx++) { ids.push(this.players[idx]._id); }
+  return ids;
+}
+
 model.prototype.startDrama = function(callback) {
   if (!this.isPending()) return;
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:fb="https://www.facebook.com/2008/fbml">
   <head>
     <meta charset="utf-8">
 	<title>Drama Royal</title>
@@ -29,7 +29,10 @@
             <a href="/">[news]</a> 
             <a href="http://www.facebook.com/apps/application.php?id=153494728049768" target="_blank">[wall]</a> 
             <a href='javascript:void(0)' id='fb-invite-request'>[invite friends]</a> 
-            [like]
+            <span id='like-button'>
+	          <fb:like href="https://apps.facebook.com/dramaroyal" send="false" layout="button_count" width="200" show_faces="false" font="verdana">
+	          </fb:like>
+	        </span>
           </section>
           <section id='screens'>
 		    <% if ( isPlaying ){ %>
