@@ -187,9 +187,11 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
     for(var idx = 0; idx < turn.actions.length; idx++) {
 	  var actionForPlayer = turn.actions[idx].userId+'' === userId+'';
       if (actionForPlayer)	{
-	    self.turns[turn.cnt-1].actions[idx].remove(); 
-	    wasFound = true;
-	    break;
+	    if (self.turns[this.turns.length-1].actions[idx]) { // guard
+	      self.turns[this.turns.length-1].actions[idx].remove(); 
+	      wasFound = true;
+	      break;
+	    }
       }
     }
     return wasFound;
