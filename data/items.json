@@ -7,14 +7,14 @@
 },
 {
   "title":"Acrylic Nails",
-  "description":"Contrary to salon assurances acrylics can be quit dangerous (when applied quickly to the face). Acrylic nails can be used during a drama when making a scratch, where if your attack succeeds yours nails will deal +1 self esteem damage to the victim. After dealing damage, however, the nails are destroyed.",
+  "description":"Contrary to salon assurances acrylics can be quit dangerous (when applied quickly to the face). Acrylic nails can be used during a drama when making a scratch; if your attack succeeds yours nails will deal +1 self esteem damage to the victim, but after dealing damage the nails are destroyed.",
   "price":15,
   "type":"consumable",
   "image":"https://dramaroyal.com/img/items/acrylic-nails.png"
 },
 {
   "title":"Hairstick",
-  "description":"An assassin's weapon excused by fashion, this dangerous spike will gouge the face of a schoolgirl to extreme effect. Hairsticks can be used during a drama when making a scratch, where if your attack succeeds the sharp stick will deal +2 self esteem damage to the victim. After dealing damage, however, the hairstick is destroyed.",
+  "description":"An assassin's weapon excused by fashion, this dangerous spike will gouge the face of a schoolgirl to extreme effect. Hairsticks can be used during a drama when making a scratch; if your attack succeeds the sharp stick will deal +2 self esteem damage to the victim, but after dealing damage the hairstick is destroyed.",
   "price":40,
   "type":"consumable",
   "image":"https://dramaroyal.com/img/items/hairstick.png"

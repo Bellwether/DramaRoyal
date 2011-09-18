@@ -2,6 +2,10 @@ var usr = require('./../models/user').Model;
 var scr = require('./../models/score').Model;
 
 module.exports = {
+  index: function(req, res) {
+	res.render('profile/index');
+  },
+
   show: function(req, res) {
 	var userId = req.params.id;
 	var isOwnUser = userId === 'me';

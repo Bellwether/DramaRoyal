@@ -1,0 +1,44 @@
+.bio {
+  margin:10px 0 0 125px;
+  position:absolute;
+  width:200px;	
+}
+
+#player-profile h5, #player-profile h6 {
+  margin:0;
+}
+
+.bio h6 {
+  font-size:14px;	
+}
+
+.bio h6 a { 
+  cursor:pointer;
+  font-size:11px;
+}
+
+.bio textarea {
+  height:115px;	
+  margin-top:3px;
+  width:140px;
+}
+
+#profile-score {
+  list-style:none;	
+  margin:10px 0 0 0;
+  padding:0;
+}
+
+#profile-score li {
+  display:inline-block;	
+  text-align:center;
+}
+
+#profile-score li h5 {
+  background-color:#ccc;	
+  margin:0;
+}
+
+#profile-score li span {
+  font-size:24px;	
+}

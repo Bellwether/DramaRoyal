@@ -42,14 +42,13 @@
 	        <% } else { %>
 	          <a href='/avatars/new'>Sign In</a>
 		    <% } %>
-	        <a href='/profiles/me'>Profile</a>
 	        <a href='/items'>Shop</a>
 	        <a href='/scores'>Leaderboard</a>
 	        <a href='/help'>[?]</a>
 	      </section>
 	
 	      <section id='hud'>
-            <% if (hasAvatar) { %>Signed in as <strong><%= avatarNick %></strong><% } %>
+            <% if (hasAvatar) { %>Signed in as <a href='/profiles/me'><strong><%= avatarNick %></strong></a><% } %>
           </section>
 	    </nav>
       </header>
