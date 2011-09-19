@@ -1,14 +1,16 @@
 <section id="game-lobby">
   <div id='lobby-wrapper'>	
 	<div id='lobby-chat-panel'>
-	  <h2>Homeroom <span id='player-count'>(0)</span></h2>
+	  <h2>Homeroom <span id='player-count'>(0 girls present)</span></h2>
+	  <div class='desc'>Linger in the homeroom to chat with (and challenge) other girls while you wait for new drama to start.</div>
       <div id='lobby-chat'></div>
 	</div>
 	
     <div id='games-panel'>	
 	  <% var cnt = 0; for(var k in locals.games) {cnt=cnt+1}; %>
 
-      <h2>Dramas <span id='game-count'>(<%- cnt %>)</span></h2>
+      <h2>Drama <span id='game-count'>(<%- cnt %> drama<%-cnt===1 ? '' : 's'%> in progress)</span></h2>
+	  <div class='desc'>You can join any new drama that hasn't yet started, or else start your own and wait for others to join.</div>
       <ul id='game-list'>
         <% for(var k in locals.games) { %>
           <li id="game-<%- locals.games[k]._id %>" class='lobby-game'>

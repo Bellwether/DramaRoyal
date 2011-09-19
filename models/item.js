@@ -13,6 +13,7 @@ function doCallback(callback, err, data) {
 var schema = new Schema({
   title: String,
   type: String,
+  action: String,
   description: String,
   image: String,
   price: Number

@@ -8,6 +8,7 @@ var gameUI = {
   },
   endGame: function(data) {
     gameUI.domGameItem(data.game._id).remove();
+    lobbyUI.setGameCount(gameUI.domGameList().children('li').length);
   },
   newGame: function(data) {
     var players = data.game.players;
@@ -38,6 +39,7 @@ var gameUI = {
     playerList.appendTo(li);
     link.appendTo(li);
     li.appendTo(gameUI.domGameList());
+    lobbyUI.setGameCount(gameUI.domGameList().children('li').length);
   },
   playerLeft: function(data) {
 	var gid = data.game._id;
@@ -62,6 +64,7 @@ var gameUI = {
 var lobbyUI = {
   domConnectionStatus: function(){ return $('#chat-status'); },
   domPlayerCount: function(){ return $('#player-count'); },
+  domGameCount: function(){ return $('#game-count'); },
   domLobbyChat: function(){ return $('#lobby-chat'); },
   domChatButton: function(){ return $('#lobby-console-submit'); },
   domChatBox: function(){ return $('#lobby-message'); },
@@ -73,7 +76,10 @@ var lobbyUI = {
     lobbyUI.domConnectionStatus().text('Status: '+status);
   },
   setplayerCount: function(cnt){
-    lobbyUI.domPlayerCount().text('('+cnt+')');
+    lobbyUI.domPlayerCount().text('('+cnt+(cnt === 1 ? ' girl' : ' girls')+' present)');
+  },
+  setGameCount: function(cnt){
+    lobbyUI.domGameCount().text('('+cnt+(cnt === 1 ? ' drama' : ' dramas')+' in progress)');
   },
   printMessage: function(message, name, userId){
 	var msg = lobbyUI.stripChatHTML(message);

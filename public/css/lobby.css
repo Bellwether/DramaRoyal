@@ -19,6 +19,23 @@
   width:300px;	
 }
 
+#lobby-chat-panel h2, #games-panel h2 {
+  margin:15px 0 5px 0;
+}
+
+#lobby-chat-panel h2 span, #games-panel h2 span {
+  margin-left:45px;	
+  font-size:16px;	
+  font-weight:normal;
+}
+
+#lobby-chat-panel .desc, #games-panel .desc {
+  clear:both;	
+  font-size:12px;	
+  font-style:italic;
+  margin-bottom:10px;	
+}
+
 #lobby-chat {
   border:1px solid #eee;	
   overflow-y:scroll;
@@ -41,6 +58,15 @@
   list-style:none;
   margin:0;
   padding:0;
+}
+
+#lobby-chat p {
+  padding: 3px;
+  margin: 0;
+}
+
+#lobby-chat p a {
+  font-weight: bold;
 }
 
 .lobby-game {
