@@ -148,6 +148,27 @@ var Lobby = function() {
 	return location.protocol.indexOf('https') === 0;
   };
 
+  function addHistory(data) {
+	var history = data.history;
+	if (history.length < 1) return;
+	
+	for (var idx = 0; idx < history.length; idx++) {
+	  var message = history[idx];
+	  var nick = message.nick ? message.nick : '???';
+	
+	  var utc = Date.parse(message.ts);
+	  utc = new Date(utc);
+	  var offset = (new Date()).getTimezoneOffset();
+	  utc.setHours(utc.getHours() + offset);
+	  var hours = utc.getHours();
+	  var minutes = utc.getMinutes() < 10 ? '0'+utc.getMinutes() : utc.getMinutes();
+	
+	  var msg = message.msg + " @"+hours+":"+minutes;
+	  lobbyUI.printMessage(msg, nick, message.uid);
+	}
+	lobbyUI.printMessage("You can hear the giggling of girls...");
+  }
+
   return {
     listen: function(userSessionId) {
 	  if (userSessionId === undefined) return;
@@ -162,6 +183,7 @@ var Lobby = function() {
       }
 	
 	  function onAuthorized(data) {	
+		if (window.console) console.log("onAuthorized!!!! "+JSON.stringify(data))
         if (data.authorized) {
 		  socket.on('player', onGamePlayerEvent);
 		  socket.on('game', onGameEvent);
@@ -170,9 +192,11 @@ var Lobby = function() {
 		
 		  if (data.count) lobbyUI.setplayerCount(data.count);
 
+          addHistory(data);
+
           lobbyUI.setConnectionStatus('connected');	
           lobbyUI.initChatControls(socket);
-          lobbyUI.enableChat(socket);		
+          lobbyUI.enableChat(socket);	
         }
       }
 	
