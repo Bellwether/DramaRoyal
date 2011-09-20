@@ -20,6 +20,11 @@ function isSentByFBRequest(req) {
   return (getRequestIds(req) || '').length > 0;
 }
 
+function checkAuthorization(req, res, callback) {
+  // authorize user if token exists, but don't force redirect
+  res.requireUser(req, res, callback, false);
+}
+
 module.exports = {
   get_privacy: function(req, res) {
 	res.render('app/privacy');
@@ -45,11 +50,13 @@ module.exports = {
 	res.render('app/help');
   },
 
-  index: function(req, res){
+  index: function(req, res) {
 	// all facebook user requests link back to the root canvas page, so handle those here
 	var sentByRequest = isSentByFBRequest(req);
 	if (sentByRequest) clearFBRequests(req, res);
-	
-	res.render('app/index', {'sentByRequest': sentByRequest});
+
+    checkAuthorization(req, res, function() {
+	  res.render('app/index', {'sentByRequest': sentByRequest});
+    }, false);	
   }
 };
