@@ -294,7 +294,7 @@ var dramaUI = {
 	});	
   },
   readyToWaiting: function() {	
-    dramaUI.domReadyButton().attr('disabled', 'disabled').unbind().text('waiting...');
+    dramaUI.domReadyButton().attr('disabled', 'disabled').addClass('diminished').unbind().text('Waiting...');
   },
   removeReadyControl: function() {
 	dramaUI.domReadyButton().remove();

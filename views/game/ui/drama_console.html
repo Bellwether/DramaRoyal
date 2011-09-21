@@ -6,12 +6,12 @@
   <span class='console-block'>
     <span id='chat-status'>Status: connecting to game</span>
     <br />
-    <input id="game-console-submit" type="submit" value="chat" disabled='disabled' />
+    <input id="game-console-submit" type="submit" value="Chat" class="button cmd" disabled='disabled' />
     <% if (locals.game.status === 'pending' ) { %>
-      <button type='button' id='player-ready' disabled='disabled'>
-	    <%- (ownPlayerStatus === 'active') ? 'waiting...' : 'ready to play' %>
+      <button type='button' id='player-ready' disabled='disabled' class="button cmd">
+	    <%- (ownPlayerStatus === 'active') ? 'Waiting...' : 'Ready to play' %>
 	  </button>
     <% } %>
-    <button type='button' id='player-quit' data-method='delete' action='/games/<%- game._id %>'>quit</button>
+    <button type='button' id='player-quit' class="button link" data-method='delete' action='/games/<%- game._id %>'>Quit</button>
   </span>
 </form>
