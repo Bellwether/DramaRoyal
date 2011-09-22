@@ -11,7 +11,7 @@
 #title {
   display:inline-block;	
   vertical-align:top;
-  width:400px;	
+  width:315px;	
 }
 
 #title a {
@@ -28,9 +28,83 @@
 
 header nav {
   display:inline-block;	
-  width:250px;
+  width:335px;
 }
 
 #widgets {
   width:190px;	
+}
+
+#screens {
+  margin:8px 0;	
+}
+
+#screens a {
+  border:2px solid #1c4757;
+  color:#fff;
+  display:inline-block;
+  font-size:15px;
+  letter-spacing:0.07em;	
+  margin-left:-7px;
+  margin-bottom:10px;
+  padding:4px 10px;
+  position:relative;
+  zoom:1;
+}
+
+#screen1 {
+  background-color:#7aa5c8;	
+  z-index:1;
+  -webkit-transform: rotate(-5deg);
+  -moz-transform: rotate(-5deg);
+  -ms-transform: rotate(-5deg);
+  -o-transform: rotate(-5deg); 
+  transform: rotate(-5deg);  
+}
+
+#screen2 {
+  background-color:#557f57;
+  bottom:-3px;
+  z-index:2;
+  -webkit-transform: rotate(9deg);
+  -moz-transform: rotate(9deg);
+  -ms-transform: rotate(9deg);
+  -o-transform: rotate(9deg); 
+  transform: rotate(9deg);
+}
+
+#screen3 {
+  background-color:#b16b83;
+  left:-5px;
+  bottom:2px;
+  -webkit-transform: rotate(-7deg);
+  -moz-transform: rotate(-7deg);
+  -ms-transform: rotate(-7deg);
+  -o-transform: rotate(-7deg); 
+  transform: rotate(-7deg);
+  z-index:3;
+}
+
+#screen4 {
+  background-color:#de3382;
+  left:-10px;
+  -webkit-transform: rotate(6deg);
+  -moz-transform: rotate(6deg);
+  -ms-transform: rotate(6deg);
+  -o-transform: rotate(6deg); 
+  transform: rotate(6deg);
+  z-index:4;
+}
+
+#screens a:hover {
+  -webkit-box-shadow: inset 0 0 3px 3px rgba(200,200,200,0.4);
+  -moz-box-shadow: inset 0 0 3px 3px rgba(200,200,200,0.4);
+  -ms-box-shadow: inset 0 0 3px 3px rgba(200,200,200,0.4);
+  -o-box-shadow: inset 0 0 3px 3px rgba(200,200,200,0.4);
+  box-shadow: inset 0 0 3px 3px rgba(200,200,200,0.4);
+  top:-5px !important;
+  z-index:10000;	
+  padding-bottom:12px;
+  margin-bottom:0;
+  text-shadow: 1 -1px 2px #999;
 }

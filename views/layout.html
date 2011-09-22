@@ -14,8 +14,8 @@
 	<% if (isProductionEnv) { %>
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<% } %>
-	<script src="/js/24/minified.js"></script>
-	<link rel="stylesheet" href="/css/24/minified.css">
+	<script src="/js/25/minified.js"></script>
+	<link rel="stylesheet" href="/css/25/minified.css">
   </head>
   <body>
 	<div id="fb-root"></div>
@@ -36,15 +36,15 @@
           </section>
           <section id='screens'>
 		    <% if ( isPlaying ){ %>
-	          <a href='/games/<%- playingGameId %>'>Having Drama</a> 
+	          <a id='screen1' href='/games/<%- playingGameId %>'>Having Drama</a> 
 	        <% } else if (hasAvatar) { %>
-	          <a href='/games'>Homeroom</a>
+	          <a id='screen1' href='/games'>Homeroom</a>
 	        <% } else { %>
-	          <a href='/avatars/new'>Sign In</a>
+	          <a id='screen1' href='/avatars/new'>Sign In</a>
 		    <% } %>
-	        <a href='/items'>Shop</a>
-	        <a href='/scores'>Leaderboard</a>
-	        <a href='/help'>[?]</a>
+	        <a id='screen2' href='/items'>Shop</a>
+	        <a id='screen3' href='/scores'>Leaderboard</a>
+	        <a id='screen4' href='/help'>wtf?</a>
 	      </section>
 	
 	      <section id='hud'>
