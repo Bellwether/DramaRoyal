@@ -94,22 +94,6 @@ margin: 0 0 3px 0;
 
 #new-game h2 {
   font-size:18px;	
-} 
-
-#new-game .desc {
-  font-size:12px;	
-  font-style:italic;
-  width:400px;	
-}
-
-#game-form {
-  height:400px;	
-  padding:10px;
-}
-
-#game-form label {
-  display:inline-block;	
-  width:100px;
 }
 
 #avatar-form p,
@@ -444,5 +428,5 @@ form.block .triangle-r {
 
 form.block .desc {
   font-style:italic;	
-  margin:15px 0;
+  margin:15px 0 5px 0;
 }
