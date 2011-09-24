@@ -6,16 +6,21 @@ $.playSound = function (options) {
   if ($.playIsMuted()) return;
 
   var srcContainerId = 'audio-source';
-  $("body").append("<div id='"+srcContainerId+"' class='hidden' hidden='true'></div>");
+  if ($('#'+srcContainerId).length < 1) {
+    $("body").append("<div id='"+srcContainerId+"' class='hidden' hidden='true'></div>");
+  }
 
   var file = options.file;
-  var pid = options.pid || 'sfx1';
+  var pid = options.pid || 'sfx'+Math.floor(Math.random()*100000);
 
   var oggSrc = "<source src='"+file+".ogg' type='audio/ogg' />";
   var mp3Src = "<source src='"+file+".mp3' type='audio/mpeg' />";
   var audioEl = "<audio id='"+pid+"' controls='false' autoplay='true'>"+oggSrc+mp3Src+"</audio>";
 
   $('#'+srcContainerId).append(audioEl);
+
+  var FIVE_SECONDS = 1000 * 5;
+  setInterval(function() { $('#'+pid).remove(); }, FIVE_SECONDS);
 };
 
 $(document).ready(function() {
