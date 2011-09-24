@@ -86,6 +86,9 @@ var lobbyUI = {
 	var msg = lobbyUI.stripChatHTML(message);
     var element = name ? $("<p><a href='/profiles/"+userId+"'>"+name+'</a>: '+msg+'</p>') : $('<p>'+msg+'</p>');
     element.prependTo(lobbyUI.domLobbyChat());
+
+    var wasJoiningMsg = message.indexOf('entered the homeroom') > 0;
+    if (wasJoiningMsg) $.playSound({file: '/sfx/girl-enter'});
   },
   enableChat: function() {
     lobbyUI.domChatButton().removeAttr("disabled").removeClass('disabled');
