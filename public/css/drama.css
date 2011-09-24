@@ -106,10 +106,13 @@ margin: 0 0 3px 0;
   height:400px;	
   padding:10px;
 }
+
 #game-form label {
   display:inline-block;	
   width:100px;
 }
+
+#avatar-form p,
 #game-form p {
   height:20px;	
 }
@@ -364,4 +367,82 @@ button.command:disabled, input.command:disabled {
   opacity: 0.7;
   filter:alpha(opacity=70);
   -moz-opacity:0.7;
+}
+
+form.block {
+  clear: both;
+  background: #fff;
+  -moz-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -webkit-border-radius:5px;
+  -moz-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  -khtml-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  margin:20px auto;
+  padding:5px;
+  position: relative;
+  width: 540px;
+  z-index: 90;
+}
+
+form.block input[type="submit"] {
+  margin:10px;	
+}
+
+form.block label {
+  display:inline-block;	
+  font-size:15px;
+  margin-left:10px;
+  width:100px;
+}
+
+form.block .title {
+  background: #7f9db9;
+  height: 50px;
+  width: 580px;
+  position: relative;
+  left:-20px;
+  top:10px;
+  float: left;
+  -moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.55);
+  -khtml-box-shadow: 0px 0px 2px rgba(0,0,0,0.55);
+  -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.55);
+  z-index: 100;
+}
+
+form.block .title h2 {
+  color: #fff;
+  font-size:22px;
+  line-height:22px;
+  padding: 0 0 0 15px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+form.block .triangle-l {
+  border-color: transparent #7d90a3 transparent transparent;
+  border-style:solid;
+  border-width:15px;
+  height:0px;
+  width:0px;
+  position: relative;
+  left: -35px;
+  top: 45px;
+  z-index: -1;
+}
+
+form.block .triangle-r {
+  border-color: transparent transparent transparent #7d90a3;
+  border-style:solid;
+  border-width:15px;
+  height:0px;
+  width:0px;
+  position: relative;
+  left: 545px;
+  top: 15px;
+  z-index: -1;
+}
+
+form.block .desc {
+  font-style:italic;	
+  margin:15px 0;
 }
