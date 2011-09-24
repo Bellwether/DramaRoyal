@@ -68,6 +68,7 @@ var lobbyUI = {
   domLobbyChat: function(){ return $('#lobby-chat'); },
   domChatButton: function(){ return $('#lobby-console-submit'); },
   domChatBox: function(){ return $('#lobby-message'); },
+  domAudioControls: function(){ return $('#audio-controls'); },
 
   stripChatHTML: function(message) {
     return (message || '').replace(/<\/?[^>]+>/gi, '');
@@ -205,6 +206,8 @@ var Lobby = function() {
 		socket.once('authorized', onAuthorized);
 		
         socket.emit('authorizeUser', userSessionId);
+
+        $.playSound({file: '/sfx/girl-enter'});
 	  }
 	
 	  function onConnectFailed() {	
