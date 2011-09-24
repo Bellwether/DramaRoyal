@@ -118,7 +118,7 @@ header nav {
 
 #audio-controls {
   display:inline-block;	
-  margin-left:175px;
+  margin-left:155px;
   cursor:pointer;
   background-color: #52a8e8;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#52a8e8), to(#377ad0));

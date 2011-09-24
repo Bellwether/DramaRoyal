@@ -496,7 +496,7 @@ var Drama = function() {
 	    dramaUI.removePlayer(id);
       };
     },
-    playerJoined: function(data){
+    playerJoined: function(data) {
       var name = data.player.nick;
       var id = data.player._id;	
 
@@ -539,6 +539,7 @@ var Drama = function() {
           return false;
 	    }
       });	
+      $.playSound({file: '/sfx/girl-enter'});
     }
   };
 
