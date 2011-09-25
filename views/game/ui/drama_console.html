@@ -9,7 +9,7 @@
     <input id="game-console-submit" type="submit" value="Chat" class="button cmd" disabled='disabled' />
     <% if (locals.game.status === 'pending' ) { %>
       <button type='button' id='player-ready' disabled='disabled' class="button cmd">
-	    <%- (ownPlayerStatus === 'active') ? 'Waiting...' : 'Ready to play' %>
+	    <%- (locals.ownPlayerStatus === 'active') ? 'Waiting...' : 'Ready to play' %>
 	  </button>
     <% } %>
     <button type='button' id='player-quit' class="button link" data-method='delete' action='/games/<%- game._id %>'>Quit</button>

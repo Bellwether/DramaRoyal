@@ -1,0 +1,31 @@
+<% var uid = player.userId %>
+<% var isPending = locals.game.isPending() %>
+<% var cmd = currentAction && currentAction.cmd %>
+
+<div id="player-target-controls-<%- uid %>" class='player-controls'>
+  <% if ( isOwnPlayer ) { %>	
+    <% var ownPlayerStatus = player.status %>
+    <% var isButtonActive = currentAction && locals.game.isActive() %>
+
+    <button type='button' id='player-cower' class='command <%- isButtonActive && cmd === "cower" ? 'selected' : '' %>' data-command='cower' <%- isPending ? "disabled='disabled'" : '' %>>Cower</button>
+
+    <button type='button' id='player-tattle' class='command <%- isButtonActive && cmd === "tattle" ? 'selected' : '' %>' data-command='tattle' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.tattles %>'>Tattle:<%- player.tattles %></button>
+
+    <button type='button' id='player-med' class='command <%- isButtonActive && cmd === "med" ? 'selected' : '' %>' data-command='med' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.meds %>'>Med:<%- player.meds %></button>
+
+  <% } else { %>
+    <% isButtonActive = currentAction && 
+                        currentAction.targetId+'' === uid+'' %>
+
+    <% if (isPending) { %>
+      <button type='button' id='player-<%- uid %>-kick' class='command kick'>Kick (0)</button>
+    <% } %>
+
+    <button type='button' id='player-<%- uid %>-tease' class='command <%- isButtonActive && cmd === "tease" ? 'selected' : '' %> <%- isPending ? ' hidden' : '' %>' data-command='tease' <%- isPending ? "disabled='disabled'" : '' %>>Tease</button>
+
+    <button type='button' id='player-<%- uid %>-scratch' class='command <%- isButtonActive && cmd === "scratch" ? 'selected' : '' %> <%- isPending ? ' hidden' : '' %>' data-command='scratch' <%- isPending ? "disabled='disabled'" : '' %>>Scratch</button>
+
+    <button type='button' id='player-<%- uid %>-grab' class='command <%- isButtonActive && cmd === "grab" ? 'selected' : '' %> <%- isPending ? ' hidden' : '' %>' data-command='grab' <%- isPending ? "disabled='disabled'" : '' %>>Grab</button>
+	
+  <% } %>	
+</div>

@@ -1,5 +1,5 @@
 $.playIsMuted = function () {
-  return $.cookie('silence') === '1';
+  return $.cookie('silence')+'' === '1';
 }
 
 $.playSound = function (options) {

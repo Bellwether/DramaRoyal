@@ -210,7 +210,8 @@ var dramaUI = {
   domMedButton: function(){ return $('#player-lick'); },
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
   domPaperdoll: function(userId){ return $('#paperdoll-'+userId); },
-  domPaperdollArms: function(userId){ return $('#paperdoll-'+userId+'-arms'); },
+  domPaperdollArms: function(userId) { return $('#paperdoll-'+userId+'-arms'); },
+  domKickButton: function(userId) { return $('#player-'+userId+'-kick'); },
 
   stripNonNumeric: function(text) {
     return (text || '').replace(/[^0-9]/g, ''); 
@@ -273,7 +274,7 @@ var dramaUI = {
 	dramaUI.domChatButton().attr('disabled') === undefined;
   },
   disableGame: function() {
-    $('.command').attr('disabled', 'disabled').addClass('disabled');
+    $('.command:not(.kick)').attr('disabled', 'disabled').addClass('disabled');
   },
   enableGame: function() {
     $('.command').removeAttr("disabled").removeClass('disabled');
@@ -298,6 +299,12 @@ var dramaUI = {
   },
   removeReadyControl: function() {
 	dramaUI.domReadyButton().remove();
+  },
+  removeKickControls: function() {
+	$('.kick').remove();
+  },
+  showCommandButtons: function() {
+	$('.command').show();
   },
   hideOutcomePanel: function() {
     outcomeUI.domOutcomePanel().hide();
@@ -345,9 +352,30 @@ var dramaUI = {
       return false;
     });
   },
-  initGameControls: function(socket) {
-    var gameAction = function(e){
+  initKickControls: function(socket) {
+    var kickAction = function(e) {
+	console.log("kickAction")
       e.preventDefault();
+
+      var btn = $(this);
+      var userId = btn.parents('li').attr('id');
+      var packet = {userId: userId};
+	console.log("kickAction"+packet.userId)
+      socket.emit('kick', packet, function(err, doc) {
+	    if (!err) {
+		  btn.addClass('selected');
+		  console.log("kicked "+JSON.stringify(doc));
+	    };
+      });
+	
+      return false;
+    };
+    $('.kick').live('click', kickAction);	
+  },
+  initGameControls: function(socket) {
+    var gameAction = function(e) {
+      e.preventDefault();
+
       var btn = $(this);
       var cmd = btn.data('command');
       var userId = btn.parents('li').attr('id');
@@ -440,14 +468,23 @@ var Drama = function() {
       dramaUI.setClock('00');	
       dramaUI.blurGame();
     },
+    playerKicked: function(data) {
+	  if (data.kicked+'' === 'true') {
+		dramaUI.removePlayer(data.id);
+	  } else {
+	    dramaUI.domKickButton(data.id).html("Kick ("+data.cnt+")");
+	  }
+    },
     playerReady: function(data) {
       var id = data.player._id;
       var status = data.player.status;
       gameAPI.setPlayerStatus('active', id);
     },
     gameStarted: function(data){
+	  dramaUI.removeKickControls();
 	  dramaUI.removeReadyControl();
 	  gameAPI.turnStarted( {"turn":{"cnt":1}} );
+	  dramaUI.showCommandButtons();
     },
     gameEnded: function(data) {
 	  dramaUI.removeGame();
@@ -516,15 +553,17 @@ var Drama = function() {
 	    var title = $("<span class='player-nick'>"+ nickLink+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");
-	    var tease = $("<button type='button' class='command' data-command='tease' disabled='disabled'>Tease</button>");
-	    var scratch = $("<button type='button' class='command' data-command='scratch' disabled='disabled'>Scratch</button>");
-	    var grab = $("<button type='button' class='command' data-command='grab' disabled='disabled'>Grab</button>");
+	    var kick = $("<button type='button' id='player-"+id+"-kick' class='command kick'>Kick (0)</button>");
+	    var tease = $("<button type='button' class='command hidden' data-command='tease' disabled='disabled'>Tease</button>");
+	    var scratch = $("<button type='button' class='command hidden' data-command='scratch' disabled='disabled'>Scratch</button>");
+	    var grab = $("<button type='button' class='command hidden' data-command='grab' disabled='disabled'>Grab</button>");
 
 	    chatBubble.appendTo(li);
 	    esteem.appendTo(li);
 	    title.appendTo(li);
 	    paperdoll.appendTo(li);
 
+	    kick.appendTo(ctrlDiv);
 	    tease.appendTo(ctrlDiv);
 	    scratch.appendTo(ctrlDiv);
 	    grab.appendTo(ctrlDiv);
@@ -552,7 +591,10 @@ var Drama = function() {
     switch (data.event) {
 	    case 'joined':
 	      gameAPI.playerJoined(data);
-	      break;			
+	      break;	
+	    case 'kick':
+	      gameAPI.playerKicked(data);
+	      break;		
 	    case 'quit':
 	      gameAPI.playerQuit(data);
 	      break;
@@ -608,6 +650,7 @@ var Drama = function() {
           dramaUI.initChatControls(socket, data.userId);
           dramaUI.enableChat(socket);
           dramaUI.initGameControls(socket);
+          dramaUI.initKickControls(socket);
 	
 	      function registerReadyButton(sckt) {
             if (gameAPI.isPlayerReady(data.userId)) {

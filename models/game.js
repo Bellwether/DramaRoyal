@@ -117,7 +117,7 @@ model.prototype.quitPlayer = function(userId, callback) {
 }
 
 model.prototype.readyPlayer = function(userId, callback) {
-  var playerParts = this.getPlayerAndIndex(userId);	
+  var playerParts = this.getPlayerAndIndex(userId);
   var player = playerParts[0];
   var playerIndex = playerParts[1];
 
@@ -129,6 +129,19 @@ model.prototype.readyPlayer = function(userId, callback) {
   }
   else {
 	doCallback(callback, "No player or active game");
+  };
+}
+
+model.prototype.kickPlayer = function(userId, taregetId, callback) {
+  var playerParts = this.getPlayerAndIndex(userId);
+  var player = playerParts[0];
+  var playerIndex = playerParts[1];
+	
+  if (player) {		
+	var kicks = player.kicks || [];
+  }
+  else {
+	doCallback(callback, "No player");
   };
 }
 
@@ -187,8 +200,8 @@ model.prototype.createAction = function(userId, targetId, command, callback) {
     for(var idx = 0; idx < turn.actions.length; idx++) {
 	  var actionForPlayer = turn.actions[idx].userId+'' === userId+'';
       if (actionForPlayer)	{
-	    if (self.turns[this.turns.length-1].actions[idx]) { // guard
-	      self.turns[this.turns.length-1].actions[idx].remove(); 
+	    if (self.turns[self.turns.length-1].actions[idx]) { // guard
+	      self.turns[self.turns.length-1].actions[idx].remove(); 
 	      wasFound = true;
 	      break;
 	    }

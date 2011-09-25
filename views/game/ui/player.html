@@ -1,5 +1,6 @@
 <% player = JSON.parse(JSON.stringify(player)) %>
 <% var isOwnPlayer = (player.userId+'' === locals.userId+'') %>
+<% if (isOwnPlayer) locals.ownPlayerStatus = player.status %>
 
 <li id="<%- player.userId %>" <%- (isOwnPlayer ? "data-self='true'" : "") %>>
   <p id="player-chat-<%- player.userId %>" class='chat-bubble'></p>
@@ -21,28 +22,5 @@
     <img id="paperdoll-<%- player.userId %>" class='paperdoll' src="<%- player.status === 'active' || player.status === 'pending' ? '/img/avatars/normalstance.png' : '/img/avatars/defeatedstance.png' %>" />
   </div>
 
-  <div id="player-target-controls-<%- player.userId %>" class='player-controls'>
-  <% isPending = locals.game.status === 'pending' %>
-
-  <% if ( isOwnPlayer ) { %>
-	
-    <% ownPlayerStatus = player.status %>
-    <% isButtonActive = currentAction && locals.game.isActive() %>
-
-    <button type='button' id='player-cower' class='command <%- isButtonActive && currentAction.cmd === "cower" ? 'selected' : '' %>' data-command='cower' <%- isPending ? "disabled='disabled'" : '' %>>Cower</button>
-    <button type='button' id='player-tattle' class='command <%- isButtonActive && currentAction.cmd === "tattle" ? 'selected' : '' %>' data-command='tattle' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.tattles %>'>Tattle:<%- player.tattles %></button>
-    <button type='button' id='player-med' class='command <%- isButtonActive && currentAction.cmd === "med" ? 'selected' : '' %>' data-command='med' <%- isPending ? "disabled='disabled'" : '' %> data-count='<%- player.meds %>'>Med:<%- player.meds %></button>
-
-  <% } else { %>	
-	
-    <% isButtonActive = currentAction && 
-                        currentAction.targetId+'' === player.userId+'' && 
-                        locals.game.isActive() %>
-
-    <button type='button' id='player-<%- player.userId %>-tease' class='command <%- isButtonActive && currentAction.cmd === "tease" ? 'selected' : '' %>' data-command='tease' <%- isPending ? "disabled='disabled'" : '' %>>Tease</button>
-    <button type='button' id='player-<%- player.userId %>-scratch' class='command <%- isButtonActive && currentAction.cmd === "scratch" ? 'selected' : '' %>' data-command='scratch' <%- isPending ? "disabled='disabled'" : '' %>>Scratch</button>
-    <button type='button' id='player-<%- player.userId %>-grab' class='command <%- isButtonActive && currentAction.cmd === "grab" ? 'selected' : '' %>' data-command='grab' <%- isPending ? "disabled='disabled'" : '' %>>Grab</button>
-
-  <% } %>
-  </div>
+  <%- partial('game/ui/player_controls', {player: player, isOwnPlayer: isOwnPlayer, currentAction: currentAction}) %>
 </li>
