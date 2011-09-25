@@ -354,17 +354,19 @@ var dramaUI = {
   },
   initKickControls: function(socket) {
     var kickAction = function(e) {
-	console.log("kickAction")
       e.preventDefault();
 
       var btn = $(this);
       var userId = btn.parents('li').attr('id');
       var packet = {userId: userId};
-	console.log("kickAction"+packet.userId)
       socket.emit('kick', packet, function(err, doc) {
 	    if (!err) {
-		  btn.addClass('selected');
-		  console.log("kicked "+JSON.stringify(doc));
+		  if (btn.hasClass('selected')) {
+			btn.removeClass('selected');
+		  } else {
+			btn.addClass('selected');
+		  }
+		  console.log("kicked "+JSON.stringify(doc)); //=====!!!!! !REMOVE #R%@ Q# RQ@# R@QRQ@R# @QR#++++
 	    };
       });
 	
@@ -470,9 +472,9 @@ var Drama = function() {
     },
     playerKicked: function(data) {
 	  if (data.kicked+'' === 'true') {
-		dramaUI.removePlayer(data.id);
+		dramaUI.removePlayer(data.userId);
 	  } else {
-	    dramaUI.domKickButton(data.id).html("Kick ("+data.cnt+")");
+	    dramaUI.domKickButton(data.userId).val("Kick ("+data.cnt+")");
 	  }
     },
     playerReady: function(data) {

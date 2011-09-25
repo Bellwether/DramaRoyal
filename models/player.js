@@ -11,7 +11,8 @@ var schema = new Schema({
   status: { type: String, default: 'pending', enum: playerStatus},
   esteem: { type: Number, default: DEFAULT_ESTEEM },
   tattles: { type: Number, default: 2 },
-  meds: { type: Number, default: 3 }
+  meds: { type: Number, default: 3 },
+  kicks: [String]
 });
 var model = mongoose.model('Player', schema);
 

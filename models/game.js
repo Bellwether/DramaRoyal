@@ -93,6 +93,34 @@ model.prototype.getPlayer = function(userId) {
   return false;
 }
 
+model.prototype.deletePlayer = function(userId, playerIndex, callback) {
+  // clear any of the deleted player's kick votes
+  var updated = false;
+  for (idx = 0; idx < this.players.length; idx++) {
+    if ( this.setKick(this.players[idx], userId, true) ) {
+	  updated = true;
+    }
+  }
+
+  var game = this;
+  function removeAndCallback() {
+	game.players[playerIndex].remove();
+	game.save(function(err, doc) {
+	  console.log("deletePlayer "+err)
+	  doCallback(callback, err, doc);
+	});
+  }
+
+  if (updated) {	
+	this.save(function(err, doc) {
+		console.log("deletePlayer "+err)
+	  removeAndCallback();
+	});
+  } else {
+	removeAndCallback();
+  }
+}
+
 model.prototype.quitPlayer = function(userId, callback) {
   var playerParts = this.getPlayerAndIndex(userId);	
   var player = playerParts[0];
@@ -100,7 +128,7 @@ model.prototype.quitPlayer = function(userId, callback) {
 
   if (player && !this.isEnded()) {
     if (this.isPending()) {
-      this.players[playerIndex].remove();
+	  this.deletePlayer(userId, playerIndex);
     } else if (this.isInProgress()) {
 	  player.status = 'quit';
 	  player.esteem = 0;
@@ -108,6 +136,7 @@ model.prototype.quitPlayer = function(userId, callback) {
 
     var game = this;
     this.save(function (err) {
+	  console.log("quitplayer "+err)
       doCallback(callback, err, game);
     });	
   }
@@ -132,13 +161,73 @@ model.prototype.readyPlayer = function(userId, callback) {
   };
 }
 
-model.prototype.kickPlayer = function(userId, taregetId, callback) {
-  var playerParts = this.getPlayerAndIndex(userId);
+model.prototype.setKick = function(player, userId, removeOnly) {
+  removeOnly = removeOnly || false;
+  var hasKick = false;	
+	
+  // if player has already voted for a vote then retract it, otherwise add the vote
+  for (var idx = 0; idx < player.kicks.length; idx++) {
+    if (player.kicks[idx]+'' === userId+'') {
+      hasKick = true;
+	  player.kicks.splice(idx,1);
+	  console.log("spliced kick away")
+      break;
+    }
+  }
+  if (!removeOnly && !hasKick) {
+	player.kicks.push(userId);
+	console.log("pushed kick up")
+  }
+  return hasKick;
+}
+
+model.prototype.kickPlayer = function(userId, targetId, callback) {
+  if (!this.isPending()) {
+	doCallback(callback, "Can't boot unless game is pending");
+    return;
+  }
+console.log("game kickPlayer targetId="+targetId+" userId="+userId);
+	
+  var playerParts = this.getPlayerAndIndex(targetId);
   var player = playerParts[0];
   var playerIndex = playerParts[1];
 	
   if (player) {		
 	var kicks = player.kicks || [];
+	
+	console.log("kickPlayer kicks "+JSON.stringify(player.kicks));
+	console.log("kickPlayer players "+JSON.stringify(this.players));
+	
+	var hasKick = this.setKick(player, userId);
+	
+	console.log("kickPlayer kicks "+JSON.stringify(player.kicks));	
+	console.log("hasKick "+hasKick)
+	
+	function kickOut(game, result) {
+	  result.kicked = true;
+	  console.log(JSON.stringify(game.players))
+	  game.deletePlayer(targetId, playerIndex);
+	
+	  game.save(function(err, doc) {
+		console.log("is kicked "+err+" "+JSON.stringify(doc))
+        doCallback(callback, err, result);
+	  });
+	}
+	
+    this.save(function(err, doc) {
+	  var cnt = player.kicks.length;
+	  var isKicked = cnt > (doc.players.length / 2);
+	  var result = {'cnt': cnt};
+	
+	console.log("kickPlayer save "+err+' '+cnt+ ' '+doc.players.length+'/2');	
+	
+	  if (isKicked) {	
+		// if player was kicked then remove them from the game
+		kickOut(doc, result);
+	  } else {
+		doCallback(callback, err, result);
+	  }
+    });	
   }
   else {
 	doCallback(callback, "No player");
