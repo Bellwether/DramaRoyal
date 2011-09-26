@@ -18,7 +18,7 @@
                         currentAction.targetId+'' === uid+'' %>
 
     <% if (isPending) { %>
-      <button type='button' id='player-<%- uid %>-kick' class='command kick'>Kick (0)</button>
+      <button type='button' id='player-<%- uid %>-kick' class='command kick'>Kick (<%- player.kicks.length %>)</button>
     <% } %>
 
     <button type='button' id='player-<%- uid %>-tease' class='command <%- isButtonActive && cmd === "tease" ? 'selected' : '' %> <%- isPending ? ' hidden' : '' %>' data-command='tease' <%- isPending ? "disabled='disabled'" : '' %>>Tease</button>

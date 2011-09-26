@@ -26,6 +26,10 @@ function checkAuthorization(req, res, callback) {
 }
 
 module.exports = {
+  get_presence	: function(req, res) {
+	res.render('app/presence');
+  },
+	
   get_privacy: function(req, res) {
 	res.render('app/privacy');
   },

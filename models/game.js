@@ -128,17 +128,18 @@ model.prototype.quitPlayer = function(userId, callback) {
 
   if (player && !this.isEnded()) {
     if (this.isPending()) {
-	  this.deletePlayer(userId, playerIndex);
+	  this.deletePlayer(userId, playerIndex, function(err) {	
+        doCallback(callback, err, game);
+	  });
     } else if (this.isInProgress()) {
 	  player.status = 'quit';
 	  player.esteem = 0;
+      var game = this;
+      this.save(function (err) {
+	    console.log("quitplayer "+err)
+        doCallback(callback, err, game);
+      });
     };
-
-    var game = this;
-    this.save(function (err) {
-	  console.log("quitplayer "+err)
-      doCallback(callback, err, game);
-    });	
   }
   else {
 	doCallback(callback, "No player or active game");
@@ -206,10 +207,8 @@ console.log("game kickPlayer targetId="+targetId+" userId="+userId);
 	function kickOut(game, result) {
 	  result.kicked = true;
 	  console.log(JSON.stringify(game.players))
-	  game.deletePlayer(targetId, playerIndex);
-	
-	  game.save(function(err, doc) {
-		console.log("is kicked "+err+" "+JSON.stringify(doc))
+	  game.deletePlayer(targetId, playerIndex, function(err) {
+		console.log("is kicked "+err)
         doCallback(callback, err, result);
 	  });
 	}

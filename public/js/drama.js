@@ -202,6 +202,7 @@ var outcomeUI = {
 };
 
 var dramaUI = {
+  userId: null,	
   domConnectionStatus: function(){ return $('#chat-status'); },
   domChatButton: function(){ return $('#game-console-submit'); },
   domChatBox: function(){ return $('#game-message'); },	
@@ -366,7 +367,6 @@ var dramaUI = {
 		  } else {
 			btn.addClass('selected');
 		  }
-		  console.log("kicked "+JSON.stringify(doc)); //=====!!!!! !REMOVE #R%@ Q# RQ@# R@QRQ@R# @QR#++++
 	    };
       });
 	
@@ -446,7 +446,6 @@ var Drama = function() {
     setPlayerStatus: function(status, playerId) {
 	  gameAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
     },
-
     startCountdown: function(seconds) {
       var time = seconds;
       dramaUI.setClock(time);	
@@ -472,9 +471,14 @@ var Drama = function() {
     },
     playerKicked: function(data) {
 	  if (data.kicked+'' === 'true') {
-		dramaUI.removePlayer(data.userId);
+		var ownPlayerKicked = data.userId+'' === dramaUI.userId+'';
+		if (ownPlayerKicked) {
+	      window.top.location = "/games";
+		} else {
+		  dramaUI.removePlayer(data.userId);
+		}
 	  } else {
-	    dramaUI.domKickButton(data.userId).val("Kick ("+data.cnt+")");
+	    dramaUI.domKickButton(data.userId).text("Kick ("+data.cnt+")");
 	  }
     },
     playerReady: function(data) {
@@ -647,6 +651,7 @@ var Drama = function() {
           registerSocketEvents(socket);
 
           socket.userId = data.userId;
+          dramaUI.userId = data.userId;
 
           dramaUI.setConnectionStatus('connected');	
           dramaUI.initChatControls(socket, data.userId);
@@ -684,7 +689,6 @@ var Drama = function() {
 	      }
 	      intiateCountdownIfInProgress();
 	
- 
           outcomeUI.init(dramaUI.domOutcomePanel());
         } else {
 	      window.top.location = "/games";
