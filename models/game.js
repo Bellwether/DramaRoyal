@@ -182,12 +182,21 @@ model.prototype.setKick = function(player, userId, removeOnly) {
   return hasKick;
 }
 
+model.prototype.clearKicks = function() {
+  for (var idx = 0; idx < this.players.length; idx++) {
+	var kickCnt = this.players[idx].kicks.length;
+    if (kickCnt > 0) {
+	  this.players[idx].kicks.splice(0,kickCnt);
+    }
+  }
+  this.save();
+}
+
 model.prototype.kickPlayer = function(userId, targetId, callback) {
   if (!this.isPending()) {
 	doCallback(callback, "Can't boot unless game is pending");
     return;
   }
-console.log("game kickPlayer targetId="+targetId+" userId="+userId);
 	
   var playerParts = this.getPlayerAndIndex(targetId);
   var player = playerParts[0];
@@ -195,20 +204,11 @@ console.log("game kickPlayer targetId="+targetId+" userId="+userId);
 	
   if (player) {		
 	var kicks = player.kicks || [];
-	
-	console.log("kickPlayer kicks "+JSON.stringify(player.kicks));
-	console.log("kickPlayer players "+JSON.stringify(this.players));
-	
 	var hasKick = this.setKick(player, userId);
-	
-	console.log("kickPlayer kicks "+JSON.stringify(player.kicks));	
-	console.log("hasKick "+hasKick)
 	
 	function kickOut(game, result) {
 	  result.kicked = true;
-	  console.log(JSON.stringify(game.players))
 	  game.deletePlayer(targetId, playerIndex, function(err) {
-		console.log("is kicked "+err)
         doCallback(callback, err, result);
 	  });
 	}
@@ -217,8 +217,6 @@ console.log("game kickPlayer targetId="+targetId+" userId="+userId);
 	  var cnt = player.kicks.length;
 	  var isKicked = cnt > (doc.players.length / 2);
 	  var result = {'cnt': cnt};
-	
-	console.log("kickPlayer save "+err+' '+cnt+ ' '+doc.players.length+'/2');	
 	
 	  if (isKicked) {	
 		// if player was kicked then remove them from the game
@@ -368,6 +366,7 @@ model.prototype.startDrama = function(callback) {
   var self = this;
   this.createTurn(function(err, turn){
 	doCallback(callback, err, self);
+	self.clearKicks();
   });
 }
 
