@@ -242,12 +242,6 @@ button.command:disabled, input.command:disabled {
   filter: fliph; /*IE*/
 }
 
-#like-button {
-	position: absolute;
-	margin-top: -28px;
-	margin-left: 160px;	
-}
-
 .button.cmd {
   background-color: #f26895;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f26895 0), to(#f26895 50%));
