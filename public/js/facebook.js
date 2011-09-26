@@ -30,7 +30,8 @@ $(document).ready(function() {
 
     // Initialize in-app like button
     // REF: https://developers.facebook.com/docs/reference/plugins/like/
-    FB.XFBML.parse(document.getElementById('like-button'));
+    FB.XFBML.parse(document.getElementById('like-button', function(){}));
+  }
 
   // load remote facebook connect script
   var facebookScriptUrl = document.location.protocol + '//connect.facebook.net/en_US/all.js';
