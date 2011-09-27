@@ -6,7 +6,7 @@ $(document).ready(function() {
       appId:key, 
       cookie:true, 
       status:false, 
-      xfbml:true,
+      xfbml:false,
       oauth:true 
     });
 
