@@ -31,6 +31,12 @@ $(document).ready(function() {
     // Initialize in-app like button
     // REF: https://developers.facebook.com/docs/reference/plugins/like/
     FB.XFBML.parse(document.getElementById('like-button', function(){}));
+
+    // Initialize facepile
+    // REF: https://developers.facebook.com/docs/reference/plugins/facepile/
+    if ($('#facepile').length) {
+	  FB.XFBML.parse(document.getElementById('facepile', function(){}));
+    }
   }
 
   // load remote facebook connect script

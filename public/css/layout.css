@@ -63,16 +63,20 @@ header nav {
   border-radius:1px;
   color:#eee;
   display:inline-block;
+  font-size:14px;
   height:14px;
-  padding:0 2px 1px 2px;
+  padding:0 2px;
   position:relative;
-  font-size:15px;
   top:1px;
 }
 
 #widgets .fb:hover {
   background-color: #EBEDF4;
   border-color: #9DACCE;
+}
+
+#facepile {
+  text-align:center;	
 }
 
 #screens {
