@@ -1,13 +1,19 @@
 <section id='home'>
-  <h2>Welcome,</h2>
+  <% if (hasAvatar) { %>
+    <h2>Welcome back,</h2>
 
-  <p>We're just getting started so you must forgive state of things around here. If you're patient, I'm sure you'll have a cozy place for dramatics in no time at all.</p>
+    <p>Thanks for checking in. We're making nearly daily updates (<a href="http://twitter.com/dramaroyal" target="_blank">follow us on twitter</a> for detailed status updates) but there's still much to be done!</p>
 
-  <p>For <a href='/help'>help</a> with gameplay go to the <a href='/help'>help</a> page for <a href='/help'>help</a> with your <a href='/help'>help</a>.
+    <p>You can help by inviting your friends to battle or waiting in the homeroom to greet newcomers. If you have any other feedback please leave a comment on the <a href="http://www.facebook.com/apps/application.php?id=153494728049768" target="_blank">wall</a>.</p>
+  <% } else { %>
+	<h2>Welcome,</h2>
+	
+    <p>We're just getting started, but please <a href='/avatars/new'>register your schoolgirl</a> and take a look around. There's a rash of truancy at the moment but you can help by inviting your friends to fight. After registering you'll get access to the homeroom where you can create drama! \^_^/</p>
+    
+    <p>To learn the rules go to the <a href='/help'>help page</a>. If you have any other feedback please leave a comment on our <a href="http://www.facebook.com/apps/application.php?id=153494728049768" target="_blank">wall</a>.</p>
 
-  <p>If you stumble into a technical problem or have any thoughts on Drama Royal's development, please make note of it on the <a href="http://www.facebook.com/apps/application.php?id=153494728049768" target="_blank">wall</a> for public record and discussion. (In-game chats are for schoolgirls only - you're unlikely to find support of any kind from your classmates)</p>
+    <p><a href="http://twitter.com/dramaroyal" target="_blank">Follow us on twitter</a> for regular development and any server status updates.</p>
+  <% } %>
 
-  <p>Oh, and <a href="https://www.facebook.com/apps/application.php?id=153494728049768&sk=app_156218351098324">LIKE US ON FACEBOOK</a> so you'll see any game updates and aforementioned discussions in the first place (some people prefer <a href="http://twitter.com/dramaroyal" target="_blank">twitter</a>, though).</p>
-
-  <p>- otherwise, boo you whores &gt;.&lt;</p>
+  <p>- student gov</p>
 </section>
