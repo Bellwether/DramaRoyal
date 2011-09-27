@@ -38,6 +38,43 @@ header nav {
   width:190px;	
 }
 
+#widgets .fb {
+  background-color: #ECEEF5;
+  border: 1px solid #CAD4E7;	
+  -khtml-border-radius:3px;
+  -webkit-border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  border-radius:3px;
+  cursor: pointer;
+  color: #3B5998;
+  display:inline-block;
+  font-size:12px;	
+  padding: 1px 4px 1px 4px;	
+}
+
+#widgets .fb span {
+  background-color:#3B5998;
+  border-color:#133783;
+  -khtml-border-radius:1px;
+  -webkit-border-radius:1px;
+  -moz-border-radius:1px;
+  -webkit-border-radius:1px;
+  border-radius:1px;
+  color:#eee;
+  display:inline-block;
+  height:14px;
+  padding:0 2px 1px 2px;
+  position:relative;
+  font-size:15px;
+  top:1px;
+}
+
+#widgets .fb:hover {
+  background-color: #EBEDF4;
+  border-color: #9DACCE;
+}
+
 #screens {
   margin:14px 0 4px 0;	
 }
