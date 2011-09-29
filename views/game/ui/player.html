@@ -9,7 +9,7 @@
   </ul>
 
   <span class='player-nick'>
-    <a href="<%- 'https://apps.facebook.com/dramaroyal/profiles/' + player.userId %>" target="_blank">
+    <a href="<%- '/profiles/' + player.userId %>" class="popup">
       <%= player.nick %>
     </a>
     <span id="player-status-<%- player.userId %>">(<%- player.status %>)</span>

@@ -218,6 +218,7 @@ header nav {
 
 #mask {
   background-color:#000;
+  cursor:pointer;
   display:none;
   left:0;
   -moz-opacity:.0; 
@@ -233,8 +234,10 @@ header nav {
   background-color:transparent;	
   display:none;
   height:350px;
+  left:60px;
   padding:20px;
   position:absolute;
+  top:15px;
   width:550px;
   z-index:9999;
 }

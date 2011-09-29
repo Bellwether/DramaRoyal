@@ -30,14 +30,9 @@ $(document).ready(function() {
     $('body').append(mask);
     mask.show();    
     mask.fadeTo(400, 0.3);  
- 
-    var winH = $(window).height();
-    var winW = $(window).width();
     
     var dialog = $("<div class='dialog'><span class='close'>&#10006;</span></div>").hide();
     $('body').append(dialog);
-    dialog.css('top',  winH/2-dialog.height()/2);
-    dialog.css('left', winW/2-dialog.width()/2);
 
 	$.ajax({
 	  url: href,

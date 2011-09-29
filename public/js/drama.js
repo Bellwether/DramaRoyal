@@ -555,7 +555,7 @@ var Drama = function() {
 	    esteem = $(esteem);
 	
 	    var paperdoll = avatarUI.getPaperdoll(id);
-	    var nickLink = "<a href='https://apps.facebook.com/dramaroyal/profiles/"+id+"' target='_blank'>"+name+"</a>";
+	    var nickLink = "<a href='/profiles/"+id+"' class='popup'>"+name+"</a>";
 	    var title = $("<span class='player-nick'>"+ nickLink+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");

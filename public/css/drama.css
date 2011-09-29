@@ -79,6 +79,7 @@ margin: 0 0 3px 0;
   text-align:center;
   white-space:nowrap;
   width:105px;
+  z-index:100;
 }
 
 #player-list li .player-nick a {
