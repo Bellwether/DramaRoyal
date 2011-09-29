@@ -38,20 +38,35 @@ $(document).ready(function() {
     $('body').append(dialog);
     dialog.css('top',  winH/2-dialog.height()/2);
     dialog.css('left', winW/2-dialog.width()/2);
- 	
-	jQuery.get(href, undefined, function(data) {
-      dialog.html(data);
-	  dialog.fadeIn(500);		
-      mask.click(MaskClick);
-	}, "html");
+
+	$.ajax({
+	  url: href,
+	  dataType: 'html',
+	  success: function(data, textStatus) {
+        dialog.html(data);
+	    dialog.fadeIn(500);		
+        mask.click(MaskClick);
+	  },
+	  error: function() {
+	    MaskHide();	
+	  }
+	});
 
 	return false;
   };
-  function MaskClick(event) {	
+  function DialogHide() {
+    $('.dialog').fadeTo(200, 0, function(){
+	  $('.dialog').remove();
+    });
+  }
+  function MaskHide() {
     $('#mask').fadeTo(300, 0, function(){
 	  $('#mask').remove();
     });
-    $('.dialog').remove();
+  }
+  function MaskClick(event) {	
+	MaskHide();
+    DialogHide();
   }
   function CloseDialogClick(event) {
     e.preventDefault();

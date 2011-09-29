@@ -8,6 +8,7 @@ module.exports = {
 
   show: function(req, res) {
 	var userId = req.params.id;
+	if (userId === 'me') userId = req.user.getId();
 
     usr.findOne({_id: userId}, function(err, doc) {
 	  if (!err && doc) {

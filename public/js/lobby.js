@@ -22,10 +22,12 @@ var gameUI = {
     function makeJoinLink() { return $('<a href="/games/'+gid+'">[join drama]</a>'); }
     function makePlayerList() {
 	  var ul = $('<ul></ul>');
-
 	  for(var idx = 0; idx < players.length; idx++) {
 	    var liId = 'game-'+gid+'-player-'+players[idx]._id;
-	    $('<li id="'+liId+'">'+players[idx].nick+'</li>').appendTo(ul);
+	    var li = $('<li id="'+liId+'"></li>');
+	    var nameLink = $("<a href='/profiles/"+players[idx]._id+"' class='popup'>"+players[idx].nick+"</a>");
+	    nameLink.appendTo(li);
+	    li.appendTo(ul);
 	  };	
 	  return ul;
     }
@@ -52,7 +54,7 @@ var gameUI = {
     var nick = data.player.nick;
 
     function makePlayerElement() { 
-	  return $('<li id="'+'game-'+gid+'-player-'+pid+'">'+nick+'</li>'); 
+	  return $('<li id="'+'game-'+gid+'-player-'+pid+'"><a href="/profiles/'+pid+'" class="popup">'+nick+'</a></li>'); 
 	} 
 
     var players = gameUI.domGameItem(gid).children('ul').first();
@@ -188,7 +190,6 @@ var Lobby = function() {
       }
 	
 	  function onAuthorized(data) {	
-		if (window.console) console.log("onAuthorized!!!! "+JSON.stringify(data))
         if (data.authorized) {
 		  socket.on('player', onGamePlayerEvent);
 		  socket.on('game', onGameEvent);
