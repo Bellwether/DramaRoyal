@@ -15,6 +15,53 @@ $(document).ready(function() {
   }
   $('a[data-method="delete"], button[data-method="delete"]').live('click', LiveClick);
 
+  function DialogClick(event) {
+	event.preventDefault();
+
+	var link = $(this);
+    var href = link.attr('href') || link.attr('action');	
+	var title = link.data('title');
+ 
+    var maskHeight = $(document).height();
+    var maskWidth = $(window).width();
+
+    var mask = $("<div id='mask'></div>");
+    mask.css({'width':maskWidth,'height':maskHeight});
+    $('body').append(mask);
+    mask.show();    
+    mask.fadeTo(400, 0.3);  
+ 
+    var winH = $(window).height();
+    var winW = $(window).width();
+    
+    var dialog = $("<div class='dialog'></div>").hide();
+    $('body').append(dialog);
+    dialog.css('top',  winH/2-dialog.height()/2);
+    dialog.css('left', winW/2-dialog.width()/2);
+ 	
+	jQuery.get(href, undefined, function(data) {
+      dialog.html(data);
+	  dialog.fadeIn(500);		
+      mask.click(MaskClick);
+	}, "html");
+
+	return false;
+  };
+  function MaskClick(event) {	
+    $('#mask').fadeTo(300, 0, function(){
+	  $('#mask').remove();
+    });
+    $('.dialog').remove();
+  }
+  function CloseDialogClick(event) {
+    e.preventDefault();
+    $('#mask, .dialog').hide();
+    return false;
+  }
+
+  $('.popup').live('click', DialogClick);
+  $('.dialog .close').live('click', CloseDialogClick);
+
   function InlineEditClick(event) {
     var el = $(this);
     var target = $('#'+el.data('target'));

@@ -84,7 +84,7 @@ var lobbyUI = {
   },
   printMessage: function(message, name, userId){
 	var msg = lobbyUI.stripChatHTML(message);
-    var element = name ? $("<p><a href='/profiles/"+userId+"'>"+name+'</a>: '+msg+'</p>') : $('<p>'+msg+'</p>');
+    var element = name ? $("<p><a class='popup' href='/profiles/"+userId+"'>"+name+'</a>: '+msg+'</p>') : $('<p>'+msg+'</p>');
     element.prependTo(lobbyUI.domLobbyChat());
 
     var wasJoiningMsg = message.indexOf('entered the homeroom') > 0;
@@ -167,7 +167,8 @@ var Lobby = function() {
 	  var hours = utc.getHours();
 	  var minutes = utc.getMinutes() < 10 ? '0'+utc.getMinutes() : utc.getMinutes();
 	
-	  var msg = message.msg + " @"+hours+":"+minutes;
+	  var ts = isNaN(hours) || isNaN(minutes) ? message.ts : (hours+":"+minutes);
+	  var msg = message.msg+" @"+ts;
 	  lobbyUI.printMessage(msg, nick, message.uid);
 	}
 	lobbyUI.printMessage("You can hear the giggling of girls...");

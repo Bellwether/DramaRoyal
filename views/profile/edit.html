@@ -8,9 +8,14 @@
 
   <div class='bio'>
     <% var bio = JSON.parse(JSON.stringify(player.avatar)).bio %>
-	<h6>bio</h6>
+	<h6>
+	  <span>bio</span> 
+	  <a id='save-bio' class='hidden'>[save]</a>
+	  <a class='editable' data-target='bio-text' data-button='save-bio' data-url='/avatars/me' data-method='PUT'>[edit]</a> 
+	</h6>
 	<span id='bio-text'><%= bio ? bio : "Just some stupid girl." %></span>
   </div>
+
   <div class='doll'>
 	<img class='paperdoll-arms' src='/img/avatars/basicarms.png'>
     <img class='paperdoll' src="/img/avatars/normalstance.png" />
