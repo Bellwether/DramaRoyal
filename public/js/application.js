@@ -34,7 +34,7 @@ $(document).ready(function() {
     var winH = $(window).height();
     var winW = $(window).width();
     
-    var dialog = $("<div class='dialog'></div>").hide();
+    var dialog = $("<div class='dialog'><span class='close'>&#10006;</span></div>").hide();
     $('body').append(dialog);
     dialog.css('top',  winH/2-dialog.height()/2);
     dialog.css('left', winW/2-dialog.width()/2);
@@ -43,7 +43,7 @@ $(document).ready(function() {
 	  url: href,
 	  dataType: 'html',
 	  success: function(data, textStatus) {
-        dialog.html(data);
+        dialog.prepend(data);
 	    dialog.fadeIn(500);		
         mask.click(MaskClick);
 	  },
@@ -68,7 +68,7 @@ $(document).ready(function() {
 	MaskHide();
     DialogHide();
   }
-  function CloseDialogClick(event) {
+  function CloseDialogClick(e) {
     e.preventDefault();
     $('#mask, .dialog').hide();
     return false;

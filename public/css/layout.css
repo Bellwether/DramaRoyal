@@ -4,6 +4,8 @@ img {
 
 .hidden {display:none;}
 
+.pad {padding:10px;}
+
 #container {
   width:700px;	
 }
@@ -228,11 +230,39 @@ header nav {
 }
    
 .dialog {
-  background-color:#eee;	
+  background-color:transparent;	
   display:none;
   height:350px;
   padding:20px;
   position:absolute;
   width:550px;
   z-index:9999;
+}
+
+.dialog .close {
+  background-color:#b20f46;
+  border:5px solid #fff;
+  border-radius:25px;
+  -moz-border-radius:25px;
+  -webkit-border-radius:25px;
+  -khtml-border-radius:25px;
+  color:#fff;
+  cursor:pointer;
+  display:inline-block;
+  float:right;	
+  font-size:32px;
+  height:40px;
+  line-height:40px;
+  margin-right:10px;
+  position:relative;
+  text-align:center;
+  top:-50px;
+  vertical-align:middle;
+  width:40px;
+  z-index:10000;
+}
+
+.dialog .close:hover {
+  background-color:#f61891;	
+  text-shadow: 0 -1px 1px #888;
 }
