@@ -49,17 +49,26 @@
 }
 
 #player-list li .chat-bubble {
-  border:1px solid #eee;
+  background-color:#F2FFFB;
+  border:2px solid #666666;
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  border-radius:10px;
   height:100px;
-  margin:2px 0 0 0;
+  font-size:35px;
+  line-height:1.3em;
+  margin:2px 1px 0 0;
   overflow-y:auto;
+  padding:3px;
+  position:relative;
   text-align:left;
 }
 
 #player-list li .chat-bubble p {
-font-size: 10px;
-line-height:11px;
-margin: 0 0 3px 0;
+  color:#000;
+  font-size: 10px;
+  line-height:11px;
+  margin: 0 0 3px 0;
 }
 
 #player-list li .player-nick {
@@ -108,6 +117,7 @@ margin: 0 0 3px 0;
 .player-controls {
   position: relative;
   text-align:center;
+  top:-3px;
   white-space:nowrap;	
 }
 
