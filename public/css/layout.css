@@ -1,10 +1,10 @@
-img {
-  border:none;	
-}
-
 .hidden {display:none;}
 
 .pad {padding:10px;}
+
+input[disabled=disabled] {
+  cursor:default;
+}
 
 #container {
   width:700px;	
