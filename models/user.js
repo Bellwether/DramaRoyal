@@ -41,7 +41,7 @@ function userParamsFromGraph(data, oAuthToken){
   var gender = userData['gender'];
   var username = userData['username'];	
   var verified = userData['verified'];
-  var country = data['locale'].length ? data['locale'].split('_').last() : null;
+  var country = data['locale'].length ? data['locale'].split('_', 2)[1] : null;
   var friends = (userData['friends'] || {})['data'] || [];
   var friendIds = [];
   for (var idx = 0; idx < friends.length; idx++) {
