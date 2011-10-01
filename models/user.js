@@ -24,7 +24,8 @@ var schema = new Schema({
 	nick: String
   },
   money: {type: Number, default: 0},
-  dramaCnt: {type: Number, default: 0}
+  dramaCnt: {type: Number, default: 0},
+  cn: String // country
 });
 var model = mongoose.model('User', schema);
 
@@ -40,30 +41,31 @@ function userParamsFromGraph(data, oAuthToken){
   var gender = userData['gender'];
   var username = userData['username'];	
   var verified = userData['verified'];
+  var country = data['country'];
   var friends = (userData['friends'] || {})['data'] || [];
   var friendIds = [];
   for (var idx = 0; idx < friends.length; idx++) {
     friendIds.push( friends[idx].id );
   }
 
-  var params = {name: name, full: fullName, fbId: fbId, token: oAuthToken, sex: gender}	
+  var params = {name: name, full: fullName, fbId: fbId, token: oAuthToken, sex: gender, cn: country}	
   return params;
 }
 
 model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFunction, callback) {
   model.findByFbId(facebookUserId, function (err, doc){
     if (doc) {
-	  var hasTokenChanged = doc.token !== oAuthToken;
-	  if (hasTokenChanged) {
-		console.log("@@fb FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
-		doc.token = oAuthToken;
-	    doc.save(function (err, doc) {
+      var hasTokenChanged = doc.token !== oAuthToken;
+      if (hasTokenChanged) {
+        console.log("@@fb FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
+        doc.token = oAuthToken;
+        doc.save(function (err, doc) {
           doCallback(callback, err, doc);
-	    });
-	  } else {
-		console.log("FOUND user by FB ID: "+facebookUserId)
-          doCallback(callback, err, doc);
-	  };
+        });
+      } else {
+        console.log("FOUND user by FB ID: "+facebookUserId)
+        doCallback(callback, err, doc);
+      };
     } else if (typeof fbGraphFunction === 'function') {
 	  fbGraphFunction(function(userData){
 		console.log("@@fb fbGraphFunction RESULTS : "+JSON.stringify(userData))
