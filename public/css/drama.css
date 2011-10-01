@@ -177,7 +177,7 @@
   cursor:pointer;
   display:inline-block;
   font-size:9px;
-  margin:0;
+  margin:0 1px 0 0;
   padding: 3px 1px 1px 1px;
   text-align:center;
 }
@@ -206,13 +206,16 @@ button.command:disabled, input.command:disabled {
 .command.green;{ background-color: #749a02; }
 .command.red:hover,
 .command.red.selected { background-color: #EE110E; }
-.command.red { background-color: #AB1D1D; }
+.command.red,
+.command.red.disabled:hover { background-color: #AB1D1D; }
 .command.kick.orange:hover,
 .command.kick.orange.selected { background-color: #ff5c00; }
-.command.kick.orange { background-color: #d45500; }
+.command.kick.orange,
+.command.kick.orange.disabled:hover { background-color: #d45500; }
 .command.blue:hover, 
 .command.blue.selected { background-color: #2787EE; }
-.command.blue { background-color: #1F65B4; }
+.command.blue,
+.command.blue.disabled:hover { background-color: #1F65B4; }
 .command.yellow:hover { background-color: #ffb515; }
 .command.yellow { background-color: #fc9200; }
 
@@ -239,4 +242,11 @@ button.command:disabled, input.command:disabled {
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
   filter: fliph; /*IE*/
+}
+
+.doll .scratches {
+  margin-left:38px;	
+  margin-top:35px;
+  position:absolute;
+  z-index:10;
 }

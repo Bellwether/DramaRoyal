@@ -1,6 +1,6 @@
 var avatarUI = {
   defeatedStance: "/img/avatars/defeatedstance.png",
-  getPaperdoll: function(id, stance) {
+  createPaperdoll: function(id, stance) {
     var dollDiv = $("<div class='doll'></div>")
     var dollArmsImg;
     var dollImg;
@@ -33,6 +33,12 @@ var outcomeUI = {
   domOutcomeList: function(){ return outcomeUI.domOutcomePanel().children('ul').first(); },
   domOutcomePages: function() { return $('#outcome-pages'); },	
   domPlayerStatus: function(playerId) { return $('#player-status-'+playerId); },
+  didAttackHit: function(attack) {
+    return attack.hit+'' === 'true';
+  },
+  isScratching: function(attack) {
+    return attack.cmd === 'scratch';	
+  },
   isVisible: function() {
     return outcomeUI.domOutcomePanel().is(":visible");
   },
@@ -45,29 +51,40 @@ var outcomeUI = {
     var desciptionPara = $('<p>'+outcome.description+'</p>');
     desciptionPara.appendTo(li);
 
-    function addTarget(target) {
-      var paperdoll = avatarUI.getPaperdoll(0)
+    function addScratch(paperdoll) {
+	  var scratch = $("<img class='scratches' src='/img/avatars/scratchmarks.png'>");
+	  paperdoll.prepend(scratch);
+    }
+
+    function addTarget(target, scratched) {
+      var paperdoll = avatarUI.createPaperdoll(0);
       paperdoll.addClass('flip');
+	  if (scratched) addScratch(paperdoll);
+	
       paperdoll.appendTo(li);
     }
 
     function addAttacker(attacker) {
-	  var paperdoll = avatarUI.getPaperdoll(0, attacker.cmd);
+	  var paperdoll = avatarUI.createPaperdoll(0, attacker.cmd);
 	  paperdoll.css("margin-left","-20px");
 	  paperdoll.appendTo(li);
     }
 
+    var scratched = false;
     if (outcome.attackers) {
 	  for (var idx = 0; idx < outcome.attackers.length; idx++) {
 		var attacker = outcome.attackers[idx];
 		addAttacker(attacker);
+		if (outcomeUI.isScratching(attacker) && outcomeUI.didAttackHit(attacker)) {
+		  scratched = true;
+		}
 	  }
     }
 
     if (outcome.targets) {
 	  for (var idx = 0; idx < outcome.targets.length; idx++) {
 		var target = outcome.targets[idx];
-		addTarget(target);
+		addTarget(target, scratched);
 	  }
     }
 
@@ -554,15 +571,15 @@ var Drama = function() {
 	    esteem = esteem + "</div>";
 	    esteem = $(esteem);
 	
-	    var paperdoll = avatarUI.getPaperdoll(id);
+	    var paperdoll = avatarUI.createPaperdoll(id);
 	    var nickLink = "<a href='/profiles/"+id+"' class='popup'>"+name+"</a>";
 	    var title = $("<span class='player-nick'>"+ nickLink+" <span id='player-status-"+id+"'>(pending)</span></span>");
 
 	    var ctrlDiv = $("<div id='player-target-controls-"+id+"' class='player-controls'></div");
-	    var kick = $("<button type='button' id='player-"+id+"-kick' class='command kick'>Boot 0</button>");
-	    var tease = $("<button type='button' class='command hidden' data-command='tease' disabled='disabled'>Tease</button>");
-	    var scratch = $("<button type='button' class='command hidden' data-command='scratch' disabled='disabled'>Scratch</button>");
-	    var grab = $("<button type='button' class='command hidden' data-command='grab' disabled='disabled'>Grab</button>");
+	    var kick = $("<button type='button' id='player-"+id+"-kick' class='command kick orange'>Boot 0</button>");
+	    var tease = $("<button type='button' class='command red hidden' data-command='tease' disabled='disabled'>Tease</button>&nbsp;");
+	    var scratch = $("<button type='button' class='command red hidden' data-command='scratch' disabled='disabled'>Scratch</button>&nbsp;");
+	    var grab = $("<button type='button' class='command red hidden' data-command='grab' disabled='disabled'>Grab</button>");
 
 	    chatBubble.appendTo(li);
 	    esteem.appendTo(li);
