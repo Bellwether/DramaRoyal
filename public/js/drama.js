@@ -141,6 +141,10 @@ var outcomeUI = {
 	  outcomeUI.setPlayerStatus('humiliated', targetId);
 	  dramaUI.disableTargetPlayer(targetId);	
 	  dramaUI.humiliateAvatar(targetId);
+	
+	  if (dramaUI.userId+''===targetId+'') {
+	    dramaUI.removeGame(); // player herself was humiliated so remove all game controls
+	  }
     }	
   },
   displayOutcome: function(data) {
