@@ -5,6 +5,9 @@
     <% var seniority = parseInt(((new Date()) - (new Date(player.ts.getFullYear(), player.ts.getMonth(), player.ts.getDate())) )/1000/60/60/24) %>
     Enrolled for <%- Math.max(seniority, 1) %> <%- seniority > 1 ? 'days' : 'day' %>
   </h6>
+  <% if (player.cn) { %>	
+	<p class='country'><img src='/img/flags/<%- player.cn %>.png' /> <%- player.cn %></p>
+  <% } %>
 
   <div class='bio'>
     <% var bio = JSON.parse(JSON.stringify(player.avatar)).bio %>
