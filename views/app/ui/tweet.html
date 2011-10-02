@@ -1,0 +1,7 @@
+<% tweet = JSON.parse(JSON.stringify(tweet)) %>
+
+<li class='tweet'>
+  <a href="http://twitter.com/dramaroyal/status/<%- tweet.id_str %>" target='_blank'><%= tweet.text %></a>
+  <br />
+  <em><%- tweet.created_at ? tweet.created_at.split('+',2)[0] : ''%></em>
+</li>

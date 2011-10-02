@@ -6,6 +6,52 @@ img {
   border:none;	
 }
 
+#home h4 {
+  letter-spacing:0.15em;
+}
+
+#home h4 img {
+  height:16px;
+  vertical-align:top;
+  width:16px;
+}
+
+#home h4 span {
+  color:#133783;	
+  display:inline-block;	
+  font-size:18px;
+  height:16px;	
+  line-height:18px;
+  text-align:center;
+  width:16px;
+}
+
+#twitter-timeline {
+  list-style:none;	
+  margin:0;
+  padding:0;
+}
+
+#twitter-timeline .tweet {
+  background-color:#eee;	
+  -khtml-border-radius:5px;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;;
+  border-radius:5px;
+  font-size:11px;
+  margin-bottom:2px;
+  padding:3px;
+}
+
+#twitter-timeline .tweet a {
+  color:#395594;	
+}
+
+#twitter-timeline .tweet em {
+  font-size:9px;	
+}
+
 #help {
   font-size:70%;
 }

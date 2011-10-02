@@ -1,4 +1,5 @@
 var fbg = require('./../lib/facebook/graph').GraphAPI();
+var twtr = require('./../lib/twitter/timeline');
 
 function getRequestIds(req) {
   return (req.query && req.query.request_ids) || 
@@ -60,7 +61,9 @@ module.exports = {
 	if (sentByRequest) clearFBRequests(req, res);
 
     checkAuthorization(req, res, function() {
-	  res.render('app/index', {'sentByRequest': sentByRequest});
+	  twtr.getTweets(function(err, tweets) {
+		res.render('app/index', {'sentByRequest': sentByRequest, 'tweets': tweets || []});
+	  })
     }, false);	
   }
 };

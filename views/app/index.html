@@ -11,11 +11,14 @@
     <p>We're just getting started, but please <a href='/avatars/new'>register your schoolgirl</a> and take a look around. There's a rash of truancy at the moment but you can help by inviting your friends to fight. After registering you'll get access to the homeroom where you can create drama! \^_^/</p>
     
     <p>To learn the rules go to the <a href='/help'>help page</a>. If you have any other feedback please leave a comment on our <a href="http://www.facebook.com/apps/application.php?id=153494728049768" target="_blank">wall</a>.</p>
-
-    <p><a href="http://twitter.com/dramaroyal" target="_blank">Follow us on twitter</a> for regular development and any server status updates.</p>
   <% } %>
+	
+	<h4><span>&#9813;</span> Your Frenemies:</h4>
+    <p id='facepile'>
+	  <% if (isProductionEnv) { %>
+        <fb:facepile size="small" width="600" max_rows="2"></fb:facepile>
+      <% } %>
+    </p>
 
-  <div id='facepile'>
-    <fb:facepile size="small" width="600" max_rows="2"></fb:facepile>
-  </div>
+    <%- partial('app/ui/tweets') %>
 </section>
