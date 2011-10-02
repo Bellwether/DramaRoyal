@@ -9,6 +9,9 @@
     Enrolled for <%- Math.max(seniority, 1) %> <%- seniority > 1 ? 'days' : 'day' %>
   </h6>
 
+  <% if (player.cn) { %>	
+	<p class='country'><img src='img/flags/<%- player.cn %>.png' /> <%- player.cn %></p>
+  <% } %>
   <div class='pad'>
   <div class='bio'>
     <% var bio = JSON.parse(JSON.stringify(player.avatar)).bio %>

@@ -187,6 +187,7 @@ header nav {
   -o-box-shadow: inset 0 1px 0 0 #72b9eb, 0 1px 2px 0 #b3b3b3;
   box-shadow: inset 0 1px 0 0 #72b9eb, 0 1px 2px 0 #b3b3b3;
   color: #fff;
+  float:right;
   font: normal 11px "lucida grande", sans-serif;
   padding: 1px 6px;
   text-align: center;
@@ -268,4 +269,8 @@ header nav {
 .dialog .close:hover {
   background-color:#f61891;	
   text-shadow: 0 -1px 1px #888;
+}
+
+#main {
+  clear:both;	
 }
