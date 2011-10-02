@@ -44,12 +44,13 @@ module.exports = {
     var userId = req.user.getId();
     var nick = req.user.avatar();
 
-    function onCreateGame(err, game) {
-	  if (game) {
-        res.redirect('/games/'+game._id);
-      } else {
-	    console.log("error creating game "+err);
-        res.redirect('/games');
+    function onCreateGame(err, gameOrId) {
+	  if (err) {
+		console.log("error creating game "+err);
+		var url = (gameOrId) ? '/games/'+gameOrId : '/games';
+	    res.redirect(url);
+      } else {		
+        res.redirect('/games/'+gameOrId._id);
       }
     }
 	
