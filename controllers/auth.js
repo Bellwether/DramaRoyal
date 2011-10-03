@@ -1,5 +1,10 @@
 var cnfg = require('./../lib/facebook/config');
 
+var facebookDeauthorizeAction = function(req, res) {
+  console.log("@@fb FACEBOOK DEAUTH "+req.params);
+  console.log("@@fb FACEBOOK DEAUTH "+req.query);
+}
+
 var facebookAuthorizeAction = function(req, res) {
   var code = req.query.code;
   var error = req.query.error;
@@ -17,6 +22,8 @@ var facebookAuthorizeAction = function(req, res) {
 module.exports = {
   get_oauth: facebookAuthorizeAction,
   post_oauth: facebookAuthorizeAction,
+  get_deoauth: facebookDeauthorizeAction,
+  post_deoauth: facebookDeauthorizeAction,
 
   index: function(req, res) {
 	var authUrl = res.getOAuthDialogUrl();

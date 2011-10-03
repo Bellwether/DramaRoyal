@@ -155,6 +155,13 @@ header nav {
   text-shadow: 1 -1px 2px #999;
 }
 
+#hud-menu {
+  overflow:hidden;
+  position:relative;
+  top:-15px;
+  width:275px;	
+}
+
 #audio-controls[disabled=disabled] {
   -moz-opacity:.55; 
   -ms-filter:"alpha(opacity=55)"; 
@@ -237,9 +244,8 @@ header nav {
   display:none;
   height:350px;
   left:60px;
-  padding:20px;
   position:absolute;
-  top:15px;
+  top:10px;
   width:550px;
   z-index:9999;
 }

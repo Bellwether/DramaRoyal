@@ -225,6 +225,7 @@ var outcomeUI = {
 var dramaUI = {
   userId: null,	
   domConnectionStatus: function(){ return $('#chat-status'); },
+  domChatBubble: function(userId) { return $('#player-chat-'+userId); },
   domChatButton: function(){ return $('#game-console-submit'); },
   domChatBox: function(){ return $('#game-message'); },	
   domReadyButton: function(){ return $('#player-ready'); },
@@ -255,9 +256,14 @@ var dramaUI = {
     dramaUI.domMedButton().text('Med '+meds);
     dramaUI.domMedButton().data('count', meds);
   },
-  printMessage: function(message, userId){
+  printMessage: function(message, userId) {
+	var maxMessageElements = 25;
+	if (dramaUI.domChatBubble(userId).children('p').length >= maxMessageElements) {
+	  dramaUI.domChatBubble(userId).children('p').last().remove();
+	}
+	
 	var element = $('<p>'+message+'</p>');
-    element.prependTo($('#player-chat-'+userId));
+    element.prependTo(dramaUI.domChatBubble(userId));
   },
   setClock: function(time) {
     $('#turn-timer').html( time ? (time + ' seconds') : '' );

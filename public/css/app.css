@@ -53,15 +53,13 @@ img {
 }
 
 #help {
+  background-color:#eee;	
   font-size:70%;
+  padding:0 5px 10px 5px;
 }
 
 #help p {
   margin: 6px 0;	
-}
-
-#help h2 {
-  margin:2px 0 6px 0;
 }
 
 #help h3 {

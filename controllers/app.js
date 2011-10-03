@@ -52,7 +52,7 @@ module.exports = {
   },
 
   get_help: function(req, res) {
-	res.render('app/help');
+	res.render('app/help', {layout: false});
   },
 
   index: function(req, res) {
