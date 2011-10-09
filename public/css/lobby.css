@@ -119,17 +119,47 @@
 #game-list ul {
   font-size:10px;	
   list-style:none;
+  overflow-x:hidden;
   margin:0;
   padding:0;
+  white-space:normal;
+}
+
+#game-list ul li {
+  overflow-x:hidden;
 }
 
 #lobby-chat p {
-  padding: 3px;
-  margin: 0;
+  margin: 2px 0;
+  padding:0 3px;
+  white-space:nowrap;
+}
+
+#lobby-chat p span {
+  background-color:#E4E5C4;
+  -khtml-border-radius:8px;
+  -webkit-border-radius:8px;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  border-radius:8px;
+  display:inline-block;
+  max-width:275px;
+  overflow:hidden;
+  padding:3px 3px;
+  white-space:normal;
 }
 
 #lobby-chat p a {
-  font-weight: bold;
+  display:inline-block;	
+  width:50px;
+  margin-right:5px;
+  overflow:hidden;
+  vertical-align:top;
+}
+
+#lobby-chat p em {
+  color:#999;	
+  font-style:normal;	
 }
 
 .lobby-game {

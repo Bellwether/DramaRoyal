@@ -736,17 +736,17 @@ var Drama = function() {
 	  }
 	
 	  function onConnectFailed() {	
-        dramaUI.setConnectionStatus('cannot connect to game');
+        dramaUI.setConnectionStatus('unconnectable');
 	  }
 	  function onReconnecting(){
-        dramaUI.setConnectionStatus('reconnecting to game');
+        dramaUI.setConnectionStatus('reconnecting');
 	  };
 	  function onReconnect(){
-        dramaUI.setConnectionStatus('reconnected to game');
+        dramaUI.setConnectionStatus('reconnected');
         dramaUI.enableChat();
 	  };
 	  function onReconnectFailure(){
-        dramaUI.setConnectionStatus('failed to reconnect to game');
+        dramaUI.setConnectionStatus('unconnectable');
 	  };	
 	
 	  socket.on('connect', onConnect);

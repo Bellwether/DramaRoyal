@@ -90,7 +90,7 @@ var lobbyUI = {
   },
   printMessage: function(message, name, userId){
 	var msg = lobbyUI.stripChatHTML(message);
-    var element = name ? $("<p><a class='popup' href='/profiles/"+userId+"'>"+name+'</a>: '+msg+'</p>') : $('<p>'+msg+'</p>');
+    var element = name ? $("<p><a class='popup' href='/profiles/"+userId+"'>"+name+'</a> <span>'+msg+'</span></p>') : $('<p><em>'+msg+'</em></p>');
     element.prependTo(lobbyUI.domLobbyChat());
 
     var wasJoiningMsg = message.indexOf('entered the homeroom') > 0;
@@ -116,6 +116,7 @@ var lobbyUI = {
       return false;
     };
     lobbyUI.domChatButton().click(emitChatMessage);
+    lobbyUI.domChatBox().focus();
   }
 }
 
@@ -220,17 +221,17 @@ var Lobby = function() {
 	  }
 	
 	  function onConnectFailed() {	
-        lobbyUI.setConnectionStatus('cannot connect to chat');
+        lobbyUI.setConnectionStatus('unconnectable');
 	  }
 	  function onReconnecting(){
-        lobbyUI.setConnectionStatus('reconnecting to chat');
+        lobbyUI.setConnectionStatus('reconnecting');
 	  };
 	  function onReconnect(){
-        lobbyUI.setConnectionStatus('reconnected to chat');
+        lobbyUI.setConnectionStatus('reconnected');
         lobbyUI.enableChat();
 	  };
 	  function onReconnectFailure(){
-        lobbyUI.setConnectionStatus('failed to reconnect to chat');
+        lobbyUI.setConnectionStatus('unconnectable');
 	  };
 
 	  socket.on('connect', onConnect);
