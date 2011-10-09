@@ -95,11 +95,6 @@
   font-size:18px;	
 }
 
-#avatar-form p,
-#game-form p {
-  height:20px;	
-}
-
 .console-block,
 #game-console {
   display:inline-block;	
@@ -119,17 +114,6 @@
   text-align:center;
   top:-3px;
   white-space:nowrap;	
-}
-
-#game-console button,
-#game-console input[type=submit] {
-  margin-right:5px;
-}
-
-#chat-status {
-  display:inline-block;	
-  margin-bottom:10px;
-  width:200px;	
 }
 
 #turn-outcomes {
@@ -168,7 +152,9 @@
   background-color:#ccc;
   border:1px solid transparent;
   border-bottom: 1px solid rgba(0,0,0,0.25);
+  -khtml-border-radius:3px;
   -webkit-border-radius:3px;
+  -moz-border-radius:3px;
   -webkit-border-radius:3px;
   border-radius:3px;
   -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.6);

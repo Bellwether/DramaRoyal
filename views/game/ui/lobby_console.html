@@ -1,12 +1,15 @@
 <form id="lobby-console" method="post" action="/lobby_messages" class='hidden'>
-  <span class='console-block'>
+  <span class='console-block left'>
   	<img src='/img/avatars/head.png' id='avatar' />
     <input type='text' id="lobby-message" name="message" autofocus="autofocus" />
   </span>
+
   <span class='console-block'>
-    <span id='chat-status'>Status: connecting to chat</span>
-    <br />
-    <input id="lobby-console-submit" type="submit" value="Chat" disabled='disabled' class='button cmd' />
-    <a href="/games/new" class="button link">Start some drama</a>
+    <span id='chat-status'>Chat Status <span>connecting</span></span>
+
+    <span id='chat-buttons'>
+      <input id="lobby-console-submit" type="submit" value="Chat" disabled='disabled' class='button cmd' />
+      <a href="/games/new" class="button link">Start some drama</a>
+    </span>
   </span>
 </form>

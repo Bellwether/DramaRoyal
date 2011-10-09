@@ -1,10 +1,12 @@
 var gameUI = {
   domGameList: function() { return $('#game-list'); },	
   domGameItem: function(gameId) { return $('#game-'+gameId) },
+  domGameItemPlayerList: function(gameId) { return $('#game-'+gameId+'-players') },
   domPlayerItem: function(gameId, playerId) { return $('#game-'+gameId+'-player-'+playerId); },
   startGame: function(data) {
     var li = $('#game-'+data.game._id);
-    var link = li.children('a').replaceWith(' (Fighting!)');
+    li.children('.join').remove();
+    li.addClass('active')
   },
   endGame: function(data) {
     gameUI.domGameItem(data.game._id).remove();
@@ -18,10 +20,11 @@ var gameUI = {
     if ( gameUI.domGameItem(gid).html() !== null) return;
 
     function makeGameElement() { return $('<li id="game-'+gid+'" class="lobby-game"></li>'); } 
+    function makeJoinLink() { return $('<a href="/games/'+gid+'" class="join button link">JOIN</a>'); }
     function makeTitle() { return $('<h5>'+game.title+' </h5>'); }
-    function makeJoinLink() { return $('<a href="/games/'+gid+'">[join drama]</a>'); }
+    function makeBody() { return $('<div class="body"></div>'); }
     function makePlayerList() {
-	  var ul = $('<ul></ul>');
+	  var ul = $('<ul id="game-'+gid+'-players"></ul>');
 	  for(var idx = 0; idx < players.length; idx++) {
 	    var liId = 'game-'+gid+'-player-'+players[idx]._id;
 	    var li = $('<li id="'+liId+'"></li>');
@@ -33,13 +36,15 @@ var gameUI = {
     }
 
     var li = makeGameElement();
-    var title = makeTitle();
     var link = makeJoinLink();
+    var title = makeTitle();
+    var body = makeBody();
     var playerList = makePlayerList();
-
-    title.appendTo(li);
-    playerList.appendTo(li);
+	
     link.appendTo(li);
+    title.appendTo(li);
+    playerList.appendTo(body);
+    body.appendTo(li);
     li.appendTo(gameUI.domGameList());
     lobbyUI.setGameCount(gameUI.domGameList().children('li').length);
   },
@@ -56,15 +61,14 @@ var gameUI = {
     function makePlayerElement() { 
 	  return $('<li id="'+'game-'+gid+'-player-'+pid+'"><a href="/profiles/'+pid+'" class="popup">'+nick+'</a></li>'); 
 	} 
-
-    var players = gameUI.domGameItem(gid).children('ul').first();
+	
     var player = makePlayerElement();
-    player.appendTo(players);
+    player.appendTo(gameUI.domGameItemPlayerList(gid));
   }
 }
 
 var lobbyUI = {
-  domConnectionStatus: function(){ return $('#chat-status'); },
+  domConnectionStatus: function(){ return $('#chat-status').children('span').first(); },
   domPlayerCount: function(){ return $('#player-count'); },
   domGameCount: function(){ return $('#game-count'); },
   domLobbyChat: function(){ return $('#lobby-chat'); },
@@ -76,7 +80,7 @@ var lobbyUI = {
     return (message || '').replace(/<\/?[^>]+>/gi, '');
   },
   setConnectionStatus: function (status){
-    lobbyUI.domConnectionStatus().text('Status: '+status);
+    lobbyUI.domConnectionStatus().text(status);
   },
   setplayerCount: function(cnt){
     lobbyUI.domPlayerCount().text('('+cnt+(cnt === 1 ? ' girl' : ' girls')+' present)');

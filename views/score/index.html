@@ -1,8 +1,16 @@
 <section id="leaderboards">
+  <h2>Drama Leaderboards</h2>	
+
+  <div class='para'>
+	<p>When you start to win enough dramas your popularity will increase, making your name the subject of envy and enmity among your less distinguished rivals. Girls on the leaderbaords will find themselves periodically rewarded for their ranking with items, ducats, and surprise baubles.</p>
+  </div>
+  <br/>
+  <div class='leaderboard-wrapper'>
   <table id='popularity' class='leaderboard'>
 	<caption>Most Popular Girls</caption>
 	<tr><th>Rank</th><th>Name</th><th>Popularity</th><th>Wins</th><th>Average Esteem</th></tr>
 	
 	<%- partial('score/score', { collection: locals.scores }) %>
   </table>
+  </div>
 </section>

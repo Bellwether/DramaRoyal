@@ -14,8 +14,8 @@
 	<% if (isProductionEnv) { %>
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<% } %>
-	<script src="/js/47/minified.js"></script>
-	<link rel="stylesheet" href="/css/47/minified.css">
+	<script src="/js/48/minified.js"></script>
+	<link rel="stylesheet" href="/css/48/minified.css">
   </head>
   <body>
 	<div id="fb-root"></div>
@@ -45,9 +45,9 @@
 	        <% } else { %>
 	          <a id='screen1' href='/avatars/new'>Sign In</a>
 		    <% } %>
-	        <a id='screen2' href='/items'>Shop</a>
+	        <a id='screen2' href='/profiles'>Roster</a>
 	        <a id='screen3' href='/scores'>Leaderboard</a>
-	        <a id='screen4' href='/profiles'>Roster</a>
+	        <a id='screen4' href='/items'>Shopping</a>
 	      </section>
 	
 	      <section id='hud'>	
@@ -66,7 +66,7 @@
 	    </nav>
       </header>
       <section id="main" role="main">
-        <%- body %>	
+	    <div id="body"><%- body %><div>
       </section>
       <footer></footer>
     </div>
