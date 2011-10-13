@@ -224,7 +224,7 @@ var outcomeUI = {
 
 var dramaUI = {
   userId: null,	
-  domConnectionStatus: function(){ return $('#chat-status'); },
+  domConnectionStatus: function(){ return $('#chat-status').children('span').first(); },
   domChatBubble: function(userId) { return $('#player-chat-'+userId); },
   domChatButton: function(){ return $('#game-console-submit'); },
   domChatBox: function(){ return $('#game-message'); },	
@@ -265,11 +265,8 @@ var dramaUI = {
 	var element = $('<p>'+message+'</p>');
     element.prependTo(dramaUI.domChatBubble(userId));
   },
-  setClock: function(time) {
-    $('#turn-timer').html( time ? (time + ' seconds') : '' );
-  },
   setTurn: function(turn) {
-    $('#game-status').html( turn );
+    $('#status').html( turn );
   },
   setPlayerEsteem: function(userId, delta) {
     var esteemBox = $('#player-esteem-'+userId);
@@ -303,6 +300,7 @@ var dramaUI = {
   },
   disableGame: function() {
     $('.command:not(.kick)').attr('disabled', 'disabled').addClass('disabled');
+    $('.kick').removeAttr('disabled').removeClass('disabled');
   },
   enableGame: function() {
     $('.command').removeAttr("disabled").removeClass('disabled');
@@ -351,7 +349,7 @@ var dramaUI = {
     dramaUI.domReadyButton().removeAttr("disabled");
   },
   setConnectionStatus: function (status) {
-    dramaUI.domConnectionStatus().text('Status: '+status);
+    dramaUI.domConnectionStatus().text(status);
   },
   initChatControls: function(socket) {
 	var sckt = socket;
@@ -436,7 +434,6 @@ var Drama = function() {
 
   var TRANSPORTS = ['flashsocket','xhr-polling','jsonp-polling','htmlfile'];	
   var ONE_SECOND = 1000;
-  var TURN_DURATION = parseInt($('#game').attr('data-duration'));
 
   var gameAPI = {
     gameInterval: null,
@@ -445,22 +442,102 @@ var Drama = function() {
 		clearInterval(gameAPI.gameInterval);
 	  }
 	},
-	setGameInterval: function(seconds, time) {
-      gameAPI.gameInterval = setInterval(function() {
-        var seconds = time % parseInt($('#game').attr('data-duration'));
-        if (seconds < 10) seconds = "0" + seconds; 
-        dramaUI.setClock(seconds);
-        time--;
+	rotateElement: function (element, angle) {
+	  var deg = 'rotate('+angle+'deg)';
+	  element.css('WebkitTransform', deg);
+	  element.css('MozTransform', deg);
+	  element.css('MsTransform', deg);
+	  element.css('OTransform', deg);
+	  element.css('Transform', deg);
+	  element.css('Zoom', 1);
+	
+      if (element.css("filter") !== undefined) {
+        var cos = Math.cos(Math.PI * 2 / 360 * angle);
+        var sin = Math.sin(Math.PI * 2 / 360 * angle);
 
-        if(time === 0) {
-	      setTimeout(function() { dramaUI.setClock("00") }, ONE_SECOND);
-          gameAPI.clearGameInterval();
-          return;
-        }
-      }, ONE_SECOND);		
+        element.css("filter","progid:DXImageTransform.Microsoft.Matrix(M11="+cos+",M12=-"+sin+",M21="+sin+",M22="+cos+",SizingMethod='auto expand',FilterType='nearest neighbor')");
+        element.css("left",-Math.floor((element.width()-50)/2));
+        element.css("top",-Math.floor((element.height()-50)/2));
+      };	
 	},
-    domGameStatus: function(){ return $('#game-status'); },
+	tickTimer: function (current, total) {
+	  var clock = gameAPI.domTimer();
+	  var angle = (360/total)*(current+1);
+	  var element;
+	
+	  var isBeginningRotation = current === 0;
+	  if (isBeginningRotation) {
+		gameAPI.resetTimer();
+	  }
+
+	  if (angle <= 180) {
+		element = clock.rotateLeft;
+	  }	else {
+		clock.rotateRight.show();
+		clock.rotateLeft.show();
+
+		gameAPI.rotateElement(clock.rotateLeft,180);
+		element = clock.rotateRight;
+		angle = Math.min(angle-180, 180); // right should not exceed 180 degress
+	  }
+	  gameAPI.rotateElement(element, angle);
+	  var displayTime = current+1;
+	  gameAPI.setTimerDisplay(displayTime);
+	},
+	setTimerDisplay: function(seconds) {
+	  seconds = parseInt(seconds);
+	  var displayTime = seconds < 10 ? '0'+seconds : seconds;
+	  gameAPI.domTimerDisplay().html(displayTime);
+	},
+	resetTimer: function() {
+	  var timer = gameAPI.domTimer();
+	  timer.rotateRight.hide();
+	  gameAPI.rotateElement(timer.rotateLeft, 0);
+	  gameAPI.setTimerDisplay(0);
+	},
+	setGameInterval: function(currentSeconds, timeLength, colorClass) {
+	  var timer = gameAPI.domTimer();
+	  var color = colorClass || 'green';
+	  var cssClass = timer.attr('class').replace('orange',color).replace('blue',color).replace('green',color);
+	
+	  gameAPI.gameInterval = setInterval(function() {
+	    gameAPI.tickTimer(currentSeconds, timeLength);
+		currentSeconds++;
+		
+		var intervalHasFinished = currentSeconds > timeLength;
+		if (intervalHasFinished) {
+		  gameAPI.clearGameInterval();
+		  return;
+		}
+	  }, ONE_SECOND);
+	
+	  timer.attr('class', cssClass);
+	
+		
+      // gameAPI.gameInterval = setInterval(function() {
+      //   var seconds = time % parseInt($('#game').attr('data-duration'));
+      //   if (seconds < 10) seconds = "0" + seconds; 
+      //   dramaUI.setClock(seconds);
+      //   time--;
+      // 
+      //   if(time === 0) {
+      // 	      setTimeout(function() { dramaUI.setClock("00") }, ONE_SECOND);
+      //     gameAPI.clearGameInterval();
+      //     return;
+      //   }
+      // }, ONE_SECOND);
+	},
+	domTimer: function() { 
+	  var timer = $('#timer');
+	  timer.rotateLeft = timer.find('.rotate.left');
+	  timer.rotateRight = timer.find('.rotate.right');
+	  return timer; 
+	},
+	domTimerDisplay: function(){ return $('#turn-timer'); },
+    domGameStatus: function(){ return $('#status'); },
     domPlayerStatus: function(playerId) { return $('#player-status-'+playerId); },
+    turnDuration: function() { return parseInt( $('#game').data('duration') ); },
+    cooldownDuration: function() { return parseInt( $('#game').data('cooldown') ); },
     isGameInProgress: function() {
       return gameAPI.domGameStatus().html().indexOf('Turn') >= 0;
     },
@@ -473,16 +550,21 @@ var Drama = function() {
     setPlayerStatus: function(status, playerId) {
 	  gameAPI.domPlayerStatus(playerId).html(status ? '('+ status+')' : '');
     },
-    startCountdown: function(seconds) {
-      var time = seconds;
-      dramaUI.setClock(time);	
-      time--;
-      gameAPI.setGameInterval(seconds, time);
+    startCountdown: function(currentSeconds, turnLength) {
+	  currentSeconds = currentSeconds || 0;
+	  turnLength = turnLength || gameAPI.turnDuration();
+	
+      gameAPI.setGameInterval(currentSeconds, turnLength, 'blue');
     },
+    startCooldown: function() {
+      gameAPI.setGameInterval(0, gameAPI.cooldownDuration());
+    },   
     turnStarted: function(data) {
-      gameAPI.startCountdown(parseInt($('#game').attr('data-duration')));
+      gameAPI.clearGameInterval();
+      gameAPI.resetTimer();
+      gameAPI.startCountdown();
 
-      dramaUI.setTurn('Turn  ' + data.turn.cnt);
+      dramaUI.setTurn('Now playing turn  ' + data.turn.cnt);
       dramaUI.enableGame();
       dramaUI.hideOutcomePanel()
       dramaUI.showPlayerPanel();
@@ -492,9 +574,9 @@ var Drama = function() {
       gameAPI.clearGameInterval();
       outcomeUI.displayOutcome( data.turn.outcome );
 
-      dramaUI.setTurn('Waiting for next turn'); 
-      dramaUI.setClock('00');	
+      dramaUI.setTurn('Waiting for next turn');
       dramaUI.blurGame();
+      gameAPI.startCooldown();
     },
     playerKicked: function(data) {
 	  if (data.kicked+'' === 'true') {
@@ -522,8 +604,8 @@ var Drama = function() {
     gameEnded: function(data) {
 	  dramaUI.removeGame();
       gameAPI.clearGameInterval();
-      dramaUI.setTurn('Game Ended');
-      dramaUI.setClock();
+      gameAPI.resetTimer();
+      dramaUI.setTurn('Game over');
 
       var outcome = {'description': 'GAME OVER! '};
       if (data.winners) {
@@ -707,7 +789,7 @@ var Drama = function() {
 		
           function intiateCountdownIfInProgress() {
 	        if (gameAPI.isGameInProgress() && !gameAPI.isGameInCooldown()) {
-              var seconds = dramaUI.stripNonNumeric( $('#turn-timer').html() );
+              var seconds = dramaUI.stripNonNumeric( gameAPI.domTimerDisplay().html() );
 	          if (seconds.length > 0) gameAPI.startCountdown( parseInt(seconds) );
               dramaUI.enableGame();
             } else {

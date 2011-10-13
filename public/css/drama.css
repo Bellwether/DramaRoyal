@@ -1,5 +1,59 @@
+#game .title {
+  background-color:#ff524a;	
+  -khtml-border-radius:3px;
+  -webkit-border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  border-radius:3px;
+  height:25px;
+  margin:12px 0 8px 0;
+  vertical-align:top;
+  width:675px;
+}
+
+#game .title #status {
+  background-color:#fea066;	
+  -khtml-border-radius:6px;
+  -webkit-border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  border:1px solid #fff;
+  color:#fff;
+  display:inline-block;
+  left:440px;
+  padding:0 5px;
+  position:relative;
+  text-align:center;
+  text-shadow:1px 0 1px #ff524a, -1px 0 1px #ff524a, 0 1px 1px #ff524a, 0 -1px 1px #ff524a;
+  top:4px;
+}
+
 #game h2 {
- font-size: 18px;
+  background-color:#fea066;	
+  background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(90deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(90deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: -ms-linear-gradient(90deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(90deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  -webkit-background-size: 100px 100px;
+  -moz-background-size: 100px 100px;
+  background-size: 100px 100px;
+  border:4px solid #ff524a;
+  color:#fff;
+  -khtml-border-radius:6px;
+  -webkit-border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  letter-spacing:0.15em;
+  margin:-15px 0 0 10px;
+  padding:10px 5px;
+  position:absolute;
+  font-size: 22px;
+  text-shadow:1px 0 1px #222, -1px 0 1px #222, 0 1px 1px #222, 0 -1px 1px #222;
+  width:400px;
 }
 
 #game h5 {
@@ -8,15 +62,78 @@
   margin-top:20px;
 }
 
-#turn-timer, #game-status {
-  display:inline-block;	
-  margin: 0 5px;
+.clock {
+  background-color:#9bd8de;
+  border:4px solid #ff524a;
+  -khtml-border-radius:6px;
+  -webkit-border-radius:6px;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  height:50px;
+  margin:-35px 0px 0px 605px;
+  position:absolute;
+  overflow:hidden;
+  width:50px;
+}
+
+.clock .rotate {
+  position:absolute;
+  width:50px;
+  height:50px;
+  top:0;
+  left:0;
+}
+
+.rotate.right{
+  display:none;
+  z-index:11;
+}
+
+.clock .bg, .clock .front{
+  width:25px;
+  height:50px;
+  background-color:#9bd8de;
+  position:absolute;
+  top:0;
+}
+
+#turn-timer {
+  color:#F5F5F5;
+  font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  left:0;	
+  position:absolute;
+  text-align:center;
+  text-shadow:1px 0 #333, 0 1px #333, -1px 0 #333, 0 -1px #333;	
+  top:18px;
+  width:50px;
+  z-index:20;
+}
+
+.clock .bg.left{ left:0; }
+
+.orange .bg.left{ background:url(/img/timers/timer_orange.png) no-repeat left top; }
+.green .bg.left{ background:url(/img/timers/timer_green.png) no-repeat left top; }
+.blue .bg.left{	background:url(/img/timers/timer_blue.png) no-repeat left top; }
+
+.clock .bg.right{ left:25px; }
+
+.orange .bg.right{ background:url(/img/timers/timer_orange.png) no-repeat right top; }
+.green .bg.right{ background:url(/img/timers/timer_green.png) no-repeat right top; }
+.blue .bg.right{ background:url(/img/timers/timer_blue.png) no-repeat right top; }
+
+.clock .front.left{
+  left:0;
+  z-index:10;
 }
 
 #game-players {
   border:1px solid #eee;	
   height:300px;	
-  width:700px;
+  margin-top:18px;
+  width:675px;
 }
 
 #player-list {
@@ -30,7 +147,7 @@
   float:left;	
   height:300px;
   text-align:center;
-  width:110px;
+  width:100px;
 }
 
 #player-list .esteem {
@@ -45,6 +162,7 @@
 #player-list .esteem li {
   height:10px;
   float:none;
+  text-shadow: 1px 0 1px #444, -1px 0 1px #444, 0 1px 1px #444, 0 -1px 1px #444;
   width:10px;
 }
 
@@ -100,15 +218,6 @@
   display:inline-block;	
 }
 
-#game-console input[type=text] {
-  border:1px solid #ccc;	
-  height:40px;
-  font-size:16px;
-  margin-right:20px;
-  padding:5px;
-  width:300px;	
-}
-
 .player-controls {
   position: relative;
   text-align:center;
@@ -117,11 +226,23 @@
 }
 
 #turn-outcomes {
+  background-color:#fea066;	
+  background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(255, 255, 255, .2)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.75, rgba(255, 255, 255, .2)), color-stop(.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: -ms-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+  -webkit-background-size: 25px 25px;
+  -moz-background-size: 25px 25px;
+  background-size: 25px 25px;
   border: 1px solid #EEE;
-  height: 300px;
+  height: 350px;
+  margin-top:-50px;
   overflow:hidden;
   position:relative;
-  width: 700px;
+  width: 675px;
+  z-index:50;
 }
 
 #outcome-pages {
@@ -163,7 +284,7 @@
   cursor:pointer;
   display:inline-block;
   font-size:9px;
-  margin:0 1px 0 0;
+  margin-right:1px;
   padding: 3px 1px 1px 1px;
   text-align:center;
 }

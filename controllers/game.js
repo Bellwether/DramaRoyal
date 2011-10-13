@@ -11,9 +11,11 @@ module.exports = {
 	});
   },
 	
-  index: function(req, res) {
+  index: function(req, res) {	
+    var userId = req.user.getId();
+
     gt.Main.findGames(function (err, docs) {
-      res.render('game/index',{ games: docs });
+      res.render('game/index',{ games: docs, userId: userId });
     })
   },
 

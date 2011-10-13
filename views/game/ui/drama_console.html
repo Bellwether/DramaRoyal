@@ -1,17 +1,20 @@
 <form id="game-console" method="post" action="/game_messages" class='hidden'>
-  <span class='console-block'>
+  <span class='console-block left'>
     <img id='avatar' src='/img/avatars/head.png' />
     <input type='text' id="game-message" name="message" autofocus="autofocus" />
   </span>
+
   <span class='console-block'>
-    <span id='chat-status'>Status: connecting to game</span>
-    <br />
-    <input id="game-console-submit" type="submit" value="Chat" class="button cmd" disabled='disabled' />
-    <% if (locals.game.status === 'pending' ) { %>
-      <button type='button' id='player-ready' disabled='disabled' class="button cmd">
-	    <%- (locals.ownPlayerStatus === 'active') ? 'Waiting...' : 'Ready to play' %>
-	  </button>
-    <% } %>
-    <button type='button' id='player-quit' class="button link" data-method='delete' action='/games/<%- game._id %>'>Quit</button>
+    <span id='chat-status'>Chat Status: <span>connecting</span></span>
+
+    <span id='chat-buttons'>
+      <input id="game-console-submit" type="submit" value="Chat" class="button cmd" disabled='disabled' />
+      <% if (locals.game.status === 'pending' ) { %>
+        <button type='button' id='player-ready' disabled='disabled' class="button cmd">
+	      <%- (locals.ownPlayerStatus === 'active') ? 'Waiting...' : 'Ready to play' %>
+	    </button>
+      <% } %>
+      <button type='button' id='player-quit' class="button link" data-method='delete' action='/games/<%- game._id %>'>Quit</button>
+    </span>
   </span>
 </form>

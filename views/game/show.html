@@ -1,11 +1,11 @@
-<section id="game" data-duration="<%- locals.game.getTurnDuration() %>">
-  <%- partial('game/ui/timer') %>	
-  &nbsp;&nbsp;
-  <h5 id='game-status'>
-  <%- locals.game.status === 'pending' ? 'Waiting For Players' : ((locals.game.status === 'cooldown') ? 'Waiting for next turn' : 'Turn ' + Math.max(locals.game.turns.length,1)) %>
-  </h5>
-  &nbsp;&nbsp;
-  <h2><%= locals.game.title %></h2>
+<section id="game" data-duration="<%- locals.game.getTurnDuration() %>" data-cooldown="<%- locals.game.getCooldownDuration() %>">
+  <div class='title'>	
+
+    <h2><%= locals.game.title %></h2>
+    <span id='status'><%- locals.game.status === 'pending' ? 'Waiting for more players' : ((locals.game.status === 'cooldown') ? 'Waiting for next turn' : 'Now playing turn ' + Math.max(locals.game.turns.length,1)) %></span>
+
+    <%- partial('game/ui/timer') %>
+  </div>
 
   <div id='game-players'>
 	<ul id='player-list'>
@@ -21,7 +21,7 @@
     <div id="outcome-pagination">
       <a href="#" id="turn-outcome-pagination-previous" class="button prev">Previous</a>
       <a href="#" id="turn-outcome-pagination-next" class="button next">Next</a>
-    </div>	
+    </div>
     <ul id='outcome-pages' data-page='1' data-next='turn-outcome-pagination-next' data-previous='turn-outcome-pagination-previous'>
 	</ul>
   </div>

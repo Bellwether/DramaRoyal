@@ -1,0 +1,24 @@
+<li id="game-<%- game._id %>" class='lobby-game <%- (game.status !== 'pending') ? 'active' : ''%>'>
+  <% if (game.status === 'pending') { %>
+    <a class='join button link' href='/games/<%-game._id%>'>JOIN</a>
+  <% } else { %>
+    <% for(var i = 0; i < game.players.length; i++) { %>	
+      <% if (game.players[i].userId+'' === locals.userId+'') { %>
+        <a class='join button link' href='/games/<%-game._id%>'>REJOIN</a>
+      <% } %>
+    <% } %>
+  <% } %>
+
+  <h5><%= game.title %></h5>
+
+  <div class='body'>
+    <ul id="game-<%-game._id%>-players">
+      <% for(var i = 0; i < game.players.length; i++) { %>	
+        <% var uid = game.players[i].userId %> 
+        <li id="<%- 'game-'+game._id+'-player-'+uid %>">
+          <a href="/profiles/<%-uid%>" class="popup"><%= game.players[i].nick %></a>
+        </li>
+      <% } %>	
+    </ul>
+  </div>
+</li>

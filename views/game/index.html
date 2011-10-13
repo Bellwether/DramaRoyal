@@ -15,25 +15,7 @@
       <div id='game-list-wrapper'>
 	    <div class='desc'><span>You can join any new drama that hasn't yet started, or else start your own and wait for others to join.</span></div>
         <ul id='game-list'>
-          <% for(var k in locals.games) { %>
-	        <% var gid = locals.games[k]._id %>
-            <li id="game-<%- gid %>" class='lobby-game <%- (locals.games[k].status !== 'pending') ? 'active' : ''%>'>
-	          <% if (locals.games[k].status === 'pending') { %>
-		        <a class='join button link' href='/games/<%-gid%>'>JOIN</a>
-		      <% } %>
-	          <h5><%= locals.games[k].title %></h5>
-	          <div class='body'>
-		      <ul id="game-<%- gid %>-players">
-			    <% for(var i = 0; i < locals.games[k].players.length; i++) { %>	
-				  <% var uid = locals.games[k].players[i].userId %> 
-                  <li id="<%- 'game-'+gid+'-player-'+uid %>">
-			        <a href="/profiles/<%-uid%>" class="popup"><%= locals.games[k].players[i].nick %></a>
-				  </li>
-			    <% } %>	
-		      </ul>
-	          </div>
-            </li>	
-          <% } %>	
+	      <%- partial('game/ui/game', { collection: locals.games, userId: userId }) %>	
         </ul>
       </div>
     </div>	
