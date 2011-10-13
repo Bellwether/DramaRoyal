@@ -35,6 +35,10 @@ function userParamsFromGraph(data, oAuthToken){
   }
   var userData = convertGraphObject(data);
 
+  if (userData['error']) {
+	return {};
+  }
+
   var fbId = userData['id'];
   var name = userData['first_name'];
   var fullName = userData['name'];

@@ -119,7 +119,6 @@ var outcomeUI = {
   applyMeds: function(outcome) {
     var meds = outcome.meds;
 	if (!meds) return;
-	
     for(var idx = 0; idx < meds.length; idx++) {
 	  var playerItem = $('li#'+meds[idx]);
 	  var ownPlayerExists = playerItem.data('self');
@@ -230,7 +229,7 @@ var dramaUI = {
   domChatBox: function(){ return $('#game-message'); },	
   domReadyButton: function(){ return $('#player-ready'); },
   domTattleButton: function(){ return $('#player-tattle'); },	
-  domMedButton: function(){ return $('#player-lick'); },
+  domMedButton: function(){ return $('#player-med'); },
   domOutcomePanel: function(){ return $('#outcome-pages'); },	
   domPaperdoll: function(userId){ return $('#paperdoll-'+userId); },
   domPaperdollArms: function(userId) { return $('#paperdoll-'+userId+'-arms'); },
