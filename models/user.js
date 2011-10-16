@@ -157,7 +157,7 @@ model.findById = function(id, callback) {
 
 model.updateNick = function(userId, name, callback) {
   model.findById(userId, function(err, doc){
-    var needsAvatar = doc && (doc.avatar === undefined || (doc.avatar.nick+'').length === 0);
+    var needsAvatar = doc && (!doc.avatar || !doc.avatar.nick);
     var canUpdateAvatar = name && needsAvatar;
   
     if (canUpdateAvatar) {
