@@ -4,6 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var schema = new Schema({
   title: String,
+  slug: String,
   description: String,
   image: String,
   url: String,

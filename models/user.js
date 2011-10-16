@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var graph = require('./../lib/facebook/graph');
 var Schema = mongoose.Schema;
 
+var GRAPH_UPDATE_INTERVAL_DAYS = 7; 
+
 function required(val) { return val && val.length; }
 
 function doCallback(callback, err, data) {
@@ -72,21 +74,33 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, tokenExpir
   }
 
   function tokenHasExpired(unixTsExpiresAt) {
-	if (!token) return false;
+	if (!unixTsExpiresAt) return false;
 	
 	var ONE_SECOND = 1000; // unix timestamps are seconds since epoch, not milliseconds since epoch
 	var dt = new Date()
 	var unixTs = Math.floor(dt.getTime() / ONE_SECOND);
 	return unixTsExpiresAt < unixTs
   }
+
+  function timeForGraphUpdate(lastUpdateAt) {
+    return false;
+  }
 	
   function createNewUserFromFacebook(userData) {
 	console.log("FACEBOOK CREATING NEW USER w/fbGraphFunction: "+JSON.stringify(userData))
-	var params = userParamsFromGraph(userData, oAuthToken)
+	var params = userParamsFromGraph(userData, oAuthToken, tokenExpiresAt)
 	var user = new model(params);
 	
     user.save(function (err, doc) {
        doCallback(callback, err, doc);
+    });	
+  }
+	
+  function updateUserToken(user) {
+    user.token = oAuthToken;
+    user.expire = tokenExpiresAt;
+    user.save(function (err, doc) {
+      doCallback(callback, err, doc);
     });	
   }
 	
@@ -97,13 +111,13 @@ model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, tokenExpir
     } else if (doc) {
       if (tokenHasChanged(doc.token, oAuthToken)) {
         console.log("FACEBOOK FOUND USER BUT TOKEN CHANGED FROM "+doc.token+" TO "+oAuthToken)	
-        doc.token = oAuthToken;
-        doc.save(function (err, doc) {
-          doCallback(callback, err, doc);
-        });
+        updateUserToken(doc);
       } else if (tokenHasExpired(tokenExpiresAt)) {
         console.log("FACEBOOK FOUND USER BUT TOKEN EXPIRED "+tokenExpiresAt);
-        doCallback(callback, "Facebook token");
+        doCallback(callback, "Facebook token expired");
+      } else if (timeForGraphUpdate(doc.upts)) {
+        console.log("FACEBOOK FOUND USER BUT TIME FOR UPDATE "+doc.upts);
+        doCallback(callback, err, doc);
       } else {
         console.log("AUTH FOUND user by FB ID: "+facebookUserId)
         doCallback(callback, err, doc);
