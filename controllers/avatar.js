@@ -26,11 +26,11 @@ module.exports = {
     var userId = req.user.getId();
 	
     usr.updateNick(userId, name, function(err, doc) {
-	  if (err) {	
+	  if (!err) {	
 		req.user.setAvatar(name);
 	    res.redirect('/games');
 	  } else {
-		console.log("AUTH could not create avatar ("+userId+", "+name+"): "+err);
+		console.log("AUTH ERROR could not create avatar ("+userId+", "+name+"): "+err);
 		res.redirect('/avatars/new');
 	  }
 	});	
