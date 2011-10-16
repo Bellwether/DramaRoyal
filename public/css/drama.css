@@ -8,7 +8,7 @@
   height:25px;
   margin:12px 0 8px 0;
   vertical-align:top;
-  width:675px;
+  width:695px;
 }
 
 #game .title #status {
@@ -133,7 +133,7 @@
   border:1px solid #eee;	
   height:300px;	
   margin-top:18px;
-  width:675px;
+  width:695px;
 }
 
 #player-list {
@@ -147,7 +147,7 @@
   float:left;	
   height:300px;
   text-align:center;
-  width:100px;
+  width:115px;
 }
 
 #player-list .esteem {
@@ -169,6 +169,8 @@
 #player-list li .chat-bubble {
   background-color:#F2FFFB;
   border:2px solid #666666;
+  -khtml-border-radius:10px;
+  -webkit-border-radius:10px;
   -moz-border-radius:10px;
   -webkit-border-radius:10px;
   border-radius:10px;
@@ -183,10 +185,16 @@
 }
 
 #player-list li .chat-bubble p {
+  background-color: #DEECE9;	
+  -khtml-border-radius:1px;
+  -webkit-border-radius:1px;
+  -moz-border-radius:1px;
+  -webkit-border-radius:1px;
+  border-radius:1px;
   color:#000;
   font-size: 10px;
-  line-height:11px;
-  margin: 0 0 3px 0;
+  line-height:10px;
+  margin: 0 0 2px 0;
 }
 
 #player-list li .player-nick {
@@ -213,8 +221,7 @@
   font-size:18px;	
 }
 
-.console-block,
-#game-console {
+.console-block {
   display:inline-block;	
 }
 
@@ -236,12 +243,12 @@
   -webkit-background-size: 25px 25px;
   -moz-background-size: 25px 25px;
   background-size: 25px 25px;
-  border: 1px solid #EEE;
-  height: 350px;
-  margin-top:-50px;
+  border: 1px solid #FF524A;
+  height: 300px;
+  margin-top:18px;
   overflow:hidden;
   position:relative;
-  width: 675px;
+  width: 695px;
   z-index:50;
 }
 
@@ -255,17 +262,23 @@
 #outcome-pages li {
   display:inline-block;	
   height:300px;
+  overflow:hidden;
   vertical-align:top;
   width:700px; 
 }
 
 #outcome-pages li p {
-  background-color:#999;	
+  background-color:#82b9a9;	
   color:#ffffff;
   display:inline-block;
+  font-size:14px;
+  font-weight:bold;
   height:100px;
+  line-height:14px;
+  padding:5px;
   position:absolute;
   margin-top:200px;
+  text-shadow: 1px 0 1px #54786E, -1px 0 1px #54786E, 0 1px 1px #54786E, 0 -1px 1px #54786E;
   width:100%;
 }
 

@@ -1,8 +1,8 @@
 var cnfg = require('./../lib/facebook/config');
 
 var facebookDeauthorizeAction = function(req, res) {
-  console.log("@@fb FACEBOOK DEAUTH "+req.params);
-  console.log("@@fb FACEBOOK DEAUTH "+req.query);
+  console.log("FACEBOOK DEAUTH "+req.params);
+  console.log("FACEBOOK DEAUTH "+req.query);
 }
 
 var facebookAuthorizeAction = function(req, res) {
@@ -10,11 +10,11 @@ var facebookAuthorizeAction = function(req, res) {
   var error = req.query.error;
 
   if (code) {
-	console.log("@@fb FACEBOOK AUTHORIZATION APPROVED WITH CODE ++++++++++++ !")
+	console.log("FACEBOOK AUTHORIZATION APPROVED WITH CODE")
     res.redirect(cnfg.CanvasAppUrl);
   } 
   else {
-	console.log("@@fb FACEBOOK AUTHORIZATION REFUSED -------------- ! "+error)
+	console.log("FACEBOOK AUTHORIZATION REFUSED"+error)
     res.redirect(cnfg.AppProfilePageUrl);
   }
 }

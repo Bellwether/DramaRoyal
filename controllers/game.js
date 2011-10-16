@@ -1,7 +1,7 @@
 var gt = require('./../lib/mechanics/game_tracker');
 
 module.exports = {
-  before_filter: function(req, res, next){
+  before_filter: function(req, res, next) {
 	res.requireUser(req, res, function(isAuthorized){
 	  if (isAuthorized) {
 		res.requireAvatar(req, res, function(hasAvatar){

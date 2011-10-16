@@ -18,8 +18,10 @@ var schema = new Schema({
   full: String,
   fbId: {type: String, index: {unique:true}},
   token: String,
+  expire: Number,
   sex: String,
   ts: {type: Date, default: Date.now},
+  upts: {type: Date, default: Date.now},
   avatar: {
 	nick: String
   },
@@ -29,7 +31,7 @@ var schema = new Schema({
 });
 var model = mongoose.model('User', schema);
 
-function userParamsFromGraph(data, oAuthToken){
+function userParamsFromGraph(data, oAuthToken, tokenExpiresAt){
   var convertGraphObject = function (graphData){	
 	return JSON.parse( JSON.stringify(graphData) );
   }
@@ -52,36 +54,64 @@ function userParamsFromGraph(data, oAuthToken){
     friendIds.push( friends[idx].id );
   }
 
-  var params = {name: name, full: fullName, fbId: fbId, token: oAuthToken, sex: gender, cn: country}	
+  var params = {
+	name: name, 
+	full: fullName, 
+	fbId: fbId, 
+	token: oAuthToken, 
+	expire: tokenExpiresAt, 
+	sex: gender, 
+	cn: country 
+  };
   return params;
 }
 
-model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, fbGraphFunction, callback) {
+model.findOrCreateFromFacebook = function(facebookUserId, oAuthToken, tokenExpiresAt, fbGraphFunction, callback) {
+  function tokenHasChanged(original, current) {
+	return original !== current;
+  }
+
+  function tokenHasExpired(unixTsExpiresAt) {
+	if (!token) return false;
+	
+	var ONE_SECOND = 1000; // unix timestamps are seconds since epoch, not milliseconds since epoch
+	var dt = new Date()
+	var unixTs = Math.floor(dt.getTime() / ONE_SECOND);
+	return unixTsExpiresAt < unixTs
+  }
+	
+  function createNewUserFromFacebook(userData) {
+	console.log("FACEBOOK CREATING NEW USER w/fbGraphFunction: "+JSON.stringify(userData))
+	var params = userParamsFromGraph(userData, oAuthToken)
+	var user = new model(params);
+	
+    user.save(function (err, doc) {
+       doCallback(callback, err, doc);
+    });	
+  }
+	
   model.findByFbId(facebookUserId, function (err, doc){
-    if (doc) {
-      var hasTokenChanged = doc.token !== oAuthToken;
-      if (hasTokenChanged) {
-        console.log("@@fb FACEBOOK TOKEN CHANGED FROM "+doc.token+" to "+oAuthToken)	
+	if (err) {
+      console.log("ERROR findByFbId: "+err);
+	  doCallback(callback, err);	
+    } else if (doc) {
+      if (tokenHasChanged(doc.token, oAuthToken)) {
+        console.log("FACEBOOK FOUND USER BUT TOKEN CHANGED FROM "+doc.token+" TO "+oAuthToken)	
         doc.token = oAuthToken;
         doc.save(function (err, doc) {
           doCallback(callback, err, doc);
         });
+      } else if (tokenHasExpired(tokenExpiresAt)) {
+        console.log("FACEBOOK FOUND USER BUT TOKEN EXPIRED "+tokenExpiresAt);
+        doCallback(callback, "Facebook token");
       } else {
-        console.log("FOUND user by FB ID: "+facebookUserId)
+        console.log("AUTH FOUND user by FB ID: "+facebookUserId)
         doCallback(callback, err, doc);
       };
     } else if (typeof fbGraphFunction === 'function') {
-	  fbGraphFunction(function(userData){
-		console.log("@@fb fbGraphFunction RESULTS : "+JSON.stringify(userData))
-		var params = userParamsFromGraph(userData, oAuthToken)
-		var user = new model(params);
-	    user.save(function (err, doc) {
-          doCallback(callback, err, doc);
-	    });
-	  });
+	  fbGraphFunction(createNewUserFromFacebook);
     } else {
-      console.log("@@fb + ERROR in findOrCreateFromFacebook : "+err)			
-      doCallback(callback, err);
+      doCallback(callback, "missing fbGraphFunction() for graph API");
     }
   })	
 }
@@ -144,6 +174,16 @@ model.updateBio = function(userId, bio, callback) {
       doCallback(callback, "Avatar required for bio");
     }
   });	
+}
+
+model.prototype.deauthorizeFacebook = function(callback) {
+  this.token = null;
+  this.expire = null;
+  this.upts = null;
+
+  this.save(function (err, doc) {
+    doCallback(callback, err, doc);
+  });
 }
 
 module.exports = {

@@ -27,7 +27,7 @@
 
 #lobby-chat-panel {
   margin-right:10px;	
-  width:375px;	
+  width:395px;	
 }
 
 #games-panel {
@@ -251,6 +251,7 @@ background-image: linear-gradient(135deg, rgba(255, 255, 255, .2) 25%, transpare
 
 #avatar {
   height:50px;	
+  margin-right:15px;
   vertical-align:top;
   width:50px;	
 }
@@ -275,7 +276,7 @@ background-image: linear-gradient(135deg, rgba(255, 255, 255, .2) 25%, transpare
   border-radius:10px;
   margin-top:5px;	
   padding:5px 4px;	
-  width:665px;	
+  width:685px;	
 }
 
 #game-console,
@@ -319,7 +320,7 @@ outline-width: 0;
   padding:5px;
   position:relative;
   top:-15px;	
-  width:360px;
+  width:375px;
 }
 
 #chat-status {
