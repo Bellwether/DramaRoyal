@@ -26,7 +26,7 @@ module.exports = {
     var userId = req.user.getId();
 	
     usr.updateNick(userId, name, function(err, doc) {
-	  if (!err) {	
+	  if (doc) {	
 		req.user.setAvatar(name);
 	    res.redirect('/games');
 	  } else {

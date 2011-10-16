@@ -166,7 +166,7 @@ model.updateNick = function(userId, name, callback) {
 	    doCallback(callback, err, doc);
       });		
     } else {
-      doCallback(callback, "Cannot update existing avatar");
+      doCallback(callback, "Cannot update existing avatar", doc);
     }
   });	
 }
