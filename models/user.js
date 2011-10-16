@@ -157,7 +157,7 @@ model.findById = function(id, callback) {
 
 model.updateNick = function(userId, name, callback) {
   model.findById(userId, function(err, doc){
-    var needsAvatar = doc && (doc.avatar === undefined || doc.avatar.nick === null);
+    var needsAvatar = doc && (doc.avatar === undefined || (doc.avatar.nick+'').length === 0);
     var canUpdateAvatar = name && needsAvatar;
   
     if (canUpdateAvatar) {
@@ -166,6 +166,7 @@ model.updateNick = function(userId, name, callback) {
 	    doCallback(callback, err, doc);
       });		
     } else {
+	  console.log(JSON.stringify(doc));
       doCallback(callback, "Cannot update existing avatar", doc);
     }
   });	
@@ -176,12 +177,8 @@ model.updateBio = function(userId, bio, callback) {
     var hasAvatar = doc && doc.avatar;
   
     if (hasAvatar) {
-	console.log(JSON.stringify(doc.avatar))
-	console.log(bio)
 	  doc.avatar = {nick: doc.avatar.nick, bio: bio};
-	console.log(JSON.stringify(doc.avatar))
       doc.save(function (err, doc) {
-	console.log(JSON.stringify(doc.avatar))
 	    doCallback(callback, err, doc);
       });		
     } else {
