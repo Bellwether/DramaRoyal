@@ -26,6 +26,19 @@ function checkAuthorization(req, res, callback) {
   res.requireUser(req, res, callback, false);
 }
 
+var facebookIndexAction = function(req, res) {
+  // all facebook user requests link back to the root canvas page, so handle those here
+  var sentByRequest = isSentByFBRequest(req);
+  if (sentByRequest) clearFBRequests(req, res);
+
+  checkAuthorization(req, res, function() {
+    twtr.getTweets(function(err, tweets) {
+	  res.render('app/index', {'sentByRequest': sentByRequest, 'tweets': tweets || []});
+    })
+  }, false);
+}
+
+
 module.exports = {
   get_presence	: function(req, res) {
 	res.render('app/presence');
@@ -55,15 +68,6 @@ module.exports = {
 	res.render('app/help', {layout: false});
   },
 
-  index: function(req, res) {
-	// all facebook user requests link back to the root canvas page, so handle those here
-	var sentByRequest = isSentByFBRequest(req);
-	if (sentByRequest) clearFBRequests(req, res);
-
-    checkAuthorization(req, res, function() {
-	  twtr.getTweets(function(err, tweets) {
-		res.render('app/index', {'sentByRequest': sentByRequest, 'tweets': tweets || []});
-	  })
-    }, false);	
-  }
+  index: facebookIndexAction,
+  create: facebookIndexAction // handles Facebook POST, which acts as GET on CANVAS iframes
 };
