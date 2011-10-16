@@ -44,7 +44,8 @@ input[disabled=disabled] {
 }
 
 #container {
-  width:700px;	
+  padding:0;	
+  width:725px;	
 }
 
 #header {
@@ -57,7 +58,7 @@ input[disabled=disabled] {
   border-radius:10px;
   padding-bottom:3px;
   padding-top:3px;
-  width:715px;	
+  width:725px;	
 }
 
 #title {
@@ -327,7 +328,7 @@ header nav {
   border:3px solid #68aeb4;
   clear:both;
   margin-top:5px;	
-  width:715px;
+  width:725px;
 }
 
 #body {

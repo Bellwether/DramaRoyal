@@ -12,6 +12,15 @@ var schema = new Schema({
   order: Number
 });
 
+var model = mongoose.model('Achievement', schema);
+
+model.findBySlug = function(slug, callback) {
+  model.findOne({ slug: slug }, function(err, doc) {
+    doCallback(callback, err, doc);
+  });
+}
+
 module.exports = {
-  Schema: schema
+  Schema: schema,
+  Model: model
 }
