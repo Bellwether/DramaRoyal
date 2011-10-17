@@ -1,8 +1,17 @@
 var cnfg = require('./../lib/facebook/config');
+var cnvs = require('./../lib/facebook/canvas');
+var usr = require('./../models/user').Model;
 
 var facebookDeauthorizeAction = function(req, res) {
   console.log("FACEBOOK DEAUTH "+req.params);
-  console.log("FACEBOOK DEAUTH "+req.query);
+
+  cnvs.receiveSignedRequest(req, res, cnfg.AppSecret);
+  var fbId = res.facebookSession && res.facebookSession.userId();
+  if (fbId) {
+    usr.deauthorizeFacebook(fbId, function(err, doc) {
+      console.log("deauthed (err="+err+")");
+    })
+  }
 }
 
 var facebookAuthorizeAction = function(req, res) {

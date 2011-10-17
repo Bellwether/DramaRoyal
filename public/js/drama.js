@@ -166,9 +166,16 @@ var outcomeUI = {
   },
   setNextAboutToClose: function	(aboutToClose) {
 	if (aboutToClose === true) {
-	  outcomeUI.next.html('Close');
+	  outcomeUI.next.html('&#10006;');
 	} else {
-	  outcomeUI.next.html('Next');
+	  outcomeUI.next.html('&#10140;');
+    };
+  },
+  setPreviousSymbol: function(onFirstPage) {
+	if (onFirstPage === true) {
+	  outcomeUI.previous.html('');
+	} else {
+	  outcomeUI.previous.html('&#10140;');
     };
   },
   init: function(list){	
@@ -211,6 +218,9 @@ var outcomeUI = {
 
       var isAboutToClosePanel = pageDelta === -numberOfPages+1;
       outcomeUI.setNextAboutToClose(isAboutToClosePanel);
+
+      var isOnFirstPage = pageDelta+1 > 0;
+      outcomeUI.setPreviousSymbol(isOnFirstPage);
 
       changePosition(delta);
       return false;

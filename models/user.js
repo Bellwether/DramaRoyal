@@ -184,16 +184,21 @@ model.updateBio = function(userId, bio, callback) {
     } else {
       doCallback(callback, "Avatar required for bio");
     }
-  });	
+  });
 }
 
-model.prototype.deauthorizeFacebook = function(callback) {
-  this.token = null;
-  this.expire = null;
-  this.upts = null;
-
-  this.save(function (err, doc) {
-    doCallback(callback, err, doc);
+model.deauthorizeFacebook = function(fbId, callback) {
+  model.findByFbId(fbId, function(err, doc) {
+    if (doc) {
+      doc.token = null;
+      doc.expire = null;
+      doc.upts = null;
+      doc.save(function (err, doc) {
+	    doCallback(callback, err, doc);
+      });
+    } else {
+      doCallback(callback, "Could not find Facebook user with UID "+fbId+" "+err);
+    }
   });
 }
 

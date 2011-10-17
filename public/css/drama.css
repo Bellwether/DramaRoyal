@@ -8,7 +8,7 @@
   height:25px;
   margin:12px 0 8px 0;
   vertical-align:top;
-  width:695px;
+  width:705px;
 }
 
 #game .title #status {
@@ -71,7 +71,7 @@
   -webkit-border-radius:6px;
   border-radius:6px;
   height:50px;
-  margin:-35px 0px 0px 605px;
+  margin:-35px 0px 0px 635px;
   position:absolute;
   overflow:hidden;
   width:50px;
@@ -133,7 +133,7 @@
   border:1px solid #eee;	
   height:300px;	
   margin-top:18px;
-  width:695px;
+  width:705px;
 }
 
 #player-list {
@@ -248,8 +248,43 @@
   margin-top:18px;
   overflow:hidden;
   position:relative;
-  width: 695px;
+  width: 705px;
   z-index:50;
+}
+
+#turn-outcome-pagination-previous,
+#turn-outcome-pagination-next {
+  background-color:#fff;	
+  -khtml-border-radius:30px;
+  -webkit-border-radius:30px;
+  -moz-border-radius:30px;
+  -webkit-border-radius:30px;
+  border-radius:25px;
+  border:6px solid #ff524a;
+  font-size:42px;	
+  height:40px;
+  line-height:42px;
+  position:absolute;	
+  text-align:center;
+  top:245px;
+  width:40px;
+  z-index:10;
+}
+
+#turn-outcome-pagination-previous {
+  left:5px;
+}
+
+#turn-outcome-pagination-next {
+  left:645px;
+}
+
+#turn-outcome-pagination-previous {
+  -moz-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: flip; /*IE*/
 }
 
 #outcome-pages {
@@ -264,7 +299,7 @@
   height:300px;
   overflow:hidden;
   vertical-align:top;
-  width:700px; 
+  width:705px; 
 }
 
 #outcome-pages li p {
@@ -361,7 +396,7 @@ button.command:disabled, input.command:disabled {
   -webkit-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
-  filter: fliph; /*IE*/
+  filter: flip; /*IE*/
 }
 
 .doll .scratches {
